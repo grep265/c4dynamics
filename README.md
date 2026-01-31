@@ -135,6 +135,10 @@ Define state space object of two variables in the state space (y, vy) with initi
 ```
 >>> s = c4d.state(y = 1, vy = 0.5)
 ``` 
+Store with time stamp `t = 0`:
+```
+>>> s.store(t = 0)
+``` 
 
 Multiply the state vector by a matrix and store:  
 ```

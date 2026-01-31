@@ -53,4 +53,4 @@ The fastest way to contribute and help engineers apply C4DYNAMICS in practice.
 * Don’t worry about perfection—improvements are collaborative.
 * Check existing notebooks for formatting and documentation standards.
 
-**Ready to start contributing?** 👉 [Fork the repo & Begin](#)
+**Ready to start contributing?** 👉 **Fork the repo & Begin**

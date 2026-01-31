@@ -54,7 +54,7 @@
     <link rel="prev" title="Sensors" href="sensors.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Dec 17, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 31, 2026"/>
   </head>
   
   
@@ -464,7 +464,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-systems">Nonlinear Systems</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linearization">Linearization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampled-systems">Sampled Systems</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-covariance">System Covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-covariance">State Covariance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kalman-filter-kalman">Kalman Filter (<code class="xref py py-class docutils literal notranslate"><span class="pre">kalman</span></code>)</a><ul class="nav section-nav flex-column">
@@ -507,8 +507,8 @@ document.write(`
                   
   <section id="filters">
 <h1>Filters<a class="headerlink" href="#filters" title="Link to this heading">#</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">filters</span></code> module in c4dynamics provides a collection of
-classes and functions for implementing various types of filters commonly used in control
+<p>The c4dynamics <a class="reference internal" href="../api/Filters.html#module-c4dynamics.filters" title="c4dynamics.filters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">filters</span></code></a> module provides a collection of
+classes and functions for various types of filters commonly used in control
 systems and state estimation.</p>
 <section id="background-material">
 <h2>Background Material<a class="headerlink" href="#background-material" title="Link to this heading">#</a></h2>
@@ -517,8 +517,8 @@ are based on sources in references <a class="reference internal" href="#fag" id=
 <section id="system-model">
 <h3>System Model<a class="headerlink" href="#system-model" title="Link to this heading">#</a></h3>
 <p>State-space representation is a mathematical model of a physical system represented
-as a set of input, output, and state variables related by first-order differential
-(or difference) equations.</p>
+as a set of input, output, and state variables related by first-order differential equations
+(continuous-time) or difference equations (discrete-time).</p>
 <p>The state vector <span class="math notranslate nohighlight">\(X\)</span> of a state-space model provides a snapshot of the system’s current condition,
 encapsulating all the variables necessary to describe its future behavior given the input.
 (In <cite>c4dynamics</cite> the state vector is a fundamental data structure,
@@ -528,8 +528,8 @@ the property <a class="reference internal" href="../api/generated/state/c4dynami
 <p>When the coefficients of the state variables in the equations are constant, the
 state model represents a linear system (LTI, linear time invariant).
 If the coefficients are
-linear functions of time, the system is considered linear time varying.
-Otherwise, the system is nonlinear.</p>
+time dependent, the system is considered linear time varying.
+In <cite>c4dynamics</cite>, all other systems are considered nonlinear.</p>
 </section>
 <section id="nonlinear-systems">
 <h3>Nonlinear Systems<a class="headerlink" href="#nonlinear-systems" title="Link to this heading">#</a></h3>
@@ -540,7 +540,7 @@ linear.
 When such a point cannot be easily found, more advanced approaches
 have to be considered to analyze and manipulate the system. Such
 an approach is the extended Kalman filter.</p>
-<p>A nonlinear system is described by:</p>
+<p>A general nonlinear system is described by:</p>
 <div class="math notranslate nohighlight" id="equation-nonlinearmodel">
 <span class="eqno">(1)<a class="headerlink" href="#equation-nonlinearmodel" title="Link to this equation">#</a></span>\[ \begin{align}\begin{aligned}\dot{x}(t) = f(x, u) + \omega\\y(t) = h(x) + \nu\\x(0) = x_0\end{aligned}\end{align} \]</div>
 <p>Where:</p>
@@ -574,7 +574,7 @@ and have known covariance matrices <span class="math notranslate nohighlight">\(
 <section id="linearization">
 <h3>Linearization<a class="headerlink" href="#linearization" title="Link to this heading">#</a></h3>
 <p>A linear Kalman filter has a significant advantage in terms of simplicity and
-computing resources, but much more importantly, the <a class="reference internal" href="#system-covariance">System Covariance</a>
+computing resources, but much more importantly, the <a class="reference internal" href="#state-covariance">State Covariance</a>
 in a linear Kalman provides exact predictions of the errors in the state estimates.
 The extended Kalman filter offers no such guarantees.
 Therefore it is always a good practice to start by
@@ -684,11 +684,11 @@ are specified in continuous terms, the above approximation can be used or
 the more exact expression for continuous white noise model
 <span class="math notranslate nohighlight">\(Q = \int_{0}^{dt} F \cdot Qc \cdot F^T \, dt\)</span></p>
 </section>
-<section id="system-covariance">
-<h3>System Covariance<a class="headerlink" href="#system-covariance" title="Link to this heading">#</a></h3>
+<section id="state-covariance">
+<h3>State Covariance<a class="headerlink" href="#state-covariance" title="Link to this heading">#</a></h3>
 <p>Before getting into the Kalman filter itself, it is necessary to consider one more concept,
-that is the system covariance.</p>
-<p>Usually denoted by <span class="math notranslate nohighlight">\(P\)</span>, this variable represents the current uncertainty of the estimate.</p>
+that is the state covariance.</p>
+<p>Usually denoted by <span class="math notranslate nohighlight">\(P\)</span>, this variable represents the current uncertainty of the state estimate.</p>
 <p><span class="math notranslate nohighlight">\(P\)</span> is a matrix that quantifies the estimated accuracy of the state variables,
 with its diagonal elements indicating the variance of each state variable,
 and the off-diagonal elements representing the covariances between different state variables.</p>
@@ -719,8 +719,8 @@ are notated by <span class="math notranslate nohighlight">\((-)\)</span> supersc
 <li><p><span class="math notranslate nohighlight">\(F\)</span> is the discretized process dynamics matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(G\)</span> is the discretized process input matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(u_k\)</span> is the process input signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, before a measurement update</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_{k-1}^+\)</span> is the system covariance matrix estimate, <span class="math notranslate nohighlight">\(P_k\)</span>, from previous measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, before a measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_{k-1}^+\)</span> is the state covariance matrix estimate, <span class="math notranslate nohighlight">\(P_k\)</span>, from previous measurement update</p></li>
 <li><p><span class="math notranslate nohighlight">\(Q\)</span> is the process covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is the measurement covariance matrix</p></li>
 <li><p>superscript T is the transpose operator</p></li>
@@ -730,8 +730,8 @@ are notated by <span class="math notranslate nohighlight">\((-)\)</span> supersc
 </section>
 <section id="update">
 <h3>Update<a class="headerlink" href="#update" title="Link to this heading">#</a></h3>
-<p>In the update step (also called <cite>correct</cite>), the estimate is corrected by using a new measure.</p>
-<p>The Kalman gain, <span class="math notranslate nohighlight">\(K\)</span>, is computed based on the predicted error covariance and the measurement noise.
+<p>In the update step (also called <cite>correct</cite>), the estimate is corrected by incorporating a new measure.</p>
+<p>The Kalman gain, <span class="math notranslate nohighlight">\(K\)</span>, is computed based on the predicted state covariance and the measurement noise covariance.
 It determines the optimal weighting between the predicted state and the new measurement.</p>
 <p>The predicted state estimate is adjusted using the new measurement, weighted by the Kalman Gain.
 This update incorporates the latest measurement to refine the state estimate.
@@ -743,14 +743,14 @@ are notated by <span class="math notranslate nohighlight">\((+)\)</span> supersc
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(K\)</span> is the Kalman gain</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, from the previous prediction</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, from the previous prediction</p></li>
 <li><p><span class="math notranslate nohighlight">\(H\)</span> is the discrete measurement matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is the measurement covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_k^+\)</span> is the estimate of the system state, <span class="math notranslate nohighlight">\(x_k\)</span>, after a measurement update</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_k^-\)</span> is the estimate of the system state, <span class="math notranslate nohighlight">\(x_k\)</span>, from the previous prediction</p></li>
 <li><p><span class="math notranslate nohighlight">\(y\)</span> is the measure</p></li>
 <li><p><span class="math notranslate nohighlight">\(I\)</span> is the identity matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^+\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, after a measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^+\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, after a measurement update</p></li>
 <li><p>superscript T is the transpose operator</p></li>
 </ul>
 </section>
@@ -1065,8 +1065,8 @@ equations for the covariance calculation (third):</p>
 <li><p><span class="math notranslate nohighlight">\(dt\)</span> is the sampling time</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_k^-\)</span> is the estimate of the system state, <span class="math notranslate nohighlight">\(x_k\)</span>, before a measurement update.</p></li>
 <li><p><span class="math notranslate nohighlight">\(u_k\)</span> is the process input signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, before a measurement update</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_{k-1}^+\)</span> is the system covariance matrix estimate, <span class="math notranslate nohighlight">\(P_k\)</span>, from previous measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, before a measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_{k-1}^+\)</span> is the state covariance matrix estimate, <span class="math notranslate nohighlight">\(P_k\)</span>, from previous measurement update</p></li>
 <li><p><span class="math notranslate nohighlight">\(Q\)</span> is the process covariance matrix</p></li>
 <li><p>superscript T is the transpose operator</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_0\)</span> is the initial state estimation</p></li>
@@ -1087,12 +1087,12 @@ the nonlinear equations themselves (third equation):</p>
 <li><p><span class="math notranslate nohighlight">\(h(\cdot)\)</span> is a vector-valued function representing the measurement equations</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_k^-\)</span> is the estimate of the system state, <span class="math notranslate nohighlight">\(x_k\)</span>, from the previous prediction</p></li>
 <li><p><span class="math notranslate nohighlight">\(K\)</span> is the Kalman gain</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, from the previous prediction</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^-\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, from the previous prediction</p></li>
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is the measurement covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_k^+\)</span> is the estimate of the system state, <span class="math notranslate nohighlight">\(x_k\)</span>, after a measurement update</p></li>
 <li><p><span class="math notranslate nohighlight">\(y\)</span> is the measure</p></li>
 <li><p><span class="math notranslate nohighlight">\(I\)</span> is the identity matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_k^+\)</span> is the estimate of the system covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, after a measurement update</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_k^+\)</span> is the estimate of the state covariance matrix, <span class="math notranslate nohighlight">\(P_k\)</span>, after a measurement update</p></li>
 <li><p>superscript T is the transpose operator</p></li>
 </ul>
 </section>
@@ -1423,7 +1423,7 @@ MSc. Thesis supervised by prof. Grigory Agranovich, University of Ariel, 2020.</
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-systems">Nonlinear Systems</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linearization">Linearization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampled-systems">Sampled Systems</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-covariance">System Covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-covariance">State Covariance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kalman-filter-kalman">Kalman Filter (<code class="xref py py-class docutils literal notranslate"><span class="pre">kalman</span></code>)</a><ul class="nav section-nav flex-column">
@@ -1486,7 +1486,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Dec 17, 2025.
+  Last updated on Jan 31, 2026.
   <br/>
 </p>
   </div>
