@@ -1,9 +1,8 @@
 Filters 
 ======= 
 
-
-The ``filters`` module in c4dynamics provides a collection of 
-classes and functions for implementing various types of filters commonly used in control 
+The c4dynamics :mod:`filters <c4dynamics.filters>` module provides a collection of 
+classes and functions for various types of filters commonly used in control 
 systems and state estimation. 
 
 
@@ -19,8 +18,8 @@ System Model
 ~~~~~~~~~~~~
 
 State-space representation is a mathematical model of a physical system represented 
-as a set of input, output, and state variables related by first-order differential 
-(or difference) equations. 
+as a set of input, output, and state variables related by first-order differential equations
+(continuous-time) or difference equations (discrete-time). 
 
 The state vector :math:`X` of a state-space model provides a snapshot of the system's current condition, 
 encapsulating all the variables necessary to describe its future behavior given the input.
@@ -32,8 +31,8 @@ the property :attr:`state.X <c4dynamics.states.state.state.X>`).
 When the coefficients of the state variables in the equations are constant, the 
 state model represents a linear system (LTI, linear time invariant). 
 If the coefficients are 
-linear functions of time, the system is considered linear time varying.  
-Otherwise, the system is nonlinear. 
+time dependent, the system is considered linear time varying.  
+In `c4dynamics`, all other systems are considered nonlinear. 
 
 
 Nonlinear Systems
@@ -47,7 +46,7 @@ When such a point cannot be easily found, more advanced approaches
 have to be considered to analyze and manipulate the system. Such 
 an approach is the extended Kalman filter. 
 
-A nonlinear system is described by:
+A general nonlinear system is described by:
 
 .. math::
   :label: _nonlinearmodel
@@ -106,7 +105,7 @@ Linearization
 ~~~~~~~~~~~~~
 
 A linear Kalman filter has a significant advantage in terms of simplicity and 
-computing resources, but much more importantly, the `System Covariance`_ 
+computing resources, but much more importantly, the `State Covariance`_ 
 in a linear Kalman provides exact predictions of the errors in the state estimates. 
 The extended Kalman filter offers no such guarantees.  
 Therefore it is always a good practice to start by 
@@ -294,13 +293,13 @@ the more exact expression for continuous white noise model
 
 
 
-System Covariance
-~~~~~~~~~~~~~~~~~
+State Covariance
+~~~~~~~~~~~~~~~~
 
 Before getting into the Kalman filter itself, it is necessary to consider one more concept, 
-that is the system covariance.
+that is the state covariance.
 
-Usually denoted by :math:`P`, this variable represents the current uncertainty of the estimate. 
+Usually denoted by :math:`P`, this variable represents the current uncertainty of the state estimate. 
 
 :math:`P` is a matrix that quantifies the estimated accuracy of the state variables, 
 with its diagonal elements indicating the variance of each state variable, 
@@ -351,8 +350,8 @@ Where:
 - :math:`F` is the discretized process dynamics matrix 
 - :math:`G` is the discretized process input matrix 
 - :math:`u_k` is the process input signal
-- :math:`P_k^-` is the estimate of the system covariance matrix, :math:`P_k`, before a measurement update
-- :math:`P_{k-1}^+` is the system covariance matrix estimate, :math:`P_k`, from previous measurement update 
+- :math:`P_k^-` is the estimate of the state covariance matrix, :math:`P_k`, before a measurement update
+- :math:`P_{k-1}^+` is the state covariance matrix estimate, :math:`P_k`, from previous measurement update 
 - :math:`Q` is the process covariance matrix 
 - :math:`R` is the measurement covariance matrix 
 - superscript T is the transpose operator
@@ -363,9 +362,9 @@ Where:
 Update 
 ~~~~~~
 
-In the update step (also called `correct`), the estimate is corrected by using a new measure. 
+In the update step (also called `correct`), the estimate is corrected by incorporating a new measure. 
 
-The Kalman gain, :math:`K`, is computed based on the predicted error covariance and the measurement noise. 
+The Kalman gain, :math:`K`, is computed based on the predicted state covariance and the measurement noise covariance. 
 It determines the optimal weighting between the predicted state and the new measurement.
 
 The predicted state estimate is adjusted using the new measurement, weighted by the Kalman Gain.
@@ -387,14 +386,14 @@ are notated by :math:`(+)` superscript.
 Where:
 
 - :math:`K` is the Kalman gain
-- :math:`P_k^-` is the estimate of the system covariance matrix, :math:`P_k`, from the previous prediction
+- :math:`P_k^-` is the estimate of the state covariance matrix, :math:`P_k`, from the previous prediction
 - :math:`H` is the discrete measurement matrix 
 - :math:`R` is the measurement covariance matrix 
 - :math:`x_k^+` is the estimate of the system state, :math:`x_k`, after a measurement update
 - :math:`x_k^-` is the estimate of the system state, :math:`x_k`, from the previous prediction
 - :math:`y` is the measure 
 - :math:`I` is the identity matrix 
-- :math:`P_k^+` is the estimate of the system covariance matrix, :math:`P_k`, after a measurement update
+- :math:`P_k^+` is the estimate of the state covariance matrix, :math:`P_k`, after a measurement update
 - superscript T is the transpose operator
 
 
@@ -861,8 +860,8 @@ Where:
 - :math:`dt` is the sampling time 
 - :math:`x_k^-` is the estimate of the system state, :math:`x_k`, before a measurement update. 
 - :math:`u_k` is the process input signal
-- :math:`P_k^-` is the estimate of the system covariance matrix, :math:`P_k`, before a measurement update
-- :math:`P_{k-1}^+` is the system covariance matrix estimate, :math:`P_k`, from previous measurement update 
+- :math:`P_k^-` is the estimate of the state covariance matrix, :math:`P_k`, before a measurement update
+- :math:`P_{k-1}^+` is the state covariance matrix estimate, :math:`P_k`, from previous measurement update 
 - :math:`Q` is the process covariance matrix 
 - superscript T is the transpose operator
 - :math:`x_0` is the initial state estimation
@@ -896,12 +895,12 @@ Where:
 - :math:`h(\cdot)` is a vector-valued function representing the measurement equations 
 - :math:`x_k^-` is the estimate of the system state, :math:`x_k`, from the previous prediction
 - :math:`K` is the Kalman gain
-- :math:`P_k^-` is the estimate of the system covariance matrix, :math:`P_k`, from the previous prediction
+- :math:`P_k^-` is the estimate of the state covariance matrix, :math:`P_k`, from the previous prediction
 - :math:`R` is the measurement covariance matrix 
 - :math:`x_k^+` is the estimate of the system state, :math:`x_k`, after a measurement update
 - :math:`y` is the measure 
 - :math:`I` is the identity matrix 
-- :math:`P_k^+` is the estimate of the system covariance matrix, :math:`P_k`, after a measurement update
+- :math:`P_k^+` is the estimate of the state covariance matrix, :math:`P_k`, after a measurement update
 - superscript T is the transpose operator
 
 
