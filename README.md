@@ -136,7 +136,7 @@ Define state space object of two variables in the state space (y, vy) with initi
 >>> s = c4d.state(y = 1, vy = 0.5)
 ``` 
 Store with time stamp `t = 0`:
-```
+```python 
 >>> s.store(t = 0)
 ``` 
 
