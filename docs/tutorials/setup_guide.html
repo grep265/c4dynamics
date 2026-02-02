@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=bcae1e9a"></script>
+    <script src="../_static/documentation_options.js?v=92471e56"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="Reinforcement Learning Environment" href="../concepts/rl_env.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 31, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
   </head>
   
   
@@ -215,8 +215,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.Position.html">c4dynamics.states.state.state.Position</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.Velocity.html">c4dynamics.states.state.state.Velocity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.addvars.html">c4dynamics.states.state.state.addvars</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.P.html">c4dynamics.states.state.state.P</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.V.html">c4dynamics.states.state.state.V</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.dist.html">c4dynamics.states.state.state.dist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.vel_mag.html">c4dynamics.states.state.state.vel_mag</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.store.html">c4dynamics.states.state.state.store</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.storeparams.html">c4dynamics.states.state.state.storeparams</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.data.html">c4dynamics.states.state.state.data</a></li>
@@ -462,6 +462,13 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Python-Version">Python Version</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Virtual-Environment">Virtual Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Dependencies">Dependencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#1.-Basic">1. Basic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#2.-Vision">2. Vision</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#3.-Dev">3. Dev</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Note-(Open3D)">Note (Open3D)</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyPI">PyPI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GitHub">GitHub</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyproject.toml">pyproject.toml</a></li>
@@ -481,7 +488,7 @@ document.write(`
   <p><a class="reference external" href="https://colab.research.google.com/github/C4dynamics/c4dynamics/blob/main/docs/source/tutorials/setup_guide.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> ← Click to open in Google Colab</p>
 <section id="Setup-Guide">
 <h1>Setup Guide<a class="headerlink" href="#Setup-Guide" title="Link to this heading">#</a></h1>
-<p>Welcome! This notebook is a step-by-step guide to install c4dynamics and import the package to use in your programs.</p>
+<p>Welcome! This notebook is a step-by-step guide to installing c4dynamics and import the package to use in your programs.</p>
 <p>There are three main ways to install c4dynamics:</p>
 <ul class="simple">
 <li><p>From <code class="docutils literal notranslate"><span class="pre">PyPI</span></code> (pip)</p></li>
@@ -494,7 +501,56 @@ document.write(`
 </section>
 <section id="Virtual-Environment">
 <h2>Virtual Environment<a class="headerlink" href="#Virtual-Environment" title="Link to this heading">#</a></h2>
-<p>If you want to install and run c4dynamics in a virtual environment, follow this guide before proceeding to next steps: <a class="reference external" href="https://k0nze.dev/posts/install-pyenv-venv-vscode/">How to Install Multiple Python Versions on your Computer and use them with VSCode</a>.</p>
+<p>If you want to install and run c4dynamics in a virtual environment, follow this guide before proceeding: <a class="reference external" href="https://k0nze.dev/posts/install-pyenv-venv-vscode/">How to Install Multiple Python Versions on your Computer and use them with VSCode</a>.</p>
+</section>
+<section id="Dependencies">
+<h2>Dependencies<a class="headerlink" href="#Dependencies" title="Link to this heading">#</a></h2>
+<p>c4dynamics uses three dependency sets, reflecting different levels of user involvement:</p>
+<section id="1.-Basic">
+<h3>1. Basic<a class="headerlink" href="#1.-Basic" title="Link to this heading">#</a></h3>
+<p>For users working at a foundational level: defining state objects, manipulating them, and using library modules that do not involve computer-vision.</p>
+<p>Included packages</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pooch</span></code></p></li>
+</ul>
+</section>
+<section id="2.-Vision">
+<h3>2. Vision<a class="headerlink" href="#2.-Vision" title="Link to this heading">#</a></h3>
+<p>Required for users working with computer-vision and tracking modules, such as:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://c4dynamics.github.io/c4dynamics/api/states.lib.pixelpoint.html">pixelpoint</a></p></li>
+<li><p><a class="reference external" href="https://c4dynamics.github.io/c4dynamics/api/detectors.yolov3.html">YOLOv3</a></p></li>
+<li><p><a class="reference external" href="https://c4dynamics.github.io/c4dynamics/api/generated/utils/c4dynamics.utils.gen_gif.gif.html">gif</a></p></li>
+</ul>
+<p>Includes all basic dependencies, plus:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">opencv-python</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imageio</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">natsort</span></code></p></li>
+</ul>
+</section>
+<section id="3.-Dev">
+<h3>3. Dev<a class="headerlink" href="#3.-Dev" title="Link to this heading">#</a></h3>
+<p>For contributors who modify source code, run tests, or build documentation. Includes all vision dependencies, plus:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">coverage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbsphinx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sphinx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sphinx-book-theme</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sphinx_design</span></code></p></li>
+</ul>
+<p>The dependency set installed depends on the chosen installation method. Each installation approach below explicitly references the relevant dependency set.</p>
+</section>
+<section id="Note-(Open3D)">
+<h3>Note (Open3D)<a class="headerlink" href="#Note-(Open3D)" title="Link to this heading">#</a></h3>
+<p>open3d is required for the animate function, but it is not included in any dependency set due to frequent installation issues reported by users. As a result, using animate or <a class="reference external" href="https://c4dynamics.github.io/c4dynamics/api/generated/rb/c4dynamics.states.lib.rigidbody.rigidbody.animate.html#c4dynamics.states.lib.rigidbody.rigidbody.animate">rigidbody.animate</a> requires a separate installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>open3d
+</pre></div>
+</div>
+</section>
 </section>
 <section id="PyPI">
 <h2>PyPI<a class="headerlink" href="#PyPI" title="Link to this heading">#</a></h2>
@@ -508,6 +564,24 @@ document.write(`
 </div>
 </div>
 <p>This approach is the most direct and easy, and automatically installs the package dependencies.</p>
+<p>To install additional dependency sets:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;c4dynamics[vision]&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>or:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;c4dynamics[dev]&quot;</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="GitHub">
 <h2>GitHub<a class="headerlink" href="#GitHub" title="Link to this heading">#</a></h2>
@@ -545,16 +619,47 @@ document.write(`
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">directory</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<div class="line-block">
+<div class="line">As outlined in the dependencies section, there are three dependency levels.</div>
+<div class="line">To install the basic level, run:</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<p>The ‘vision’ set:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">-</span><span class="n">vision</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<p>The ‘dev’ set:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">-</span><span class="n">dev</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="pyproject.toml">
 <h2>pyproject.toml<a class="headerlink" href="#pyproject.toml" title="Link to this heading">#</a></h2>
-<p>The third option to install c4dynamics lets you modify the source code and have the changes reflected immediately without reinstalling.</p>
-<p>Download c4dynamics (follow steps 1 or 2 in the previous section - GitHub).</p>
-<p>Change directory:</p>
+<p>The third option allows you to modify the source code and have the changes reflected immediately (editable install).</p>
+<div class="line-block">
+<div class="line">Download c4dynamics (see GitHub section).</div>
+<div class="line">Change directory:</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -563,7 +668,8 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<p>For basic installation (running examples and using c4dynamics in your programs):</p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">/path/to/your/directory</span></code> is the root directory of c4dynamics.</p>
+<p>Install:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -572,8 +678,16 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">/path/to/your/directory</span></code> is the root directory of c4dynamics.</p>
-<p>For development and documentation, install the <code class="docutils literal notranslate"><span class="pre">dev</span></code> extras:</p>
+<p>For other dependency sets:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;c4dynamics[vision]&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Or:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -660,6 +774,13 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Python-Version">Python Version</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Virtual-Environment">Virtual Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Dependencies">Dependencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#1.-Basic">1. Basic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#2.-Vision">2. Vision</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#3.-Dev">3. Dev</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Note-(Open3D)">Note (Open3D)</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyPI">PyPI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GitHub">GitHub</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyproject.toml">pyproject.toml</a></li>
@@ -698,7 +819,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jan 31, 2026.
+  Last updated on Feb 02, 2026.
   <br/>
 </p>
   </div>

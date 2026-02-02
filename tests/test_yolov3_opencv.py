@@ -3,16 +3,25 @@
 import unittest
 from unittest.mock import patch, MagicMock
 import numpy as np
-import cv2
+
+
+try:
+    import cv2
+    has_cv2 = True
+except ImportError:
+    has_cv2 = False
+
+
 import os 
 
 import sys 
 sys.path.append('.')
-from c4dynamics.detectors import yolov3  # replace 'yolov3_module' with your actual module name
-from c4dynamics import pixelpoint  # replace 'yolov3_module' with your actual module name
+from c4dynamics.detectors import yolov3  
+from c4dynamics import pixelpoint  
 
 MODEL_SIZE = (416, 416, 3)
 
+@unittest.skipIf(not has_cv2, "opencv-python not installed")
 class TestYoloV3(unittest.TestCase):
 
     @patch("c4dynamics.datasets.nn_model")

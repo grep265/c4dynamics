@@ -1,8 +1,13 @@
-import os
-import imageio
-import natsort
-import warnings
+# optional vision modules
+try:
+  import imageio
+  import natsort
+except ImportError:
+    # vision modules are unavailable
+    pass
 
+import os
+import warnings
 import sys 
 sys.path.append('.')
 import c4dynamics as c4d 

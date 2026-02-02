@@ -8,9 +8,9 @@ def main():
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter('always')
 
-        # Start with integer-initialized state
+        # Start with integer-initialized state \ always becomes float. 
         s = c4d.state(x=0, y=0)
-        assert s.X.dtype.kind in ("i", "u"), "expected integer dtype initially"
+        assert s.X.dtype.kind == "f", "expected integer dtype initially"
 
         # Assign a float scalar -> _X should be cast to float and value updated
         s.x = 1.9

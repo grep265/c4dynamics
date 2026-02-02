@@ -5,6 +5,7 @@ import numpy as np
 import os
 import shutil
 import sys 
+
 sys.path.append('.')
 from c4dynamics.rotmat import animate
 from c4dynamics import rigidbody

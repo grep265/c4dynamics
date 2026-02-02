@@ -26,6 +26,9 @@
 __pycache__ 
 .pytest_cache/ 
 .venv/ 
+venv_basic/
+venv_vision/ 
+venv_dev/
 .vscode/ 
 untracked/ 
 build/

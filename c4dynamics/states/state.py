@@ -204,7 +204,7 @@ class state:
 
   def __setattr__(self, var, val):
     # intercept known state variables
-    if "_didx" in self.__dict__ and var in self._didx:
+    if "_didx" in self.__dict__ and var in self._didx:  
 
       # if np.array(val).dtype != self._X.dtype:
       #   warnings.warn(
@@ -212,7 +212,7 @@ class state:
       #     , c4d.c4warn)
       #   self._X = self._X.astype(np.array(val).dtype)      
         
-      self._X[self._didx[var] - 1] = np.array(val).astype(self._STATETYPE)
+      self._X[self._didx[var] - 1] = np.array(val).astype(self._STATETYPE).item()
     else:
       # regular attribute assignment
       super().__setattr__(var, val)
@@ -961,7 +961,6 @@ class state:
 
     .. code:: 
     
-      >>> plt.switch_backend('qtagg')
       >>> s.plot('x')   # doctest: +IGNORE_OUTPUT 
       >>> plt.show(block = True)
 
@@ -1132,10 +1131,10 @@ class state:
       
 
     if block: 
-      be = plt.get_backend()
-      plt.switch_backend('tkagg')
+      # be = plt.get_backend()
+      # plt.switch_backend('tkagg') # NOTE requires tk installed! 
       plt.show(block = True)
-      plt.switch_backend(be)
+      # plt.switch_backend(be)
       
     return ax 
 

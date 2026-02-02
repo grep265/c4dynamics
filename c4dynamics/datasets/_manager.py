@@ -573,20 +573,26 @@ def sha256(filename: str) -> str:
 if __name__ == "__main__":
 
 
+  current_module = sys.modules[__name__]
 
   try:
     import open3d as o3d  # OPEN3D AVAILABLE
-
   except ImportError:     # OPEN3D UNAVAILABLE
     # remove the doctests for d3_model if open3d is not available
-    
-    current_module = sys.modules[__name__]
     if hasattr(current_module, "d3_model"):
       current_module.d3_model.__doc__ = ""   # clears doctest examples
 
+  try:
+    import cv2 
+  except ImportError:     
+    if hasattr(current_module, "video"):
+      current_module.video.__doc__ = ""   # clears doctest examples
+    if hasattr(current_module, "nn_model"):
+      current_module.nn_model.__doc__ = ""   # clears doctest examples
 
-  import doctest, contextlib
-  from c4dynamics import IgnoreOutputChecker, cprint
+
+  # import doctest, contextlib
+  # from c4dynamics import IgnoreOutputChecker, cprint
 
 
   # # Register the custom OutputChecker

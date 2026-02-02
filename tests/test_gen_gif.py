@@ -7,7 +7,14 @@ import c4dynamics as c4d
 from c4dynamics import gif 
 import warnings
 
+try:
+    import imageio
+    import natsort
+    vision_install = True
+except ImportError:
+    vision_install = False
 
+@unittest.skipIf(not vision_install, "imageio and natsort not installed")
 class TestGifFunction(unittest.TestCase):
 
 

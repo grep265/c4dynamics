@@ -752,7 +752,23 @@ class pixelpoint(state):
 if __name__ == "__main__":
 
   from c4dynamics import rundoctests
+
+  # current_module = sys.modules[__name__].yolov3
+  current_module = sys.modules[__name__]
+
+  try:
+    import cv2 
+  except ImportError:     
+    # if hasattr(current_module, "yolov3"):
+    current_module.pixelpoint.__doc__ = ""   # clears doctest examples
+    current_module.pixelpoint.Xpixels.__doc__ = ""   # clears doctest examples
+    # current_module.yolov3.confidence_th.__doc__ = ""   # clears doctest examples
+    # current_module.yolov3.nms_th.__doc__ = ""   # clears doctest examples
+		
   rundoctests(sys.modules[__name__])
+  # NOTE: message about skipped tests becuase it currently says all passed actually no one was ran. 
+
+
 
 
 

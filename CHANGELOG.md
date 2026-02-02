@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 - mountain_car.py: predefined environment for the RL mountain car problem 
 
 
+## [2.3.4] - 2026-02-02
+### Changed
+- separate dependencies to 3 sets: basic, vision, dev.   
+- fix a bug of a single numpy item assignment into the state vector.  
+
+
 ## [2.3.3] - 2026-01-17
 ### Changed
 - fix bug in addvars(): adjust state vector legnth with new vars.

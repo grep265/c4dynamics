@@ -1,4 +1,4 @@
-from scipy.linalg import solve_discrete_are
+from scipy.linalg import solve_discrete_are # NOTE only this file and maybe math.py use scipy. worth replacing and exclude from requirements. 
 from typing import Dict, Optional
 import sys 
 sys.path.append('.')

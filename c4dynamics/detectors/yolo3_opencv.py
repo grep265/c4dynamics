@@ -1,5 +1,10 @@
 import os, sys 
-import cv2
+# optional vision modules
+try:
+    import cv2
+except ImportError:
+    # vision modules are unavailable
+    pass
 
 import numpy as np
 sys.path.append('.')
@@ -657,8 +662,21 @@ class yolov3:
 
 if __name__ == "__main__":
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
+		from c4dynamics import rundoctests
+		
+		# current_module = sys.modules[__name__].yolov3
+		current_module = sys.modules[__name__]
 
+		try:
+			import cv2 
+		except ImportError:     
+			# if hasattr(current_module, "yolov3"):
+			current_module.yolov3.__doc__ = ""   # clears doctest examples
+			current_module.yolov3.detect.__doc__ = ""   # clears doctest examples
+			current_module.yolov3.confidence_th.__doc__ = ""   # clears doctest examples
+			current_module.yolov3.nms_th.__doc__ = ""   # clears doctest examples
+		
+		rundoctests(sys.modules[__name__])
+		
 
 

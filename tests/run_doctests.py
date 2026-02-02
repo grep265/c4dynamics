@@ -8,6 +8,7 @@ sys.path.append('.')
 import c4dynamics as c4d 
 
 # Open output file for writing
+os.makedirs('tests/_out', exist_ok=True)
 output_file = open(r'tests\_out\doctests_output.txt', 'w')
 
 # Redirect stdout and stderr
