@@ -39,14 +39,14 @@ import numpy as np
 #
 # body objects
 ##
-from .states.state import state as state
-from .states.lib.pixelpoint import pixelpoint as pixelpoint
+from . import rotmat as rotmat 
+from .states.lib.pixelpoint import pixelpoint as pixelpoint 
 from .states.lib.datapoint import datapoint as datapoint
 from .states.lib.datapoint import create as create 
-from . import rotmat as rotmat
+from .states.state import state as state
 
 # rotmat is required to importing rigidbody:
-from .states.lib.rigidbody import rigidbody as rigidbody # rotmat is required to import rigidbody.
+from .states.lib.rigidbody import rigidbody as rigidbody # rotmat is required to import rigidbody.        
 
 #
 # routines
