@@ -2,9 +2,11 @@
 
 import unittest
 import numpy as np
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 from c4dynamics import datapoint, c4warn  # Update with the correct import path
+
 
 class TestDatapoint(unittest.TestCase):
 
@@ -31,8 +33,8 @@ class TestDatapoint(unittest.TestCase):
         """Test the data method for accessing stored state."""
         self.dp.store(t=0)
         self.dp.store(t=1)
-        self.assertEqual(self.dp.data('t').tolist(), [0, 1])
-        self.assertTrue(np.array_equal(self.dp.data('x')[1], np.array([1.0, 1.0])))
+        self.assertEqual(self.dp.data("t").tolist(), [0, 1])
+        self.assertTrue(np.array_equal(self.dp.data("x")[1], np.array([1.0, 1.0])))
 
     def test_integration_method(self):
         """Test the integration method (mock behavior for testing)."""
@@ -44,31 +46,31 @@ class TestDatapoint(unittest.TestCase):
     def test_plot_function(self):
         """Test the plotting functionality."""
         import matplotlib.pyplot as plt
-        
+
         self.dp.store(t=0)
         self.dp.store(t=1)
-        self.dp.plot('x')  # Should not raise errors and produce a plot
+        self.dp.plot("x")  # Should not raise errors and produce a plot
         plt.close()  # Close the plot after testing to avoid displaying
 
     def test_invalid_plot_variable(self):
         """Test that an error is raised for an invalid plot variable."""
         with self.assertWarns(c4warn):
-            self.dp.plot('invalid_var')
+            self.dp.plot("invalid_var")
 
     def test_plot_with_custom_ax(self):
         """Test the plot function with a custom Axes object."""
         import matplotlib.pyplot as plt
-        
+
         fig, ax = plt.subplots()
         self.dp.store(t=0)
         self.dp.store(t=1)
-        self.dp.plot('x', ax=ax)
+        self.dp.plot("x", ax=ax)
         plt.close(fig)  # Close the plot after testing to avoid displaying
 
     def test_storeparams(self):
         """Test the storeparams method."""
-        self.dp.storeparams('mass', t=0)
-        self.assertIn(0, self.dp._prmdata['mass'][0])  # Check that time is stored
+        self.dp.storeparams("mass", t=0)
+        self.assertIn(0, self.dp._prmdata["mass"][0])  # Check that time is stored
 
     def test_timestate(self):
         """Test the timestate method for retrieving state at a specific time."""
@@ -82,5 +84,6 @@ class TestDatapoint(unittest.TestCase):
     #     expected_repr = "datapoint(x=1.0, y=2.0, z=3.0, vx=4.0, vy=5.0, vz=6.0)"
     #     self.assertEqual(repr(self.dp), expected_repr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

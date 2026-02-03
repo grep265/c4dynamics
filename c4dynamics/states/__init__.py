@@ -1,6 +1,6 @@
-'''
+"""
 
-.. list-table:: 
+.. list-table::
   :header-rows: 0
 
   * - :class:`State <c4dynamics.states.state.state>`
@@ -10,24 +10,20 @@
 
 
 
-'''
+"""
 
-# TODO how come the overall title is not word-capatilized and the smaller are.  
-
-
-import sys 
-sys.path.append('.')
-from c4dynamics.states.lib import * 
+# TODO how come the overall title is not word-capatilized and the smaller are.
 
 
+import sys
 
+sys.path.append(".")
+from c4dynamics.states.lib import datapoint as datapoint
+from c4dynamics.states.lib import pixelpoint as pixelpoint
+from c4dynamics.states.lib import rigidbody as rigidbody
 
 if __name__ == "__main__":
 
+    from c4dynamics import rundoctests
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
-
-
-
-
+    rundoctests(sys.modules[__name__])

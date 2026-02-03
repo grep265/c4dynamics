@@ -1,8 +1,11 @@
 import unittest
 import numpy as np
-import sys 
-sys.path.append('.')
-from c4dynamics import pi, g_ms2, g_fts2, ft2m, lbft2tokgm2, r2d, d2r, kmh2ms, k2ms 
+import sys
+
+sys.path.append(".")
+from c4dynamics import pi, g_ms2, g_fts2, ft2m, lbft2tokgm2, r2d, d2r, kmh2ms, k2ms
+
+
 class TestC4DynamicsConstants(unittest.TestCase):
 
     def test_pi(self):
@@ -19,6 +22,7 @@ class TestC4DynamicsConstants(unittest.TestCase):
         self.assertAlmostEqual(d2r, np.pi / 180, places=10, msg="d2r should be pi / 180")
         self.assertAlmostEqual(kmh2ms, 1000 / 3600, places=10, msg="kmh2ms should be 1000 / 3600")
         self.assertAlmostEqual(k2ms, 1852 / 3600, places=10, msg="k2ms should be 1852 / 3600")
+
 
 if __name__ == "__main__":
     unittest.main()

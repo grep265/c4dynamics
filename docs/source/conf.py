@@ -2,10 +2,12 @@
 # display_html("<script>Jupyter.notebook.kernel.restart()</script>", raw = True)
 
 import re
-import os, sys
+import os
+import sys
+
 # import importlib
 
-'''
+"""
 
 required packages:
 
@@ -81,7 +83,7 @@ Each introduction should be tailored to the specific audience, with clear and re
 
 
 
-'''
+"""
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -94,9 +96,9 @@ Each introduction should be tailored to the specific audience, with clear and re
 # https://ds4sd.github.io/docling/reference/document_converter/
 
 
-project   = 'C4DYNAMICS'
-copyright = '2023, c4dynamics'
-author    = 'c4dynamics'
+project = "C4DYNAMICS"
+copyright = "2023, c4dynamics"
+author = "c4dynamics"
 # release   = '0.0.40'
 # # Check if the module is loaded
 # if 'c4dynamics' in sys.modules:
@@ -105,18 +107,19 @@ author    = 'c4dynamics'
 
 # sys.path.append('.')
 # sys.path.append(os.path.join('..', '..'))
-sys.path.insert(0, os.path.abspath('..'))  # adjust '..' if conf.py is in docs/
+sys.path.insert(0, os.path.abspath(".."))  # adjust '..' if conf.py is in docs/
 
 # sys.path.append('./c4dynamics')
 # sys.path.append(os.path.join(os.getcwd(), 'c4dynamics'))
 # print('\033[91m' + os.getcwd() + '\033[0m')
 
 import c4dynamics as c4d
-# import c4dynamics.states.state 
+
+# import c4dynamics.states.state
 # from c4dynamics.states.state import state.X0
 # import import__all__ext
 
-c4d.cprint('successfully imported c4dynamics', 'y')
+c4d.cprint("successfully imported c4dynamics", "y")
 # c4d.cprint('successfully imported import__all__ext', 'y')
 
 
@@ -124,8 +127,8 @@ c4d.cprint('successfully imported c4dynamics', 'y')
 # importlib.reload(importlib.import_module(project.lower()))
 
 # The short X.Y version (including .devxxx, rcX, b1 suffixes if present)
-version = re.sub(r'(\d+\.\d+)\.\d+(.*)', r'\1\2', c4d.__version__)
-version = re.sub(r'(\.dev\d+).*?$', r'\1', version)
+version = re.sub(r"(\d+\.\d+)\.\d+(.*)", r"\1\2", c4d.__version__)
+version = re.sub(r"(\.dev\d+).*?$", r"\1", version)
 # The full version, including alpha/beta/rc tags.
 release = c4d.__version__
 print("%s %s" % (version, release))
@@ -135,17 +138,17 @@ print("%s %s" % (version, release))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-      'sphinx.ext.autodoc'
-    , 'sphinx.ext.autosummary'
-    , 'sphinx.ext.coverage'
-    , 'sphinx.ext.mathjax'
-    , 'sphinx.ext.doctest'
-    , 'sphinx.ext.viewcode'
-    , 'sphinx.ext.extlinks'
-    , 'sphinx.ext.intersphinx'
-    , 'sphinx.ext.napoleon'
-    , 'sphinx_design'
-    , 'nbsphinx'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.doctest",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
+    "sphinx_design",
+    "nbsphinx",
     # , 'import__all__ext'
     # , 'myst_nb'
     # , 'sphinxcontrib.bibtex'
@@ -155,17 +158,17 @@ extensions = [
 # jupyter_execute_notebooks = 'off'
 
 
-# verbose debug 
+# verbose debug
 traceback_show = True
-autodoc_default_flags = ['members']
+autodoc_default_flags = ["members"]
 autosummary_generate = True
 # Otherwise, the Return parameter list looks different from the Parameters list
 napoleon_use_rtype = False
 # napoleon_google_docstring = True
 # napoleon_numpy_docstring = False
-napoleon_type_aliases = {'Args': 'Arguments', 'Parameters': 'Arguments'}
+napoleon_type_aliases = {"Args": "Arguments", "Parameters": "Arguments"}
 
-'''
+"""
   https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 
   
@@ -220,21 +223,19 @@ napoleon_type_aliases = {'Args': 'Arguments', 'Parameters': 'Arguments'}
     napoleon_preprocess_types = False
     napoleon_type_aliases = None
     napoleon_attr_annotations = True
-'''
+"""
 
 
- # maps functions with a class name that is indistinguishable when case is 
- # ignore to another filename 
+# maps functions with a class name that is indistinguishable when case is
+# ignore to another filename
 
 
-autosummary_filename_map = { # not sure this is necessary anymore
-'c4dynamics.datapoint.x': 'c4dynamics.datapoint.x_var', 
-#  'c4dynamics.datapoint.X': 'datapoint.x_property', 
- } 
-
-autodoc_default_options = {
-'ignore-module-all': True
+autosummary_filename_map = {  # not sure this is necessary anymore
+    "c4dynamics.datapoint.x": "c4dynamics.datapoint.x_var",
+    #  'c4dynamics.datapoint.X': 'datapoint.x_property',
 }
+
+autodoc_default_options = {"ignore-module-all": True}
 
 
 # Sphinx project configuration
@@ -248,11 +249,9 @@ pygments_style = "default"
 add_function_parentheses = False
 
 
-
 suppress_warnings = [
     "misc.highlighting_failure",
 ]
-
 
 
 # nbsphinx_allow_errors = True
@@ -264,13 +263,9 @@ suppress_warnings = [
 # nbsphinx_execute = 'never'
 
 
-
-
-
 # -----------------------------------------------------------------------------
 # HTML output
 # -----------------------------------------------------------------------------
-
 
 
 # HTML output configuration
@@ -281,7 +276,7 @@ html_short_title = project
 # Don't use the logo since it gets in the way of the project name and is
 # repeated in the front page.
 # html_logo = "_static/pooch-logo.png"
-''' 
+""" 
   html_static_path
   ----------------
   A list of paths that contain custom static files. 
@@ -302,7 +297,7 @@ html_short_title = project
   -----------------------
   The directory containing conf.py. 
 
-'''
+"""
 html_static_path = ["_papers", "_architecture", "_static"]
 html_favicon = "_static/c4dlogo.svg"
 html_last_updated_fmt = "%b %d, %Y"
@@ -316,22 +311,23 @@ html_show_copyright = True
 
 html_theme = "sphinx_book_theme"
 html_theme_options = {
-      "repository_url": f"https://github.com/{author.lower()}/{project.lower()}"
-    , "repository_branch": "main"
-    , "path_to_docs": "docs"
+    "repository_url": f"https://github.com/{author.lower()}/{project.lower()}",
+    "repository_branch": "main",
+    "path_to_docs": "docs"
     # "launch_buttons": {
     #   "binderhub_url": "https://mybinder.org",
     #   "notebook_interface": "jupyterlab",
-    # } 
+    # }
     # "use_edit_page_button": True,
     # "use_issues_button": True,
     # "use_repository_button": True,
     # "use_download_button": True
-    , "home_page_in_toc": True
+    ,
+    "home_page_in_toc": True,
 }
 
 
-'''
+"""
 procedure for version.
 1 checkout main revision
 2 branch it 
@@ -370,5 +366,4 @@ https://chatgpt.com/share/799febb0-c875-41be-99f7-c5555741d387
 
 
 
-'''
-
+"""

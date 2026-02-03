@@ -1,6 +1,6 @@
 import numpy as np
 
-__doc__ = '''
+__doc__ = """
 Globals and conversion constants. 
 
 
@@ -86,31 +86,29 @@ Conversion Constants
   ``k2ms = 0.514444``
 
 
-'''
+"""
 
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 
 
-#  global quantities 
-pi       = np.pi
-g_ms2    = 9.80665  # m/s^2 
-g_fts2   = 32.1740  # ft/s^2
+#  global quantities
+pi = np.pi
+g_ms2 = 9.80665  # m/s^2
+g_fts2 = 32.1740  # ft/s^2
 
-#  conversion variables 
-ft2m        = 0.3048        # 1             # 
-lbft2tokgm2 = 4.88243       # 47.8803 to include gravity        # 1      
-r2d         = 180 / np.pi 
-d2r         = np.pi / 180 
-kmh2ms      = 1000 / 3600 
-k2ms        = 1852 / 3600   # knots to meter per second
-
+#  conversion variables
+ft2m = 0.3048  # 1             #
+lbft2tokgm2 = 4.88243  # 47.8803 to include gravity        # 1
+r2d = 180 / np.pi
+d2r = np.pi / 180
+kmh2ms = 1000 / 3600
+k2ms = 1852 / 3600  # knots to meter per second
 
 
 if __name__ == "__main__":
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
+    from c4dynamics import rundoctests
 
-
-
+    rundoctests(sys.modules[__name__])

@@ -2,8 +2,10 @@ import unittest
 import io
 import sys
 from contextlib import redirect_stdout
-sys.path.append('.')
-from c4dynamics import cprint 
+
+sys.path.append(".")
+from c4dynamics import cprint
+
 
 class TestCPrint(unittest.TestCase):
 

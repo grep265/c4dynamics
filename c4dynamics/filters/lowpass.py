@@ -1,13 +1,12 @@
-import numpy as np
 import sys
 from typing import Optional
 
-sys.path.append('.')
+sys.path.append(".")
 import c4dynamics as c4d
 
 
 class lowpass(c4d.state):
-  """
+    """
     A first-order low-pass filter for smoothing signals, supporting both discrete and continuous systems.
 
     Parameters
@@ -36,7 +35,7 @@ class lowpass(c4d.state):
     Example
     -------
 
-    .. code:: 
+    .. code::
 
       >>> filter_continuous = lowpass(dt=0.01, tau=0.1, y0=0)
       >>> filter_discrete = lowpass(alpha=0.5, y0=1)
@@ -44,58 +43,65 @@ class lowpass(c4d.state):
       0.09...
       >>> filter_discrete.sample(2.0)
       1.5
-  """
-
-  def __init__(self, alpha: Optional[float] = None, dt: Optional[float] = None,
-                  tau: Optional[float] = None, y0: float = 0) -> None:
-    # Initialize alpha based on the provided parameters
-    if dt is not None and tau is not None:
-      if dt <= 0 or tau <= 0:
-        raise ValueError("For a continuous system, `dt` and `tau` must be positive.")
-      self.alpha = dt / tau
-    elif alpha is not None:
-      if not (0 < alpha < 1):
-        raise ValueError("For a discrete system, `alpha` must be in the range (0, 1).")
-      self.alpha = alpha
-    else:
-      raise ValueError("Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system.")
-
-    self.y = y0  # Initial state value
-
-  def sample(self, x: float) -> float:
     """
-      Applies the low-pass filter to the input value and returns the filtered output.
 
-      Parameters
-      ----------
-      x : float
-          Input value to be filtered.
+    def __init__(
+        self,
+        alpha: Optional[float] = None,
+        dt: Optional[float] = None,
+        tau: Optional[float] = None,
+        y0: float = 0,
+    ) -> None:
+        # Initialize alpha based on the provided parameters
+        if dt is not None and tau is not None:
+            if dt <= 0 or tau <= 0:
+                raise ValueError("For a continuous system, `dt` and `tau` must be positive.")
+            self.alpha = dt / tau
+        elif alpha is not None:
+            if not (0 < alpha < 1):
+                raise ValueError("For a discrete system, `alpha` must be in the range (0, 1).")
+            self.alpha = alpha
+        else:
+            raise ValueError(
+                "Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system."
+            )
 
-      Returns
-      -------
-      float
-          The filtered output value after applying the low-pass filter.
+        self.y = y0  # Initial state value
 
-      Notes
-      -----
-      - For a continuous system: `y'(t) = -y(t) / tau + x(t) / tau`
-      - For a discrete system: `y[k] = (1 - alpha) * y[k-1] + alpha * x[k]`
-      - The filter's state (`self.y`) is updated in place.
+    def sample(self, x: float) -> float:
+        """
+        Applies the low-pass filter to the input value and returns the filtered output.
 
-      Example
-      -------
+        Parameters
+        ----------
+        x : float
+            Input value to be filtered.
 
-      .. code::
+        Returns
+        -------
+        float
+            The filtered output value after applying the low-pass filter.
 
-        >>> lp_filter = lowpass(alpha=0.5)
-        >>> lp_filter.sample(2.0)
-        1.0
-        >>> lp_filter.sample(3.0)
-        2.0
-    """
-    # Update the filter's state
-    self.y = (1 - self.alpha) * self.y + self.alpha * x
-    return self.y
+        Notes
+        -----
+        - For a continuous system: `y'(t) = -y(t) / tau + x(t) / tau`
+        - For a discrete system: `y[k] = (1 - alpha) * y[k-1] + alpha * x[k]`
+        - The filter's state (`self.y`) is updated in place.
+
+        Example
+        -------
+
+        .. code::
+
+          >>> lp_filter = lowpass(alpha=0.5)
+          >>> lp_filter.sample(2.0)
+          1.0
+          >>> lp_filter.sample(3.0)
+          2.0
+        """
+        # Update the filter's state
+        self.y = (1 - self.alpha) * self.y + self.alpha * x
+        return self.y
 
 
 if __name__ == "__main__":
@@ -111,13 +117,13 @@ if __name__ == "__main__":
     optionflags = doctest.FAIL_FAST
 
     if tofile:
-        with open('tests/_out/output.txt', 'w') as f:
+        with open("tests/_out/output.txt", "w") as f:
             with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
                 result = doctest.testmod(optionflags=optionflags)
     else:
         result = doctest.testmod(optionflags=optionflags)
 
     if result.failed == 0:
-        cprint(os.path.basename(__file__) + ": all tests passed!", 'g')
+        cprint(os.path.basename(__file__) + ": all tests passed!", "g")
     else:
         print(f"{result.failed} test(s) failed.")

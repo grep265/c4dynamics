@@ -1,10 +1,10 @@
 import unittest
 import numpy as np
-from scipy.special import erfinv
-from math import isclose
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 import c4dynamics as c4d  # Import your custom module that contains the aliased functions
+
 
 class TestC4DynamicsMathFunctions(unittest.TestCase):
 

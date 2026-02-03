@@ -2,9 +2,11 @@
 
 import unittest
 import numpy as np
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 from c4dynamics.rotmat import rotx, roty, rotz, dcm321, dcm321euler
+
 
 class TestRotationMatrices(unittest.TestCase):
 
@@ -58,14 +60,13 @@ class TestRotationMatrices(unittest.TestCase):
         self.assertEqual(result, expected)
 
         # Test with a known rotation matrix
-        BI = np.array([[0.866, 0, -0.5],
-                       [0, 1, 0],
-                       [0.5, 0, 0.866]])
+        BI = np.array([[0.866, 0, -0.5], [0, 1, 0], [0.5, 0, 0.866]])
         result = dcm321euler(BI)
         expected = (0, 30, 0)  # Expected output
         self.assertAlmostEqual(result[0], expected[0], places=2)
         self.assertAlmostEqual(result[1], expected[1], places=2)
         self.assertAlmostEqual(result[2], expected[2], places=2)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

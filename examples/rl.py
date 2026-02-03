@@ -2,10 +2,12 @@
 
 import numpy as np
 import sys
-sys.path.append('')
+
+sys.path.append("")
 import c4dynamics as c4d
 import random
 import matplotlib.pyplot as plt
+
 
 # Define the Environment and State
 class SimpleEnv:
@@ -33,6 +35,7 @@ class SimpleEnv:
 
         return self.state.X.astype(int), reward, done
 
+
 env = SimpleEnv(target=[5, 5])
 
 # Define the state and action space
@@ -50,11 +53,13 @@ epsilon_decay = 0.995
 min_epsilon = 0.01
 episodes = 1000
 
+
 def choose_action(state):
     if random.uniform(0, 1) < epsilon:
         return random.randint(0, action_space - 1)
     else:
         return np.argmax(Q_table[state[0], state[1], :])
+
 
 # Training the agent
 for episode in range(episodes):
@@ -91,11 +96,11 @@ while not done:
 path = np.array(path)
 
 # Plot the path
-plt.plot(path[:, 0], path[:, 1], marker='o')
-plt.scatter(env.target[0], env.target[1], marker='x', color='red', label='Target')
-plt.title('Agent Path to Target')
-plt.xlabel('X')
-plt.ylabel('Y')
+plt.plot(path[:, 0], path[:, 1], marker="o")
+plt.scatter(env.target[0], env.target[1], marker="x", color="red", label="Target")
+plt.title("Agent Path to Target")
+plt.xlabel("X")
+plt.ylabel("Y")
 plt.legend()
 plt.grid()
 plt.show()

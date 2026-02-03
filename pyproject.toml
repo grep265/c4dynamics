@@ -49,3 +49,14 @@ dynamic = ["classifiers"]
 [tool.setuptools.dynamic]
 classifiers = { file = "CLASSIFIERS.txt" }
 
+[tool.ruff]
+line-length = 100
+exclude = [
+    "docs",
+    "tests",
+    "examples",
+    "*.md",
+    "*.png",
+    "c4dynamics/utils/video_gen.py", 
+    "c4dynamics/envs/mountain_car.py"
+]

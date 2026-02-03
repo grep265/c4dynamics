@@ -7,9 +7,7 @@
 
 
 <div align="center">
-  <strong>📄 Published in the Journal of Open Source Software (JOSS)</strong><br>
-  <em>A peer-reviewed open-source framework for state-space modeling and algorithm development</em>
-  <br>
+  <strong> Published in the Journal of Open Source Software (JOSS)</strong><br>
   <a href="https://doi.org/10.5281/zenodo.17931207">
     <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17931207.svg">
   </a>
