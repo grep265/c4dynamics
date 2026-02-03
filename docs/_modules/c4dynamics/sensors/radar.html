@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -412,732 +412,725 @@ document.write(`
                   
   <h1>Source code for c4dynamics.sensors.radar</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
 <span class="c1"># from scipy.special import erfinv</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.sensors.seeker</span><span class="w"> </span><span class="kn">import</span> <span class="n">seeker</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span> 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="c1"># np.warnings.filterwarnings(&#39;ignore&#39;, category = np.VisibleDeprecationWarning)                 </span>
- 
+<span class="c1"># np.warnings.filterwarnings(&#39;ignore&#39;, category = np.VisibleDeprecationWarning)</span>
+
+
 <div class="viewcode-block" id="radar">
 <a class="viewcode-back" href="../../../api/sensors.radar.html#c4dynamics.sensors.radar.radar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">radar</span><span class="p">(</span><span class="n">seeker</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  Range-direction detector.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Range-direction detector.</span>
+
+<span class="sd">    `radar` is a subclass of :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;`</span>
+<span class="sd">    and utilizes its functionality and errors model for angular measurements.</span>
+<span class="sd">    This documentation supplaments the information concerning range measurements.</span>
+<span class="sd">    Refer to :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` for the full documentation.</span>
+
+
+<span class="sd">    The `radar` class models sensors that</span>
+<span class="sd">    measure both the range and the direction to a target.</span>
+<span class="sd">    The direction is measured in terms of azimuth and elevation.</span>
+<span class="sd">    Sensors that provide precise range measurements</span>
+<span class="sd">    typically use electro-magnetical technology,</span>
+<span class="sd">    though other technologies may also be employed.</span>
+
+<span class="sd">    As a subclass of `seeker`, the `radar`</span>
+<span class="sd">    can operate in one of two modes: ideal mode,</span>
+<span class="sd">    providing precise range and direction measurements,</span>
+<span class="sd">    or non-ideal mode,</span>
+<span class="sd">    where measurements may be affected by errors such as</span>
+<span class="sd">    `scale factor`, `bias`, and `noise`,</span>
+<span class="sd">    according to the errors model.</span>
+<span class="sd">    A random variable generation mechanism allows</span>
+<span class="sd">    for Monte Carlo simulations.</span>
 
-<span class="sd">  `radar` is a subclass of :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` </span>
-<span class="sd">  and utilizes its functionality and errors model for angular measurements. </span>
-<span class="sd">  This documentation supplaments the information concerning range measurements. </span>
-<span class="sd">  Refer to :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` for the full documentation.</span>
-
-
-<span class="sd">  The `radar` class models sensors that </span>
-<span class="sd">  measure both the range and the direction to a target.</span>
-<span class="sd">  The direction is measured in terms of azimuth and elevation. </span>
-<span class="sd">  Sensors that provide precise range measurements </span>
-<span class="sd">  typically use electro-magnetical technology, </span>
-<span class="sd">  though other technologies may also be employed. </span>
-
-<span class="sd">  As a subclass of `seeker`, the `radar`</span>
-<span class="sd">  can operate in one of two modes: ideal mode, </span>
-<span class="sd">  providing precise range and direction measurements, </span>
-<span class="sd">  or non-ideal mode, </span>
-<span class="sd">  where measurements may be affected by errors such as</span>
-<span class="sd">  `scale factor`, `bias`, and `noise`, </span>
-<span class="sd">  according to the errors model. </span>
-<span class="sd">  A random variable generation mechanism allows </span>
-<span class="sd">  for Monte Carlo simulations.   </span>
-
-
-<span class="sd">  </span>
-<span class="sd">  Parameters</span>
-<span class="sd">  ==========</span>
-
-<span class="sd">  origin : :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, optional </span>
-<span class="sd">      A `rigidbody` object whose state vector :attr:`X &lt;c4dynamics.states.state.state.X&gt;` </span>
-<span class="sd">      determines the radar&#39;s initial position and attitude. </span>
-<span class="sd">      Defaults: a `rigidbody` object with zeros vector, `X = numpy.zeros(12)`.</span>
-<span class="sd">  isideal : bool, optional </span>
-<span class="sd">      A flag indicating whether the errors model is off. </span>
-<span class="sd">      Defaults False. </span>
-
-
-
-<span class="sd">  Keyword Arguments </span>
-<span class="sd">  =================</span>
-<span class="sd">  rng_noise_std : float </span>
-<span class="sd">      A standard deviation of the radar range. Default value for non-ideal radar: `rng_noise_std = 1m`. </span>
-<span class="sd">  bias_std : float </span>
-<span class="sd">      The standard deviation of the bias error, [radians]. Defaults :math:`0.3°`.</span>
-<span class="sd">  scale_factor_std : float </span>
-<span class="sd">      The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.07 (= 7\\%)`. </span>
-<span class="sd">  noise_std : float</span>
-<span class="sd">      The standard deviation of the radar angular noise, [radians]. </span>
-<span class="sd">      Default value for non-ideal radar: :math:`0.8°`. </span>
-<span class="sd">  dt : float</span>
-<span class="sd">      The time-constant of the operational rate of the radar </span>
-<span class="sd">      (below which the radar measures return None), [seconds]. Default value: :math:`dt = -1sec` </span>
-<span class="sd">      (no limit between calls to :meth:`measure`). </span>
-
-
-<span class="sd">  * Note the default values for angular parameters, `bias_std`, `scale_factor_std`, </span>
-<span class="sd">    and `noise_std`, differ from those in a `seeker` object. </span>
-
-<span class="sd">  </span>
-
-<span class="sd">  See Also</span>
-<span class="sd">  ========</span>
-<span class="sd">  .filters </span>
-<span class="sd">  .eqm </span>
-<span class="sd">  .seeker</span>
-
-<span class="sd">  </span>
-
-
-<span class="sd">  **Functionality**</span>
-
-
-<span class="sd">  At each sample the seeker returns measures based on the true geometry </span>
-<span class="sd">  with the target.</span>
-
-<span class="sd">  Let the relative coordinates in an arbitrary frame of reference: </span>
-
-<span class="sd">  .. math::</span>
-
-<span class="sd">    dx = target.x - seeker.x</span>
-
-<span class="sd">    dy = target.y - seeker.y</span>
-
-<span class="sd">    dz = target.z - seeker.z</span>
-<span class="sd">  </span>
-
-<span class="sd">  The relative coordinates in the seeker body frame are given by: </span>
-
-<span class="sd">  .. math::</span>
-
-<span class="sd">    x_b = [BR] \\cdot [dx, dy, dz]^T </span>
-
-<span class="sd">  where :math:`[BR]` is a </span>
-<span class="sd">  Body from Reference DCM (Direction Cosine Matrix)</span>
-<span class="sd">  formed by the seeker three Euler angles. See the `rigidbody` section below. </span>
-
-<span class="sd">  The azimuth and elevation measures are then the spatial angles: </span>
-<span class="sd">  </span>
-<span class="sd">  .. math:: </span>
-
-<span class="sd">    az = tan^{-1}{x_b[1] \\over x_b[0]}</span>
-
-<span class="sd">    el = tan^{-1}{x_b[2] \\over \\sqrt{x_b[0]^2 + x_b[1]^2}}</span>
-
-<span class="sd">  </span>
-<span class="sd">  Where:</span>
-
-<span class="sd">  - :math:`az` is the azimuth angle</span>
-<span class="sd">  - :math:`el` is the elevation angle</span>
-<span class="sd">  - :math:`x_b` is the target-radar position vector in radar body frame</span>
-
-
-<span class="sd">  For a `radar` object, the range is defined as: </span>
-
-<span class="sd">  .. math::</span>
-
-<span class="sd">      range = \\sqrt{x_b^2 + y_b^2 + z_b^2}</span>
-
-<span class="sd">  Where:</span>
-
-<span class="sd">  - :math:`range` is the target-radar distance </span>
-<span class="sd">  - :math:`x_b` is the target-radar position vector in radar body frame</span>
-
-
-<span class="sd">  .. figure:: /_architecture/rdr_definitions.svg</span>
-<span class="sd">    </span>
-<span class="sd">    Fig-1: Range and angles definition</span>
-
-<span class="sd">      </span>
-<span class="sd">  **Errors Model**</span>
-<span class="sd">  </span>
-<span class="sd">  The azimuth and elevation angles are subject to errors: scale factor, bias, and noise, </span>
-<span class="sd">  as detailed in `seeker`. </span>
-<span class="sd">  A `radar` instance has in addition range noise: </span>
-
-<span class="sd">  - ``Range Noise``: </span>
-<span class="sd">    represents random variations or fluctuations in the measurements </span>
-<span class="sd">    that are not systematic. </span>
-<span class="sd">    The noise at each sample (:meth:`measure`) </span>
-<span class="sd">    is a normally distributed variable </span>
-<span class="sd">    with `mean = 0` and `std = rng_noise_std`, where `rng_noise_std` </span>
-<span class="sd">    is a `radar` parameter with default value of `1m`.  </span>
-
-<span class="sd">  Angular errors:</span>
-
-<span class="sd">  - ``Bias``: </span>
-<span class="sd">    represents a constant offset or deviation from the </span>
-<span class="sd">    true value in the seeker&#39;s measurements. </span>
-<span class="sd">    It is a systematic error that consistently affects the measured values. </span>
-<span class="sd">    The bias of a `seeker` instance is a normally distributed variable with `mean = 0` </span>
-<span class="sd">    and `std = bias_std`, where `bias_std` is a parameter with default value of `0.3°`.</span>
-<span class="sd">  - ``Scale Factor``: </span>
-<span class="sd">    a multiplier applied to the true value of a measurement. </span>
-<span class="sd">    It represents a scaling error in the measurements made by the seeker. </span>
-<span class="sd">    The scale factor of a `seeker` instance is </span>
-<span class="sd">    a normally distributed variable </span>
-<span class="sd">    with `mean = 0` and `std = scale_factor_std`, </span>
-<span class="sd">    , where `scale_factor_std` is a parameter with default value of `0.07`. </span>
-<span class="sd">  - ``Noise``: </span>
-<span class="sd">    represents random variations or fluctuations in the measurements </span>
-<span class="sd">    that are not systematic. </span>
-<span class="sd">    The noise at each seeker sample (:meth:`measure`) </span>
-<span class="sd">    is a normally distributed variable </span>
-<span class="sd">    with `mean = 0` and `std = noise_std`, where `noise_std` </span>
-<span class="sd">    is a parameter with default value of `0.8°`.    </span>
-<span class="sd">   </span>
-<span class="sd">  </span>
-
-<span class="sd">  The errors model generates random variables for each radar instance, </span>
-<span class="sd">  allowing for the simulation of different scenarios or variations in the radar behavior</span>
-<span class="sd">  in a technique known as Monte Carlo. </span>
-<span class="sd">  Monte Carlo simulations leverage this randomness to statistically analyze </span>
-<span class="sd">  the impact of these biases and scale factors over a large number of iterations, </span>
-<span class="sd">  providing insights into potential outcomes and system reliability.</span>
-
-<span class="sd">  </span>
-
-<span class="sd">  **Radar vs Seeker**</span>
-<span class="sd">      </span>
-<span class="sd">  </span>
-<span class="sd">  The following table</span>
-<span class="sd">  lists the main differences between </span>
-<span class="sd">  :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` and :class:`radar` </span>
-<span class="sd">  in terms of measurements and </span>
-<span class="sd">  default error parameters:</span>
-<span class="sd">     </span>
-<span class="sd">    </span>
-
-<span class="sd">  .. list-table:: </span>
-<span class="sd">    :widths: 22 13 13 13 13 13 13  </span>
-<span class="sd">    :header-rows: 1</span>
-
-<span class="sd">    * - </span>
-<span class="sd">      - Angles</span>
-<span class="sd">      - Range</span>
-<span class="sd">      - :math:`σ_{Bias}`</span>
-<span class="sd">      - :math:`σ_{Scale Factor}`</span>
-<span class="sd">      - :math:`σ_{Angular Noise}`</span>
-<span class="sd">      - :math:`σ_{Range Noise}`</span>
-
-<span class="sd">    * - Seeker </span>
-<span class="sd">      - ✔️</span>
-<span class="sd">      - ❌</span>
-<span class="sd">      - :math:`0.1°`</span>
-<span class="sd">      - :math:`5%`</span>
-<span class="sd">      - :math:`0.4°`</span>
-<span class="sd">      - :math:`--`</span>
-
-<span class="sd">    * - Radar </span>
-<span class="sd">      - ✔️</span>
-<span class="sd">      - ✔️</span>
-<span class="sd">      - :math:`0.3°`</span>
-<span class="sd">      - :math:`7%`</span>
-<span class="sd">      - :math:`0.8°`</span>
-<span class="sd">      - :math:`1m`</span>
-
-<span class="sd">    </span>
-
-
-<span class="sd">  **rigidbody**</span>
-<span class="sd">  </span>
-<span class="sd">  The radar class is also a subclass of </span>
-<span class="sd">  :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, i.e. </span>
-<span class="sd">  it suggests attributes of position and attitude and the manipulation of them.</span>
-
-<span class="sd">  As a fundamental propety, the </span>
-<span class="sd">  rigidbody&#39;s state vector </span>
-<span class="sd">  :attr:`X &lt;c4dynamics.states.state.state.X&gt;` </span>
-<span class="sd">  sets the spatial coordinates of the radar:</span>
-
-<span class="sd">  .. math::</span>
-
-<span class="sd">    X = [x, y, z, v_x, v_y, v_z, {\\varphi}, {\\theta}, {\\psi}, p, q, r]^T </span>
-
-<span class="sd">  The first six coordinates determine the translational position and velocity of the radar </span>
-<span class="sd">  while the last six determine its angular attitude in terms of Euler angles and </span>
-<span class="sd">  the body rates. </span>
-
-<span class="sd">  Passing a rigidbody parameter as an `origin` sets </span>
-<span class="sd">  the initial conditions of the radar. </span>
-
-<span class="sd">  </span>
-<span class="sd">  </span>
-<span class="sd">  **Construction**</span>
-
-<span class="sd">  A radar instance is created by making a direct call </span>
-<span class="sd">  to the radar constructor: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; rdr = c4d.sensors.radar()</span>
-
-<span class="sd">  Initialization of the instance does not require any </span>
-<span class="sd">  mandatory arguments, but the radar parameters can be </span>
-<span class="sd">  determined using the \\**kwargs argument as detailed above.</span>
-
-
-
-
-<span class="sd">  Examples </span>
-<span class="sd">  ========</span>
-
-<span class="sd">  </span>
-<span class="sd">  Import required packages:</span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">    &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-
-<span class="sd">    </span>
-
-<span class="sd">  **Target**</span>
-<span class="sd">  </span>
-
-<span class="sd">  For the examples below let&#39;s generate the trajectory of a target with constant velocity:   </span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; tgt = c4d.datapoint(x = 1000, y = 0, vx = -80 * c4d.kmh2ms, vy = 10 * c4d.kmh2ms)</span>
-<span class="sd">    &gt;&gt;&gt; for t in np.arange(0, 60, 0.01):</span>
-<span class="sd">    ...   tgt.inteqm(np.zeros(3), .01) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    ...   tgt.store(t)</span>
-
-<span class="sd">  The method :meth:`inteqm &lt;c4dynamics.states.lib.datapoint.datapoint.inteqm&gt;` </span>
-<span class="sd">  of the </span>
-<span class="sd">  :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;` class </span>
-<span class="sd">  integrates the 3 degrees of freedom equations of motion with respect to </span>
-<span class="sd">  the input force vector (`np.zeros(3)` here). </span>
-<span class="sd">  </span>
-<span class="sd">  .. figure:: /_examples/radar/target.png</span>
-
-<span class="sd">  Since the call to :meth:`measure` requires a target as a `datapoint` object </span>
-<span class="sd">  we utilize a custom `create` function that returns a new `datapoint` object for </span>
-<span class="sd">  a given `X` state vector in time. </span>
-
-<span class="sd">  - :code:`c4d.kmh2ms` converts kilometers per hour to meters per second.</span>
-<span class="sd">  - :code:`c4d.r2d` converts radians to degrees.</span>
-<span class="sd">  - :code:`c4d.d2r` converts degrees to radians.</span>
-
-<span class="sd">  </span>
-<span class="sd">  **Origin**</span>
-<span class="sd">  </span>
-<span class="sd">  Let&#39;s also introduce a pedestal as an origin for the radar. </span>
-<span class="sd">  The pedestal is a `rigidbody` object with position and attitude: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; pedestal = c4d.rigidbody(z = 30, theta = -1 * c4d.d2r)</span>
-
-
-
-<span class="sd">    </span>
-
-<span class="sd">  **Ideal Radar**</span>
-<span class="sd">  </span>
-<span class="sd">  Measure the target position with an ideal radar:</span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; rdr_ideal = c4d.sensors.radar(origin = pedestal, isideal = True)</span>
-<span class="sd">    &gt;&gt;&gt; for x in tgt.data():</span>
-<span class="sd">    ...   rdr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    </span>
-<span class="sd">  Comparing the radar measurements with the true target angles requires </span>
-<span class="sd">  converting the relative position to the radar body frame: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; dx =  tgt.data(&#39;x&#39;)[1] - rdr_ideal.x</span>
-<span class="sd">    &gt;&gt;&gt; dy =  tgt.data(&#39;y&#39;)[1] - rdr_ideal.y</span>
-<span class="sd">    &gt;&gt;&gt; dz =  tgt.data(&#39;z&#39;)[1] - rdr_ideal.z</span>
-<span class="sd">    &gt;&gt;&gt; Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x, X[2] - rdr_ideal.y, X[3] - rdr_ideal.z] for X in tgt.data()])</span>
-
-<span class="sd">  where :attr:`rdr_ideal.BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;` is a </span>
-<span class="sd">  Body from Reference DCM (Direction Cosine Matrix)</span>
-<span class="sd">  formed by the radar three Euler angles</span>
-
-<span class="sd">  Now `az_true` and `el_true` are the true target angles with respect to the radar, and </span>
-<span class="sd">  `rng_true` is the true range (`atan2d` is an aliasing of `numpy&#39;s arctan2` </span>
-<span class="sd">  with a modification returning the angles in degrees): </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; az_true = c4d.atan2d(Xb[:, 1], Xb[:, 0])</span>
-<span class="sd">    &gt;&gt;&gt; el_true = c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2))</span>
-<span class="sd">    &gt;&gt;&gt; # plot results</span>
-<span class="sd">    &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; # range</span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), c4d.norm(Xb, axis = 1), label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; # angles </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 1], Xb[:, 0]), label = &#39;target azimuth&#39;)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)), label = &#39;target elevation&#39;)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;)  # doctest: +IGNORE_OUTPUT </span>
-
-<span class="sd">  .. figure:: /_examples/radar/ideal.png</span>
-
-
-
-<span class="sd">  </span>
-
-<span class="sd">  **Non-ideal Radar**</span>
-<span class="sd">  </span>
-
-<span class="sd">  Measure the target position with a *non-ideal* radar. </span>
-<span class="sd">  The radar&#39;s errors model introduces bias, scale factor, and </span>
-<span class="sd">  noise that corrupt the measurements: </span>
-
-<span class="sd">  </span>
-<span class="sd">  To reproduce the result, let&#39;s set the random generator seed (61 is arbitrary):</span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; np.random.seed(61)</span>
-
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal)</span>
-<span class="sd">    &gt;&gt;&gt; for x in tgt.data():</span>
-<span class="sd">    ...   rdr.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
-
-<span class="sd">  Results with respect to an ideal radar: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
-<span class="sd">    &gt;&gt;&gt; # range     </span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;target&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), label = &#39;radar&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; # angles  </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;target azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;target elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
-
-<span class="sd">  `target` labels mean the true position as measured by an ideal radar. </span>
-
-<span class="sd">  .. figure:: /_examples/radar/nonideal.png</span>
-
-<span class="sd">  </span>
-<span class="sd">  The bias, scale factor, and noise that used to generate these measures </span>
-<span class="sd">  can be examined by: </span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; rdr.rng_noise_std # doctest: +ELLIPSIS</span>
-<span class="sd">    1.0</span>
-<span class="sd">    &gt;&gt;&gt; rdr.bias * c4d.r2d  # doctest: +ELLIPSIS </span>
-<span class="sd">    0.13...</span>
-<span class="sd">    &gt;&gt;&gt; rdr.scale_factor # doctest: +ELLIPSIS </span>
-<span class="sd">    0.96...</span>
-<span class="sd">    &gt;&gt;&gt; rdr.noise_std * c4d.r2d</span>
-<span class="sd">    0.8</span>
-
-<span class="sd">  Points to consider here: </span>
-
-<span class="sd">  - The scale factor error increases with the angle, such that for a :math:`7%` </span>
-<span class="sd">    scale factor, </span>
-<span class="sd">    the error of :math:`Azimuth = 100°` is :math:`7°`, whereas the error for </span>
-<span class="sd">    :math:`Elevation = -15°` is only :math:`-1.05°`.  </span>
-<span class="sd">  - The standard deviation of the noise in the two angle channels is the same. </span>
-<span class="sd">    However, as the `Elevation` values are confined to a smaller range, the effect </span>
-<span class="sd">    appears more pronounced there.  </span>
-<span class="sd">    </span>
-
-
-
-<span class="sd">  **Rotating Radar**</span>
-<span class="sd">  </span>
-
-<span class="sd">  Measure the target position with a rotating radar. </span>
-<span class="sd">  The radar origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion: </span>
-
-
-<span class="sd">  .. code::</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal)</span>
-<span class="sd">    &gt;&gt;&gt; for x in tgt.data():</span>
-<span class="sd">    ...   rdr.psi += .02 * c4d.d2r </span>
-<span class="sd">    ...   rdr.measure(c4d.create(x[1:]), t = x[0], store = True)# doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    ...   rdr.store(x[0])</span>
-
-<span class="sd">  The radar yaw angle: </span>
-
-<span class="sd">  .. figure:: /_examples/radar/psi.png</span>
-
-<span class="sd">  And the target angles with respect to the yawing radar are: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
-<span class="sd">    &gt;&gt;&gt; # range    </span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;ideal static&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;),label = &#39;non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; # angles</span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, c4d.r2d), label = &#39;az: ideal static&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, c4d.r2d), label = &#39;az: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: ideal static&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT </span>
-
-<span class="sd">  .. figure:: /_examples/radar/yawing.png</span>
-
-<span class="sd">  </span>
-<span class="sd">  - The rotation of the radar with the target direction </span>
-<span class="sd">    keeps the azimuth angle limited, such that non-rotating radars with limited FOV (field of view) </span>
-<span class="sd">    would have lost the target. </span>
-
-<span class="sd">    </span>
-
-<span class="sd">  **Operation Time**</span>
-<span class="sd">  </span>
-<span class="sd">  By default, the radar returns measurments for each </span>
-<span class="sd">  call to :meth:`measure`. However, setting the parameter `dt` </span>
-<span class="sd">  to a positive number makes `measure` return `None` </span>
-<span class="sd">  for any `t &lt; last_t + dt`, where `t` is the current measure time, </span>
-<span class="sd">  `last_t` is the last measurement time, and `dt` is the radar time-constant: </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; np.random.seed(770)</span>
-<span class="sd">    &gt;&gt;&gt; tgt = c4d.datapoint(x = 100, y = 100)</span>
-<span class="sd">    &gt;&gt;&gt; rdr = c4d.sensors.radar(dt = 0.01)</span>
-<span class="sd">    &gt;&gt;&gt; for t in np.arange(0, .025, .005):  # doctest: +ELLIPSIS</span>
-<span class="sd">    ...   print(f&#39;{t}: {rdr.measure(tgt, t = t)}&#39;) </span>
-<span class="sd">    0.0: (0.7..., 0.01..., 140.1...)</span>
-<span class="sd">    0.005: (None, None, None)</span>
-<span class="sd">    0.01: (0.72..., -0.04..., 142.1...)</span>
-<span class="sd">    0.015: (None, None, None)</span>
-<span class="sd">    0.02: (0.72..., -0.003..., 140.4...)</span>
-
-<span class="sd">    </span>
-<span class="sd">  **Random Distribution** </span>
-
-<span class="sd"> </span>
-<span class="sd">  The distribution of normally generated random variables </span>
-<span class="sd">  is characterized by its bell-shaped curve, which is symmetric about the mean.</span>
-<span class="sd">  The area under the curve represents probability, with about `68%` of the data </span>
-<span class="sd">  falling within one standard deviation (1σ) of the mean, `95%` within two, </span>
-<span class="sd">  and `99.7%` within three,   </span>
-<span class="sd">  making it a useful tool for understanding and predicting data behavior.</span>
-
-
-<span class="sd">  In `radar` objects, and `seeker` objects in general, </span>
-<span class="sd">  the `bias` and `scale factor` vary </span>
-<span class="sd">  among different instances to allow a realistic simulation </span>
-<span class="sd">  of performance behavior in a technique known as Monte Carlo.</span>
-<span class="sd">  </span>
-<span class="sd">  Let&#39;s examine the `bias` distribution across   </span>
-<span class="sd">  </span>
-<span class="sd">  mutliple `radar` instances with a default `bias_std = 0.3°`</span>
-<span class="sd">  in comparison to `seeker` instances with a default `bias_std = 0.1°`:</span>
-<span class="sd">      </span>
-
-<span class="sd">  </span>
-
-
-
-
-
-<span class="sd">  .. code:: </span>
-<span class="sd">  </span>
-<span class="sd">    &gt;&gt;&gt; from c4dynamics.sensors import seeker, radar </span>
-<span class="sd">    &gt;&gt;&gt; seekers = []</span>
-<span class="sd">    &gt;&gt;&gt; radars = []</span>
-<span class="sd">    &gt;&gt;&gt; for i in range(1000):</span>
-<span class="sd">    ...   seekers.append(seeker().bias * c4d.r2d)</span>
-<span class="sd">    ...   radars.append(radar().bias * c4d.r2d)</span>
-
-<span class="sd"> </span>
-<span class="sd">  The histogram highlights the broadening of the distribution </span>
-<span class="sd">  as the standard deviation increases:    </span>
-
-
-<span class="sd">    &gt;&gt;&gt; ax = plt.subplot()</span>
-<span class="sd">    &gt;&gt;&gt; ax.hist(seekers, 30, label = &#39;Seekers&#39;) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">    &gt;&gt;&gt; ax.hist(radars, 30, label = &#39;Radars&#39;)  # doctest: +IGNORE_OUTPUT </span>
-
-<span class="sd">  .. figure:: /_examples/radar/bias2.png</span>
-
-<span class="sd">  &#39;&#39;&#39;</span>
-  
-  <span class="n">rng_noise_std</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">isideal</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;radar&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> 
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">,</span> <span class="n">isideal</span> <span class="o">=</span> <span class="n">isideal</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;rng_noise_std&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-    <span class="k">if</span> <span class="n">isideal</span><span class="p">:</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">=</span> <span class="mf">0.0</span> 
-
-
-
-
-
-<div class="viewcode-block" id="radar.measure">
-<a class="viewcode-back" href="../../../api/generated/radar/c4dynamics.sensors.radar.radar.measure.html#c4dynamics.sensors.radar.radar.measure">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="s1">&#39;c4d.state&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span> <span class="c1"># type: ignore</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Measures range, azimuth and elevation between the radar and a `target`. </span>
-
-
-<span class="sd">    If the radar time-constant `dt` was provided when the `radar` was created, </span>
-<span class="sd">    then `measure` returns `None` for any `t &lt; last_t + dt`, </span>
-<span class="sd">    where `t` is the time input, `last_t` is the last measurement time, </span>
-<span class="sd">    and `dt` is the radar time-constant. </span>
-<span class="sd">    Default behavior, returns measurements for each call.  </span>
-<span class="sd">    </span>
-<span class="sd">    If `store = True`, the method stores the measured </span>
-<span class="sd">    azimuth and elevation along with a timestamp </span>
-<span class="sd">    (`t = -1` by default, if not provided otherwise). </span>
 
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    target : state</span>
-<span class="sd">        A Cartesian state object to measure by the radar, including at least one position coordinate (x, y, z).  </span>
-<span class="sd">    store : bool, optional</span>
-<span class="sd">        A flag indicating whether to store the measured values. Defaults `False`.</span>
-<span class="sd">    t : float, optional</span>
-<span class="sd">        Timestamp [seconds]. Defaults -1.</span>
+<span class="sd">    ==========</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : tuple</span>
-<span class="sd">        range [meters, float], azimuth and elevation, [radians, float]. </span>
-<span class="sd">    </span>
-
-<span class="sd">    Raises </span>
-<span class="sd">    ------</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        If `target` doesn&#39;t include any position coordinate (x, y, z).  </span>
-
-<span class="sd">                </span>
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-
-<span class="sd">    `measure` in a program simulating </span>
-<span class="sd">    real-time tracking of a constant velcoity target.</span>
-
-<span class="sd">    </span>
-<span class="sd">    The target is represented by a :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;` </span>
-<span class="sd">    and is simulated using the :mod:`eqm &lt;c4dynamics.eqm&gt;` module, </span>
-<span class="sd">    which integrating the point-mass equations of motion. </span>
-
-<span class="sd">    An ideal radar uses as reference to the true position of the target. </span>
-
-<span class="sd">    At each cycle, the the radars take measurements and store the samples for </span>
-<span class="sd">    later use in plotting the results.  </span>
-
-<span class="sd">    </span>
-<span class="sd">    Import required packages:</span>
-
-<span class="sd">    .. code:: </span>
-
-<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
-<span class="sd">      &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">      &gt;&gt;&gt; import numpy as np </span>
+<span class="sd">    origin : :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, optional</span>
+<span class="sd">        A `rigidbody` object whose state vector :attr:`X &lt;c4dynamics.states.state.state.X&gt;`</span>
+<span class="sd">        determines the radar&#39;s initial position and attitude.</span>
+<span class="sd">        Defaults: a `rigidbody` object with zeros vector, `X = numpy.zeros(12)`.</span>
+<span class="sd">    isideal : bool, optional</span>
+<span class="sd">        A flag indicating whether the errors model is off.</span>
+<span class="sd">        Defaults False.</span>
 
 
 
-<span class="sd">    Settings and initial conditions:</span>
+<span class="sd">    Keyword Arguments</span>
+<span class="sd">    =================</span>
+<span class="sd">    rng_noise_std : float</span>
+<span class="sd">        A standard deviation of the radar range. Default value for non-ideal radar: `rng_noise_std = 1m`.</span>
+<span class="sd">    bias_std : float</span>
+<span class="sd">        The standard deviation of the bias error, [radians]. Defaults :math:`0.3°`.</span>
+<span class="sd">    scale_factor_std : float</span>
+<span class="sd">        The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.07 (= 7\\%)`.</span>
+<span class="sd">    noise_std : float</span>
+<span class="sd">        The standard deviation of the radar angular noise, [radians].</span>
+<span class="sd">        Default value for non-ideal radar: :math:`0.8°`.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        The time-constant of the operational rate of the radar</span>
+<span class="sd">        (below which the radar measures return None), [seconds]. Default value: :math:`dt = -1sec`</span>
+<span class="sd">        (no limit between calls to :meth:`measure`).</span>
 
-<span class="sd">    .. code:: </span>
 
-<span class="sd">      &gt;&gt;&gt; dt = 0.01</span>
-<span class="sd">      &gt;&gt;&gt; np.random.seed(321)</span>
-<span class="sd">      &gt;&gt;&gt; tgt = c4d.datapoint(x = 1000, vx = -80 * c4d.kmh2ms, vy = 10 * c4d.kmh2ms)</span>
-<span class="sd">      &gt;&gt;&gt; pedestal = c4d.rigidbody(z = 30, theta = -1 * c4d.d2r)</span>
-<span class="sd">      &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal, dt = 0.05)</span>
-<span class="sd">      &gt;&gt;&gt; rdr_ideal = c4d.sensors.radar(origin = pedestal, isideal = True)</span>
-<span class="sd">   </span>
-<span class="sd">    Main loop:</span>
-<span class="sd">    </span>
-<span class="sd">    .. code:: </span>
-<span class="sd">          </span>
-<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, 60, dt):</span>
-<span class="sd">      ...   tgt.inteqm(np.zeros(3), dt)  # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">      ...   rdr_ideal.measure(tgt, t = t, store = True)    # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">      ...   rdr.measure(tgt, t = t, store = True)    # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">      ...   tgt.store(t)</span>
+<span class="sd">    * Note the default values for angular parameters, `bias_std`, `scale_factor_std`,</span>
+<span class="sd">      and `noise_std`, differ from those in a `seeker` object.</span>
 
-<span class="sd">    Before viewing the results, let&#39;s examine the error parameters generated by </span>
-<span class="sd">    the errors model (`c4d.r2d` converts radians to degrees): </span>
+
+
+<span class="sd">    See Also</span>
+<span class="sd">    ========</span>
+<span class="sd">    .filters</span>
+<span class="sd">    .eqm</span>
+<span class="sd">    .seeker</span>
+
+
+
+
+<span class="sd">    **Functionality**</span>
+
+
+<span class="sd">    At each sample the seeker returns measures based on the true geometry</span>
+<span class="sd">    with the target.</span>
+
+<span class="sd">    Let the relative coordinates in an arbitrary frame of reference:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      dx = target.x - seeker.x</span>
+
+<span class="sd">      dy = target.y - seeker.y</span>
+
+<span class="sd">      dz = target.z - seeker.z</span>
+
+
+<span class="sd">    The relative coordinates in the seeker body frame are given by:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      x_b = [BR] \\cdot [dx, dy, dz]^T</span>
+
+<span class="sd">    where :math:`[BR]` is a</span>
+<span class="sd">    Body from Reference DCM (Direction Cosine Matrix)</span>
+<span class="sd">    formed by the seeker three Euler angles. See the `rigidbody` section below.</span>
+
+<span class="sd">    The azimuth and elevation measures are then the spatial angles:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      az = tan^{-1}{x_b[1] \\over x_b[0]}</span>
+
+<span class="sd">      el = tan^{-1}{x_b[2] \\over \\sqrt{x_b[0]^2 + x_b[1]^2}}</span>
+
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`az` is the azimuth angle</span>
+<span class="sd">    - :math:`el` is the elevation angle</span>
+<span class="sd">    - :math:`x_b` is the target-radar position vector in radar body frame</span>
+
+
+<span class="sd">    For a `radar` object, the range is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        range = \\sqrt{x_b^2 + y_b^2 + z_b^2}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`range` is the target-radar distance</span>
+<span class="sd">    - :math:`x_b` is the target-radar position vector in radar body frame</span>
+
+
+<span class="sd">    .. figure:: /_architecture/rdr_definitions.svg</span>
+
+<span class="sd">      Fig-1: Range and angles definition</span>
+
+
+<span class="sd">    **Errors Model**</span>
+
+<span class="sd">    The azimuth and elevation angles are subject to errors: scale factor, bias, and noise,</span>
+<span class="sd">    as detailed in `seeker`.</span>
+<span class="sd">    A `radar` instance has in addition range noise:</span>
+
+<span class="sd">    - ``Range Noise``:</span>
+<span class="sd">      represents random variations or fluctuations in the measurements</span>
+<span class="sd">      that are not systematic.</span>
+<span class="sd">      The noise at each sample (:meth:`measure`)</span>
+<span class="sd">      is a normally distributed variable</span>
+<span class="sd">      with `mean = 0` and `std = rng_noise_std`, where `rng_noise_std`</span>
+<span class="sd">      is a `radar` parameter with default value of `1m`.</span>
+
+<span class="sd">    Angular errors:</span>
+
+<span class="sd">    - ``Bias``:</span>
+<span class="sd">      represents a constant offset or deviation from the</span>
+<span class="sd">      true value in the seeker&#39;s measurements.</span>
+<span class="sd">      It is a systematic error that consistently affects the measured values.</span>
+<span class="sd">      The bias of a `seeker` instance is a normally distributed variable with `mean = 0`</span>
+<span class="sd">      and `std = bias_std`, where `bias_std` is a parameter with default value of `0.3°`.</span>
+<span class="sd">    - ``Scale Factor``:</span>
+<span class="sd">      a multiplier applied to the true value of a measurement.</span>
+<span class="sd">      It represents a scaling error in the measurements made by the seeker.</span>
+<span class="sd">      The scale factor of a `seeker` instance is</span>
+<span class="sd">      a normally distributed variable</span>
+<span class="sd">      with `mean = 0` and `std = scale_factor_std`,</span>
+<span class="sd">      , where `scale_factor_std` is a parameter with default value of `0.07`.</span>
+<span class="sd">    - ``Noise``:</span>
+<span class="sd">      represents random variations or fluctuations in the measurements</span>
+<span class="sd">      that are not systematic.</span>
+<span class="sd">      The noise at each seeker sample (:meth:`measure`)</span>
+<span class="sd">      is a normally distributed variable</span>
+<span class="sd">      with `mean = 0` and `std = noise_std`, where `noise_std`</span>
+<span class="sd">      is a parameter with default value of `0.8°`.</span>
+
+
+
+<span class="sd">    The errors model generates random variables for each radar instance,</span>
+<span class="sd">    allowing for the simulation of different scenarios or variations in the radar behavior</span>
+<span class="sd">    in a technique known as Monte Carlo.</span>
+<span class="sd">    Monte Carlo simulations leverage this randomness to statistically analyze</span>
+<span class="sd">    the impact of these biases and scale factors over a large number of iterations,</span>
+<span class="sd">    providing insights into potential outcomes and system reliability.</span>
+
+
+
+<span class="sd">    **Radar vs Seeker**</span>
+
+
+<span class="sd">    The following table</span>
+<span class="sd">    lists the main differences between</span>
+<span class="sd">    :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` and :class:`radar`</span>
+<span class="sd">    in terms of measurements and</span>
+<span class="sd">    default error parameters:</span>
+
+
+
+<span class="sd">    .. list-table::</span>
+<span class="sd">      :widths: 22 13 13 13 13 13 13</span>
+<span class="sd">      :header-rows: 1</span>
+
+<span class="sd">      * -</span>
+<span class="sd">        - Angles</span>
+<span class="sd">        - Range</span>
+<span class="sd">        - :math:`σ_{Bias}`</span>
+<span class="sd">        - :math:`σ_{Scale Factor}`</span>
+<span class="sd">        - :math:`σ_{Angular Noise}`</span>
+<span class="sd">        - :math:`σ_{Range Noise}`</span>
+
+<span class="sd">      * - Seeker</span>
+<span class="sd">        - ✔️</span>
+<span class="sd">        - ❌</span>
+<span class="sd">        - :math:`0.1°`</span>
+<span class="sd">        - :math:`5%`</span>
+<span class="sd">        - :math:`0.4°`</span>
+<span class="sd">        - :math:`--`</span>
+
+<span class="sd">      * - Radar</span>
+<span class="sd">        - ✔️</span>
+<span class="sd">        - ✔️</span>
+<span class="sd">        - :math:`0.3°`</span>
+<span class="sd">        - :math:`7%`</span>
+<span class="sd">        - :math:`0.8°`</span>
+<span class="sd">        - :math:`1m`</span>
+
+
+
+
+<span class="sd">    **rigidbody**</span>
+
+<span class="sd">    The radar class is also a subclass of</span>
+<span class="sd">    :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, i.e.</span>
+<span class="sd">    it suggests attributes of position and attitude and the manipulation of them.</span>
+
+<span class="sd">    As a fundamental propety, the</span>
+<span class="sd">    rigidbody&#39;s state vector</span>
+<span class="sd">    :attr:`X &lt;c4dynamics.states.state.state.X&gt;`</span>
+<span class="sd">    sets the spatial coordinates of the radar:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">      X = [x, y, z, v_x, v_y, v_z, {\\varphi}, {\\theta}, {\\psi}, p, q, r]^T</span>
+
+<span class="sd">    The first six coordinates determine the translational position and velocity of the radar</span>
+<span class="sd">    while the last six determine its angular attitude in terms of Euler angles and</span>
+<span class="sd">    the body rates.</span>
+
+<span class="sd">    Passing a rigidbody parameter as an `origin` sets</span>
+<span class="sd">    the initial conditions of the radar.</span>
+
+
+
+<span class="sd">    **Construction**</span>
+
+<span class="sd">    A radar instance is created by making a direct call</span>
+<span class="sd">    to the radar constructor:</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; rdr.rng_noise_std</span>
+<span class="sd">      &gt;&gt;&gt; rdr = c4d.sensors.radar()</span>
+
+<span class="sd">    Initialization of the instance does not require any</span>
+<span class="sd">    mandatory arguments, but the radar parameters can be</span>
+<span class="sd">    determined using the \\**kwargs argument as detailed above.</span>
+
+
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    ========</span>
+
+
+<span class="sd">    Import required packages:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">      &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">      &gt;&gt;&gt; import numpy as np</span>
+
+
+
+<span class="sd">    **Target**</span>
+
+
+<span class="sd">    For the examples below let&#39;s generate the trajectory of a target with constant velocity:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; tgt = c4d.datapoint(x = 1000, y = 0, vx = -80 * c4d.kmh2ms, vy = 10 * c4d.kmh2ms)</span>
+<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, 60, 0.01):</span>
+<span class="sd">      ...   tgt.inteqm(np.zeros(3), .01) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      ...   tgt.store(t)</span>
+
+<span class="sd">    The method :meth:`inteqm &lt;c4dynamics.states.lib.datapoint.datapoint.inteqm&gt;`</span>
+<span class="sd">    of the</span>
+<span class="sd">    :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;` class</span>
+<span class="sd">    integrates the 3 degrees of freedom equations of motion with respect to</span>
+<span class="sd">    the input force vector (`np.zeros(3)` here).</span>
+
+<span class="sd">    .. figure:: /_examples/radar/target.png</span>
+
+<span class="sd">    Since the call to :meth:`measure` requires a target as a `datapoint` object</span>
+<span class="sd">    we utilize a custom `create` function that returns a new `datapoint` object for</span>
+<span class="sd">    a given `X` state vector in time.</span>
+
+<span class="sd">    - :code:`c4d.kmh2ms` converts kilometers per hour to meters per second.</span>
+<span class="sd">    - :code:`c4d.r2d` converts radians to degrees.</span>
+<span class="sd">    - :code:`c4d.d2r` converts degrees to radians.</span>
+
+
+<span class="sd">    **Origin**</span>
+
+<span class="sd">    Let&#39;s also introduce a pedestal as an origin for the radar.</span>
+<span class="sd">    The pedestal is a `rigidbody` object with position and attitude:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; pedestal = c4d.rigidbody(z = 30, theta = -1 * c4d.d2r)</span>
+
+
+
+
+
+<span class="sd">    **Ideal Radar**</span>
+
+<span class="sd">    Measure the target position with an ideal radar:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; rdr_ideal = c4d.sensors.radar(origin = pedestal, isideal = True)</span>
+<span class="sd">      &gt;&gt;&gt; for x in tgt.data():</span>
+<span class="sd">      ...   rdr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    Comparing the radar measurements with the true target angles requires</span>
+<span class="sd">    converting the relative position to the radar body frame:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; dx =  tgt.data(&#39;x&#39;)[1] - rdr_ideal.x</span>
+<span class="sd">      &gt;&gt;&gt; dy =  tgt.data(&#39;y&#39;)[1] - rdr_ideal.y</span>
+<span class="sd">      &gt;&gt;&gt; dz =  tgt.data(&#39;z&#39;)[1] - rdr_ideal.z</span>
+<span class="sd">      &gt;&gt;&gt; Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x, X[2] - rdr_ideal.y, X[3] - rdr_ideal.z] for X in tgt.data()])</span>
+
+<span class="sd">    where :attr:`rdr_ideal.BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;` is a</span>
+<span class="sd">    Body from Reference DCM (Direction Cosine Matrix)</span>
+<span class="sd">    formed by the radar three Euler angles</span>
+
+<span class="sd">    Now `az_true` and `el_true` are the true target angles with respect to the radar, and</span>
+<span class="sd">    `rng_true` is the true range (`atan2d` is an aliasing of `numpy&#39;s arctan2`</span>
+<span class="sd">    with a modification returning the angles in degrees):</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; az_true = c4d.atan2d(Xb[:, 1], Xb[:, 0])</span>
+<span class="sd">      &gt;&gt;&gt; el_true = c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2))</span>
+<span class="sd">      &gt;&gt;&gt; # plot results</span>
+<span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; # range</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), c4d.norm(Xb, axis = 1), label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; # angles</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 1], Xb[:, 0]), label = &#39;target azimuth&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)), label = &#39;target elevation&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;)  # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    .. figure:: /_examples/radar/ideal.png</span>
+
+
+
+
+
+<span class="sd">    **Non-ideal Radar**</span>
+
+
+<span class="sd">    Measure the target position with a *non-ideal* radar.</span>
+<span class="sd">    The radar&#39;s errors model introduces bias, scale factor, and</span>
+<span class="sd">    noise that corrupt the measurements:</span>
+
+
+<span class="sd">    To reproduce the result, let&#39;s set the random generator seed (61 is arbitrary):</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; np.random.seed(61)</span>
+
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal)</span>
+<span class="sd">      &gt;&gt;&gt; for x in tgt.data():</span>
+<span class="sd">      ...   rdr.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    Results with respect to an ideal radar:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
+<span class="sd">      &gt;&gt;&gt; # range</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;target&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), label = &#39;radar&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; # angles</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;target azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;target elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    `target` labels mean the true position as measured by an ideal radar.</span>
+
+<span class="sd">    .. figure:: /_examples/radar/nonideal.png</span>
+
+
+<span class="sd">    The bias, scale factor, and noise that used to generate these measures</span>
+<span class="sd">    can be examined by:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; rdr.rng_noise_std # doctest: +ELLIPSIS</span>
 <span class="sd">      1.0</span>
-<span class="sd">      &gt;&gt;&gt; rdr.bias * c4d.r2d # doctest: +ELLIPSIS</span>
-<span class="sd">      0.49...</span>
+<span class="sd">      &gt;&gt;&gt; rdr.bias * c4d.r2d  # doctest: +ELLIPSIS</span>
+<span class="sd">      0.13...</span>
 <span class="sd">      &gt;&gt;&gt; rdr.scale_factor # doctest: +ELLIPSIS</span>
-<span class="sd">      1.01...</span>
+<span class="sd">      0.96...</span>
 <span class="sd">      &gt;&gt;&gt; rdr.noise_std * c4d.r2d</span>
 <span class="sd">      0.8</span>
 
-<span class="sd">    Then we excpect a constant bias of -0.02° and a &#39;compression&#39; or &#39;squeeze&#39; of `5%` with </span>
-<span class="sd">    respect to the target (as represented by the ideal radar):  </span>
-<span class="sd">    </span>
+<span class="sd">    Points to consider here:</span>
+
+<span class="sd">    - The scale factor error increases with the angle, such that for a :math:`7%`</span>
+<span class="sd">      scale factor,</span>
+<span class="sd">      the error of :math:`Azimuth = 100°` is :math:`7°`, whereas the error for</span>
+<span class="sd">      :math:`Elevation = -15°` is only :math:`-1.05°`.</span>
+<span class="sd">    - The standard deviation of the noise in the two angle channels is the same.</span>
+<span class="sd">      However, as the `Elevation` values are confined to a smaller range, the effect</span>
+<span class="sd">      appears more pronounced there.</span>
+
+
+
+
+<span class="sd">    **Rotating Radar**</span>
+
+
+<span class="sd">    Measure the target position with a rotating radar.</span>
+<span class="sd">    The radar origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion:</span>
+
+
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; _, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; # range      </span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; # angles </span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      </span>
-<span class="sd">    .. figure:: /_examples/radar/measure.png</span>
+<span class="sd">      &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal)</span>
+<span class="sd">      &gt;&gt;&gt; for x in tgt.data():</span>
+<span class="sd">      ...   rdr.psi += .02 * c4d.d2r</span>
+<span class="sd">      ...   rdr.measure(c4d.create(x[1:]), t = x[0], store = True)# doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      ...   rdr.store(x[0])</span>
 
-<span class="sd">    The sample rate of the radar was set by the parameter `dt = 0.05`. </span>
-<span class="sd">    In cycles that don&#39;t satisfy `t &lt; last_t + dt`, `measure` returns None, </span>
-<span class="sd">    as shown in a close-up view:  </span>
+<span class="sd">    The radar yaw angle:</span>
 
-<span class="sd">    .. figure:: /_examples/radar/measure_zoom.png</span>
+<span class="sd">    .. figure:: /_examples/radar/psi.png</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    And the target angles with respect to the yawing radar are:</span>
 
-    <span class="n">az</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">store</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="sd">    .. code::</span>
 
-    <span class="k">if</span> <span class="n">az</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># elapsed time is not enough </span>
-      <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span> 
+<span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
+<span class="sd">      &gt;&gt;&gt; # range</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;),label = &#39;non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; # angles</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, c4d.r2d), label = &#39;az: ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, c4d.r2d), label = &#39;az: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>  
-    
+<span class="sd">    .. figure:: /_examples/radar/yawing.png</span>
 
-    <span class="k">if</span> <span class="n">store</span><span class="p">:</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">storeparams</span><span class="p">([</span><span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;el&#39;</span><span class="p">,</span> <span class="s1">&#39;range&#39;</span><span class="p">],</span> <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span> </div>
+<span class="sd">    - The rotation of the radar with the target direction</span>
+<span class="sd">      keeps the azimuth angle limited, such that non-rotating radars with limited FOV (field of view)</span>
+<span class="sd">      would have lost the target.</span>
+
+
+
+<span class="sd">    **Operation Time**</span>
+
+<span class="sd">    By default, the radar returns measurments for each</span>
+<span class="sd">    call to :meth:`measure`. However, setting the parameter `dt`</span>
+<span class="sd">    to a positive number makes `measure` return `None`</span>
+<span class="sd">    for any `t &lt; last_t + dt`, where `t` is the current measure time,</span>
+<span class="sd">    `last_t` is the last measurement time, and `dt` is the radar time-constant:</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; np.random.seed(770)</span>
+<span class="sd">      &gt;&gt;&gt; tgt = c4d.datapoint(x = 100, y = 100)</span>
+<span class="sd">      &gt;&gt;&gt; rdr = c4d.sensors.radar(dt = 0.01)</span>
+<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, .025, .005):  # doctest: +ELLIPSIS</span>
+<span class="sd">      ...   print(f&#39;{t}: {rdr.measure(tgt, t = t)}&#39;)</span>
+<span class="sd">      0.0: (0.7..., 0.01..., 140.1...)</span>
+<span class="sd">      0.005: (None, None, None)</span>
+<span class="sd">      0.01: (0.72..., -0.04..., 142.1...)</span>
+<span class="sd">      0.015: (None, None, None)</span>
+<span class="sd">      0.02: (0.72..., -0.003..., 140.4...)</span>
+
+
+<span class="sd">    **Random Distribution**</span>
+
+
+<span class="sd">    The distribution of normally generated random variables</span>
+<span class="sd">    is characterized by its bell-shaped curve, which is symmetric about the mean.</span>
+<span class="sd">    The area under the curve represents probability, with about `68%` of the data</span>
+<span class="sd">    falling within one standard deviation (1σ) of the mean, `95%` within two,</span>
+<span class="sd">    and `99.7%` within three,</span>
+<span class="sd">    making it a useful tool for understanding and predicting data behavior.</span>
+
+
+<span class="sd">    In `radar` objects, and `seeker` objects in general,</span>
+<span class="sd">    the `bias` and `scale factor` vary</span>
+<span class="sd">    among different instances to allow a realistic simulation</span>
+<span class="sd">    of performance behavior in a technique known as Monte Carlo.</span>
+
+<span class="sd">    Let&#39;s examine the `bias` distribution across</span>
+
+<span class="sd">    mutliple `radar` instances with a default `bias_std = 0.3°`</span>
+<span class="sd">    in comparison to `seeker` instances with a default `bias_std = 0.1°`:</span>
+
+
+
+
+
+
+
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; from c4dynamics.sensors import seeker, radar</span>
+<span class="sd">      &gt;&gt;&gt; seekers = []</span>
+<span class="sd">      &gt;&gt;&gt; radars = []</span>
+<span class="sd">      &gt;&gt;&gt; for i in range(1000):</span>
+<span class="sd">      ...   seekers.append(seeker().bias * c4d.r2d)</span>
+<span class="sd">      ...   radars.append(radar().bias * c4d.r2d)</span>
+
+
+<span class="sd">    The histogram highlights the broadening of the distribution</span>
+<span class="sd">    as the standard deviation increases:</span>
+
+
+<span class="sd">      &gt;&gt;&gt; ax = plt.subplot()</span>
+<span class="sd">      &gt;&gt;&gt; ax.hist(seekers, 30, label = &#39;Seekers&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; ax.hist(radars, 30, label = &#39;Radars&#39;)  # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    .. figure:: /_examples/radar/bias2.png</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rng_noise_std</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isideal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;radar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">isideal</span><span class="o">=</span><span class="n">isideal</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rng_noise_std&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="n">isideal</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<div class="viewcode-block" id="radar.measure">
+<a class="viewcode-back" href="../../../api/generated/radar/c4dynamics.sensors.radar.radar.measure.html#c4dynamics.sensors.radar.radar.measure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="s2">&quot;c4d.state&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>  <span class="c1"># type: ignore</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Measures range, azimuth and elevation between the radar and a `target`.</span>
+
+
+<span class="sd">        If the radar time-constant `dt` was provided when the `radar` was created,</span>
+<span class="sd">        then `measure` returns `None` for any `t &lt; last_t + dt`,</span>
+<span class="sd">        where `t` is the time input, `last_t` is the last measurement time,</span>
+<span class="sd">        and `dt` is the radar time-constant.</span>
+<span class="sd">        Default behavior, returns measurements for each call.</span>
+
+<span class="sd">        If `store = True`, the method stores the measured</span>
+<span class="sd">        azimuth and elevation along with a timestamp</span>
+<span class="sd">        (`t = -1` by default, if not provided otherwise).</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : state</span>
+<span class="sd">            A Cartesian state object to measure by the radar, including at least one position coordinate (x, y, z).</span>
+<span class="sd">        store : bool, optional</span>
+<span class="sd">            A flag indicating whether to store the measured values. Defaults `False`.</span>
+<span class="sd">        t : float, optional</span>
+<span class="sd">            Timestamp [seconds]. Defaults -1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : tuple</span>
+<span class="sd">            range [meters, float], azimuth and elevation, [radians, float].</span>
+
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If `target` doesn&#39;t include any position coordinate (x, y, z).</span>
+
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        `measure` in a program simulating</span>
+<span class="sd">        real-time tracking of a constant velcoity target.</span>
+
+
+<span class="sd">        The target is represented by a :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">        and is simulated using the :mod:`eqm &lt;c4dynamics.eqm&gt;` module,</span>
+<span class="sd">        which integrating the point-mass equations of motion.</span>
+
+<span class="sd">        An ideal radar uses as reference to the true position of the target.</span>
+
+<span class="sd">        At each cycle, the the radars take measurements and store the samples for</span>
+<span class="sd">        later use in plotting the results.</span>
+
+
+<span class="sd">        Import required packages:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">          &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">          &gt;&gt;&gt; import numpy as np</span>
+
+
+
+<span class="sd">        Settings and initial conditions:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; dt = 0.01</span>
+<span class="sd">          &gt;&gt;&gt; np.random.seed(321)</span>
+<span class="sd">          &gt;&gt;&gt; tgt = c4d.datapoint(x = 1000, vx = -80 * c4d.kmh2ms, vy = 10 * c4d.kmh2ms)</span>
+<span class="sd">          &gt;&gt;&gt; pedestal = c4d.rigidbody(z = 30, theta = -1 * c4d.d2r)</span>
+<span class="sd">          &gt;&gt;&gt; rdr = c4d.sensors.radar(origin = pedestal, dt = 0.05)</span>
+<span class="sd">          &gt;&gt;&gt; rdr_ideal = c4d.sensors.radar(origin = pedestal, isideal = True)</span>
+
+<span class="sd">        Main loop:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; for t in np.arange(0, 60, dt):</span>
+<span class="sd">          ...   tgt.inteqm(np.zeros(3), dt)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   rdr_ideal.measure(tgt, t = t, store = True)    # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   rdr.measure(tgt, t = t, store = True)    # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   tgt.store(t)</span>
+
+<span class="sd">        Before viewing the results, let&#39;s examine the error parameters generated by</span>
+<span class="sd">        the errors model (`c4d.r2d` converts radians to degrees):</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; rdr.rng_noise_std</span>
+<span class="sd">          1.0</span>
+<span class="sd">          &gt;&gt;&gt; rdr.bias * c4d.r2d # doctest: +ELLIPSIS</span>
+<span class="sd">          0.49...</span>
+<span class="sd">          &gt;&gt;&gt; rdr.scale_factor # doctest: +ELLIPSIS</span>
+<span class="sd">          1.01...</span>
+<span class="sd">          &gt;&gt;&gt; rdr.noise_std * c4d.r2d</span>
+<span class="sd">          0.8</span>
+
+<span class="sd">        Then we excpect a constant bias of -0.02° and a &#39;compression&#39; or &#39;squeeze&#39; of `5%` with</span>
+<span class="sd">        respect to the target (as represented by the ideal radar):</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; _, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; # range</span>
+<span class="sd">          &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; # angles</span>
+<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">        .. figure:: /_examples/radar/measure.png</span>
+
+<span class="sd">        The sample rate of the radar was set by the parameter `dt = 0.05`.</span>
+<span class="sd">        In cycles that don&#39;t satisfy `t &lt; last_t + dt`, `measure` returns None,</span>
+<span class="sd">        as shown in a close-up view:</span>
+
+<span class="sd">        .. figure:: /_examples/radar/measure_zoom.png</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">az</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">az</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># elapsed time is not enough</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng_noise_std</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">store</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">storeparams</span><span class="p">([</span><span class="s2">&quot;az&quot;</span><span class="p">,</span> <span class="s2">&quot;el&quot;</span><span class="p">,</span> <span class="s2">&quot;range&quot;</span><span class="p">],</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span></div>
 </div>
 
 
-    
-    
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
-
+    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -1185,7 +1178,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

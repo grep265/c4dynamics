@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -411,7 +411,9 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.detectors.yolo3_opencv</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span> 
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
 <span class="c1"># optional vision modules</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
@@ -420,11 +422,12 @@ document.write(`
     <span class="k">pass</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">c4d</span> 
-<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">pixelpoint</span> 
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">c4d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">pixelpoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">resources</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">resources</span>
 
 <span class="n">MODEL_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">416</span><span class="p">,</span> <span class="mi">416</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
@@ -432,33 +435,33 @@ document.write(`
 <div class="viewcode-block" id="yolov3">
 <a class="viewcode-back" href="../../../api/detectors.yolov3.html#c4dynamics.detectors.yolo3_opencv.yolov3">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">yolov3</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    YOLO: Real-Time Object Detection</span>
 
 
-<span class="sd">    :class:`yolov3` is a YOLOv3 (You Only Look Once) object detection model. </span>
-<span class="sd">    Though it is no longer the most accurate object detection algorithm, </span>
-<span class="sd">    YOLOv3 is still a very good choice when you need real-time detection </span>
+<span class="sd">    :class:`yolov3` is a YOLOv3 (You Only Look Once) object detection model.</span>
+<span class="sd">    Though it is no longer the most accurate object detection algorithm,</span>
+<span class="sd">    YOLOv3 is still a very good choice when you need real-time detection</span>
 <span class="sd">    while maintaining excellent accuracy.</span>
 
 
-<span class="sd">    </span>
-<span class="sd">    YOLOv3 processes an entire image in a single forward pass, </span>
+
+<span class="sd">    YOLOv3 processes an entire image in a single forward pass,</span>
 <span class="sd">    making it efficient for dynamic scenes.</span>
-<span class="sd">    Its key strength lies the ability to simultaneously </span>
-<span class="sd">    predict bounding box coordinates and class probabilities </span>
-<span class="sd">    for multiple objects within an image. </span>
+<span class="sd">    Its key strength lies the ability to simultaneously</span>
+<span class="sd">    predict bounding box coordinates and class probabilities</span>
+<span class="sd">    for multiple objects within an image.</span>
 
 
-<span class="sd">    Parameters </span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ==========</span>
-<span class="sd">    weights_path : str, optional </span>
-<span class="sd">        Path to the YOLOv3 weights file. Defaults None. </span>
-<span class="sd">        </span>
+<span class="sd">    weights_path : str, optional</span>
+<span class="sd">        Path to the YOLOv3 weights file. Defaults None.</span>
+
 
 <span class="sd">    See Also</span>
 <span class="sd">    ========</span>
-<span class="sd">    .filters </span>
+<span class="sd">    .filters</span>
 <span class="sd">    .pixelpoint</span>
 
 
@@ -466,24 +469,24 @@ document.write(`
 <span class="sd">    **Classes**</span>
 
 
-<span class="sd">    Using YOLOv3 means </span>
-<span class="sd">    object detection capability with the 80 pre-trained </span>
-<span class="sd">    classes that come with the COCO dataset. </span>
+<span class="sd">    Using YOLOv3 means</span>
+<span class="sd">    object detection capability with the 80 pre-trained</span>
+<span class="sd">    classes that come with the COCO dataset.</span>
 
 
-<span class="sd">    The following 80 classes are available using COCO&#39;s pre-trained weights: </span>
+<span class="sd">    The following 80 classes are available using COCO&#39;s pre-trained weights:</span>
 
 <span class="sd">    .. admonition:: COCO dataset</span>
 
-<span class="sd">        person, bicycle, car, motorcycle, airplane, bus, train, truck, boat, </span>
-<span class="sd">        traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat, </span>
-<span class="sd">        dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, </span>
-<span class="sd">        umbrella, handbag, tie, suitcase, frisbee, skis,snowboard, sports ball, </span>
-<span class="sd">        kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket, </span>
-<span class="sd">        bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, </span>
-<span class="sd">        sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair, </span>
-<span class="sd">        couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote, </span>
-<span class="sd">        keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, </span>
+<span class="sd">        person, bicycle, car, motorcycle, airplane, bus, train, truck, boat,</span>
+<span class="sd">        traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat,</span>
+<span class="sd">        dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack,</span>
+<span class="sd">        umbrella, handbag, tie, suitcase, frisbee, skis,snowboard, sports ball,</span>
+<span class="sd">        kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket,</span>
+<span class="sd">        bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple,</span>
+<span class="sd">        sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair,</span>
+<span class="sd">        couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote,</span>
+<span class="sd">        keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book,</span>
 <span class="sd">        clock, vase, scissors, teddy bear, hair drier, toothbrush</span>
 
 
@@ -497,14 +500,14 @@ document.write(`
 
 <span class="sd">    **Implementation (c4dynamics)**</span>
 
-<span class="sd">    The :class:`yolov3` class abstracts the complexities of model initialization, </span>
-<span class="sd">    input preprocessing, and output parsing. </span>
-<span class="sd">    The :meth:`detect` method returns a </span>
-<span class="sd">    :class:`pixelpoint &lt;c4dynamics.states.lib.pixelpoint.pixelpoint&gt;` </span>
-<span class="sd">    for each detected object. </span>
+<span class="sd">    The :class:`yolov3` class abstracts the complexities of model initialization,</span>
+<span class="sd">    input preprocessing, and output parsing.</span>
+<span class="sd">    The :meth:`detect` method returns a</span>
+<span class="sd">    :class:`pixelpoint &lt;c4dynamics.states.lib.pixelpoint.pixelpoint&gt;`</span>
+<span class="sd">    for each detected object.</span>
 <span class="sd">    The `pixelpoint` is a :mod:`predefined state class &lt;c4dynamics.states.lib&gt;`</span>
-<span class="sd">    representing a data point in a video frame with an associated bounding box. </span>
-<span class="sd">    Its methods and properties enhance the YOLOv3 output structure, </span>
+<span class="sd">    representing a data point in a video frame with an associated bounding box.</span>
+<span class="sd">    Its methods and properties enhance the YOLOv3 output structure,</span>
 <span class="sd">    providing a convenient data structure for handling tracking missions.</span>
 
 
@@ -512,74 +515,74 @@ document.write(`
 
 <span class="sd">    **Installation**</span>
 
-<span class="sd">    C4dynamics downloads </span>
-<span class="sd">    the YOLOv3&#39; weights file </span>
-<span class="sd">    once at first call to :class:`yolov3` and saves it to the cache. </span>
+<span class="sd">    C4dynamics downloads</span>
+<span class="sd">    the YOLOv3&#39; weights file</span>
+<span class="sd">    once at first call to :class:`yolov3` and saves it to the cache.</span>
 <span class="sd">    For further details see :mod:`datasets &lt;c4dynamics.datasets&gt;`.</span>
-<span class="sd">    Alternatively, the user can provide a path to his </span>
-<span class="sd">    own weights file using the parameter `weights_path`. </span>
+<span class="sd">    Alternatively, the user can provide a path to his</span>
+<span class="sd">    own weights file using the parameter `weights_path`.</span>
 
 
 <span class="sd">    **Construction**</span>
 
-<span class="sd">    A YOLOv3 detector instance is created by making a direct call </span>
-<span class="sd">    to the `yolov3` constructor: </span>
+<span class="sd">    A YOLOv3 detector instance is created by making a direct call</span>
+<span class="sd">    to the `yolov3` constructor:</span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    .. code::</span>
 
 <span class="sd">        &gt;&gt;&gt; from c4dynamics.detectors import yolov3</span>
 <span class="sd">        &gt;&gt;&gt; yolo3 = yolov3()</span>
 <span class="sd">        Fetched successfully</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    Initialization of the instance does not require any mandatory parameters.</span>
 
 
-<span class="sd">    </span>
+
 <span class="sd">    Example</span>
 <span class="sd">    =======</span>
 
-<span class="sd">    The following snippet initializes the YOLOv3 model and </span>
-<span class="sd">    runs the `detect()` method on an image containing four airplanes. </span>
-<span class="sd">    The example uses the `datasets` module from `c4dynamics` to fetch an image. </span>
+<span class="sd">    The following snippet initializes the YOLOv3 model and</span>
+<span class="sd">    runs the `detect()` method on an image containing four airplanes.</span>
+<span class="sd">    The example uses the `datasets` module from `c4dynamics` to fetch an image.</span>
 <span class="sd">    For further details, see :mod:`c4dynamics.datasets`.</span>
-<span class="sd">        </span>
 
-<span class="sd">    Import required packages: </span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    Import required packages:</span>
 
-<span class="sd">        &gt;&gt;&gt; import cv2 </span>
-<span class="sd">        &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">        &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">        </span>
-<span class="sd">    Load YOLOv3 detector: </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">        &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+
+<span class="sd">    Load YOLOv3 detector:</span>
+
+<span class="sd">    .. code::</span>
 
 <span class="sd">        &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()</span>
 <span class="sd">        Fetched successfully</span>
-<span class="sd">    </span>
-<span class="sd">    Fetch and read the image: </span>
-<span class="sd">                </span>
-<span class="sd">    .. code:: </span>
+
+<span class="sd">    Fetch and read the image:</span>
+
+<span class="sd">    .. code::</span>
 
 <span class="sd">        &gt;&gt;&gt; imagepath = c4d.datasets.image(&#39;planes&#39;)</span>
 <span class="sd">        Fetched successfully</span>
 <span class="sd">        &gt;&gt;&gt; img = cv2.imread(imagepath)</span>
 
-<span class="sd">        </span>
-<span class="sd">    Run YOLOv3 detector on an image: </span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    Run YOLOv3 detector on an image:</span>
+
+<span class="sd">    .. code::</span>
 
 <span class="sd">        &gt;&gt;&gt; pts = yolo3.detect(img)</span>
 
-<span class="sd">        </span>
-<span class="sd">    Now `pts` consists of </span>
-<span class="sd">    :class:`pixelpoint &lt;c4dynamics.states.lib.pixelpoint.pixelpoint&gt;` </span>
-<span class="sd">    instances for each object detected in the frame.    </span>
-<span class="sd">    Let&#39;s use the properties and methods of the `pixelpoint` class to </span>
+
+<span class="sd">    Now `pts` consists of</span>
+<span class="sd">    :class:`pixelpoint &lt;c4dynamics.states.lib.pixelpoint.pixelpoint&gt;`</span>
+<span class="sd">    instances for each object detected in the frame.</span>
+<span class="sd">    Let&#39;s use the properties and methods of the `pixelpoint` class to</span>
 <span class="sd">    view the attributes of the detected objects:</span>
 
 
@@ -598,119 +601,183 @@ document.write(`
 <span class="sd">          635     |    189     |    (578, 153)    |    (692, 225)    | aeroplane  |  (1280, 720)</span>
 <span class="sd">          793     |    575     |    (742, 540)    |    (844, 610)    | aeroplane  |  (1280, 720)</span>
 
-<span class="sd">          </span>
-<span class="sd">    .. code:: </span>
 
-<span class="sd">        &gt;&gt;&gt; plt.figure() # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">        &gt;&gt;&gt; plt.axis(False) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">        &gt;&gt;&gt; plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # doctest: +IGNORE_OUTPUT </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">    .. figure:: /_examples/yolov3/intro.png                  </span>
+<span class="sd">        &gt;&gt;&gt; plt.figure() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">        &gt;&gt;&gt; plt.axis(False) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">        &gt;&gt;&gt; plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # doctest: +IGNORE_OUTPUT</span>
+
+<span class="sd">    .. figure:: /_examples/yolov3/intro.png</span>
 
 
-<span class="sd">    &#39;&#39;&#39;</span>
-    
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">class_names</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s1">&#39;person&#39;</span><span class="p">,</span>       <span class="s1">&#39;bicycle&#39;</span><span class="p">,</span>  <span class="s1">&#39;car&#39;</span><span class="p">,</span>      <span class="s1">&#39;motorbike&#39;</span><span class="p">,</span> <span class="s1">&#39;aeroplane&#39;</span><span class="p">,</span> 
-                <span class="s1">&#39;bus&#39;</span><span class="p">,</span>          <span class="s1">&#39;train&#39;</span><span class="p">,</span>    <span class="s1">&#39;truck&#39;</span><span class="p">,</span>    <span class="s1">&#39;boat&#39;</span><span class="p">,</span>     <span class="s1">&#39;traffic&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;light&#39;</span><span class="p">,</span>        <span class="s1">&#39;fire&#39;</span><span class="p">,</span>     <span class="s1">&#39;hydrant&#39;</span><span class="p">,</span>  <span class="s1">&#39;stop&#39;</span><span class="p">,</span>     <span class="s1">&#39;sign&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;parking&#39;</span><span class="p">,</span>      <span class="s1">&#39;meter&#39;</span><span class="p">,</span>    <span class="s1">&#39;bench&#39;</span><span class="p">,</span>    <span class="s1">&#39;bird&#39;</span><span class="p">,</span>     <span class="s1">&#39;cat&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;dog&#39;</span><span class="p">,</span>          <span class="s1">&#39;horse&#39;</span><span class="p">,</span>    <span class="s1">&#39;sheep&#39;</span><span class="p">,</span>    <span class="s1">&#39;cow&#39;</span><span class="p">,</span>      <span class="s1">&#39;elephant&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;bear&#39;</span><span class="p">,</span>         <span class="s1">&#39;zebra&#39;</span><span class="p">,</span>    <span class="s1">&#39;giraffe&#39;</span><span class="p">,</span>  <span class="s1">&#39;backpack&#39;</span><span class="p">,</span> <span class="s1">&#39;umbrella&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;handbag&#39;</span><span class="p">,</span>      <span class="s1">&#39;tie&#39;</span><span class="p">,</span>      <span class="s1">&#39;suitcase&#39;</span><span class="p">,</span> <span class="s1">&#39;frisbee&#39;</span><span class="p">,</span>  <span class="s1">&#39;skis&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;snowboard&#39;</span><span class="p">,</span>    <span class="s1">&#39;sports&#39;</span><span class="p">,</span>   <span class="s1">&#39;ball&#39;</span><span class="p">,</span>     <span class="s1">&#39;kite&#39;</span><span class="p">,</span>     <span class="s1">&#39;baseball&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;bat&#39;</span><span class="p">,</span>          <span class="s1">&#39;baseball&#39;</span><span class="p">,</span> <span class="s1">&#39;glove&#39;</span><span class="p">,</span>    <span class="s1">&#39;skateboard&#39;</span><span class="p">,</span> <span class="s1">&#39;surfboard&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;tennis&#39;</span><span class="p">,</span>       <span class="s1">&#39;racket&#39;</span><span class="p">,</span>   <span class="s1">&#39;bottle&#39;</span><span class="p">,</span>   <span class="s1">&#39;wine&#39;</span><span class="p">,</span>     <span class="s1">&#39;glass&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;cup&#39;</span><span class="p">,</span>          <span class="s1">&#39;fork&#39;</span><span class="p">,</span>     <span class="s1">&#39;knife&#39;</span><span class="p">,</span>    <span class="s1">&#39;spoon&#39;</span><span class="p">,</span>    <span class="s1">&#39;bowl&#39;</span><span class="p">,</span> 
-                <span class="s1">&#39;banana&#39;</span><span class="p">,</span>       <span class="s1">&#39;apple&#39;</span><span class="p">,</span>    <span class="s1">&#39;sandwich&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>   <span class="s1">&#39;broccoli&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;carrot&#39;</span><span class="p">,</span>       <span class="s1">&#39;hot&#39;</span><span class="p">,</span>      <span class="s1">&#39;dog&#39;</span><span class="p">,</span>      <span class="s1">&#39;pizza&#39;</span><span class="p">,</span>    <span class="s1">&#39;donut&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;cake&#39;</span><span class="p">,</span>         <span class="s1">&#39;chair&#39;</span><span class="p">,</span>    <span class="s1">&#39;sofa&#39;</span><span class="p">,</span>     <span class="s1">&#39;pottedplant&#39;</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;diningtable&#39;</span><span class="p">,</span>  <span class="s1">&#39;toilet&#39;</span><span class="p">,</span>   <span class="s1">&#39;tvmonitor&#39;</span><span class="p">,</span> <span class="s1">&#39;laptop&#39;</span><span class="p">,</span>  <span class="s1">&#39;mouse&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;remote&#39;</span><span class="p">,</span>       <span class="s1">&#39;keyboard&#39;</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">,</span>     <span class="s1">&#39;phone&#39;</span><span class="p">,</span>    <span class="s1">&#39;microwave&#39;</span><span class="p">)</span>
+        <span class="s2">&quot;person&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bicycle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;car&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;motorbike&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aeroplane&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bus&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;truck&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;boat&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;traffic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fire&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hydrant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stop&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sign&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;parking&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;meter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bench&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bird&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cat&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;horse&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sheep&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cow&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elephant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bear&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;zebra&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;giraffe&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;backpack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;umbrella&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;handbag&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tie&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;suitcase&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;frisbee&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;skis&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;snowboard&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ball&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;kite&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;baseball&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bat&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;baseball&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;glove&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;skateboard&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;surfboard&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tennis&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;racket&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bottle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wine&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;glass&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cup&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fork&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;knife&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;spoon&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bowl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;banana&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;apple&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sandwich&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;broccoli&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;carrot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pizza&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;donut&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cake&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;chair&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sofa&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pottedplant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;diningtable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;toilet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tvmonitor&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;laptop&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mouse&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;remote&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;keyboard&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cell&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;phone&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;microwave&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">_nms_th</span> <span class="o">=</span> <span class="mf">0.5</span> 
-    <span class="n">_confidence_th</span> <span class="o">=</span> <span class="mf">0.5</span> 
- 
+    <span class="n">_nms_th</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">_confidence_th</span> <span class="o">=</span> <span class="mf">0.5</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-      <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-      <span class="k">if</span> <span class="n">weights_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-        <span class="n">weights_path</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">nn_model</span><span class="p">(</span><span class="s1">&#39;YOLOv3&#39;</span><span class="p">)</span>
-        <span class="n">errormsg</span> <span class="o">=</span> <span class="s2">&quot;Try to clear the cache by &#39;c4dynamics.datasets.clear_cache()&#39;&quot;</span>
+        <span class="n">errormsg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">weights_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weights_path</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">nn_model</span><span class="p">(</span><span class="s2">&quot;YOLOv3&quot;</span><span class="p">)</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="s2">&quot;Try to clear the cache by &#39;c4dynamics.datasets.clear_cache()&#39;&quot;</span>
 
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">weights_path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The file &#39;yolov3.weights&#39; does not &quot;</span>
-                                    <span class="sa">f</span><span class="s2">&quot;exist in: &#39;</span><span class="si">{</span><span class="n">weights_path</span><span class="si">}</span><span class="s2">&#39;. </span><span class="si">{</span><span class="n">errormsg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">weights_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The file &#39;yolov3.weights&#39; does not &quot;</span> <span class="sa">f</span><span class="s2">&quot;exist in: &#39;</span><span class="si">{</span><span class="n">weights_path</span><span class="si">}</span><span class="s2">&#39;. </span><span class="si">{</span><span class="n">errormsg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
-      <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s1">&#39;c4dynamics.detectors&#39;</span><span class="p">,</span> <span class="s1">&#39;yolov3.cfg&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfgpath</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromDarknet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cfgpath</span><span class="p">),</span> <span class="n">weights_path</span><span class="p">)</span>
-      
-      <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">setPreferableBackend</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">DNN_BACKEND_OPENCV</span><span class="p">)</span>
-      <span class="n">ln</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">getLayerNames</span><span class="p">()</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">ln</span> <span class="o">=</span> <span class="p">[</span><span class="n">ln</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">getUnconnectedOutLayers</span><span class="p">()]</span>
+        <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;c4dynamics.detectors&quot;</span><span class="p">,</span> <span class="s2">&quot;yolov3.cfg&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfgpath</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromDarknet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cfgpath</span><span class="p">),</span> <span class="n">weights_path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">setPreferableBackend</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">DNN_BACKEND_OPENCV</span><span class="p">)</span>
+        <span class="n">ln</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">getLayerNames</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span> <span class="o">=</span> <span class="p">[</span><span class="n">ln</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">getUnconnectedOutLayers</span><span class="p">()]</span>
 
     <span class="c1">#   with open(coconames, &#39;r&#39;) as f:</span>
     <span class="c1">#     self.class_names = f.read().strip().split(&#39;\n&#39;)</span>
-        
-      <span class="c1"># self.__dict__.update(kwargs)</span>
-        
 
+    <span class="c1"># self.__dict__.update(kwargs)</span>
 
-    <span class="nd">@property</span> 
+    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nms_th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets and sets the Non-Maximum Suppression (NMS) threshold.</span>
 
-<span class="sd">        Objects with confidence scores below this threshold are suppressed. </span>
-<span class="sd">        </span>
+<span class="sd">        Objects with confidence scores below this threshold are suppressed.</span>
 
-<span class="sd">        </span>
+
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        nms_th : float</span>
-<span class="sd">            The new threshold value for NMS during object detection. </span>
-<span class="sd">            Defaults: `nms_th = 0.5`. </span>
+<span class="sd">            The new threshold value for NMS during object detection.</span>
+<span class="sd">            Defaults: `nms_th = 0.5`.</span>
 
-<span class="sd">        Returns </span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        nms_th : float</span>
 <span class="sd">            The threshold value used for NMS during object detection.</span>
-<span class="sd">            Objects with confidence scores below this threshold are suppressed. </span>
+<span class="sd">            Objects with confidence scores below this threshold are suppressed.</span>
 
-<span class="sd">            </span>
+
 
 <span class="sd">        Example</span>
 <span class="sd">        -------</span>
 
 <span class="sd">        Import required packages:</span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
-<span class="sd">            </span>
-<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">            &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">            &gt;&gt;&gt; import cv2 </span>
-<span class="sd">        </span>
-<span class="sd">            </span>
-<span class="sd">        Fetch &#39;planes.png&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):         </span>
-<span class="sd">            </span>
-<span class="sd">        .. code:: </span>
-<span class="sd">            </span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">            &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">            &gt;&gt;&gt; import cv2</span>
+
+
+<span class="sd">        Fetch &#39;planes.png&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):</span>
+
+<span class="sd">        .. code::</span>
+
 <span class="sd">            &gt;&gt;&gt; impath = c4d.datasets.image(&#39;planes&#39;)</span>
 <span class="sd">            Fetched successfully</span>
-<span class="sd">            </span>
 
-<span class="sd">        Load YOLOv3 detector and set 3 NMS threshold values to compare: </span>
 
-<span class="sd">        .. code:: </span>
-<span class="sd">            </span>
-<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3() </span>
+<span class="sd">        Load YOLOv3 detector and set 3 NMS threshold values to compare:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()</span>
 <span class="sd">            Fetched successfully</span>
-<span class="sd">            &gt;&gt;&gt; nms_thresholds = [0.1, 0.5, 0.9] </span>
+<span class="sd">            &gt;&gt;&gt; nms_thresholds = [0.1, 0.5, 0.9]</span>
 
-<span class="sd">            </span>
-<span class="sd">        Run the detector on each threshold: </span>
 
-<span class="sd">        .. code:: </span>
+<span class="sd">        Run the detector on each threshold:</span>
+
+<span class="sd">        .. code::</span>
 
 <span class="sd">            &gt;&gt;&gt; _, axs = plt.subplots(1, 3)</span>
 <span class="sd">            &gt;&gt;&gt; for i, nms_threshold in enumerate(nms_thresholds):</span>
@@ -723,47 +790,47 @@ document.write(`
 <span class="sd">            ...   axs[i].set_title(f&quot;NMS Threshold: {nms_threshold}&quot;, fontsize = 6)</span>
 <span class="sd">            ...   axs[i].axis(&#39;off&#39;) # doctest: +IGNORE_OUTPUT</span>
 
-<span class="sd">            </span>
-<span class="sd">        .. figure:: /_examples/yolov3/nms_th.png                  </span>
 
-<span class="sd">        </span>
-<span class="sd">        A high value (0.9) for the Non-Maximum Suppression (NMS) threshold here  </span>
+<span class="sd">        .. figure:: /_examples/yolov3/nms_th.png</span>
+
+
+<span class="sd">        A high value (0.9) for the Non-Maximum Suppression (NMS) threshold here</span>
 <span class="sd">        leads to an increased number of bounding boxes around a single object.</span>
-<span class="sd">        When the NMS threshold is high, it means that a significant overlap is </span>
-<span class="sd">        required for two bounding boxes to be considered redundant, </span>
+<span class="sd">        When the NMS threshold is high, it means that a significant overlap is</span>
+<span class="sd">        required for two bounding boxes to be considered redundant,</span>
 <span class="sd">        and one of them will be suppressed.</span>
-<span class="sd">        To address this issue, it&#39;s essential to choose an appropriate </span>
-<span class="sd">        NMS threshold based on the characteristics of your dataset and the </span>
-<span class="sd">        level of overlap between objects. </span>
-<span class="sd">        A lower NMS threshold (e.g., 0.4 or 0.5) </span>
-<span class="sd">        is commonly used to suppress redundant boxes effectively </span>
-<span class="sd">        while retaining accurate detections. </span>
-<span class="sd">        Experimenting with different </span>
-<span class="sd">        threshold values and observing their impact on the results is crucial </span>
+<span class="sd">        To address this issue, it&#39;s essential to choose an appropriate</span>
+<span class="sd">        NMS threshold based on the characteristics of your dataset and the</span>
+<span class="sd">        level of overlap between objects.</span>
+<span class="sd">        A lower NMS threshold (e.g., 0.4 or 0.5)</span>
+<span class="sd">        is commonly used to suppress redundant boxes effectively</span>
+<span class="sd">        while retaining accurate detections.</span>
+<span class="sd">        Experimenting with different</span>
+<span class="sd">        threshold values and observing their impact on the results is crucial</span>
 <span class="sd">        for optimizing the performance of object detection models.</span>
 
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nms_th</span> 
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nms_th</span>
 
     <span class="nd">@nms_th</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nms_th</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nms_th</span> <span class="o">=</span> <span class="n">val</span>
-        
-    <span class="nd">@property</span> 
+
+    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">confidence_th</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets and sets the confidence threshold used in the object detection.</span>
 
 <span class="sd">        Detected objects with confidence scores below this threshold are filtered out.</span>
-<span class="sd">        </span>
+
 
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        confidence_th : float</span>
-<span class="sd">            The new confidence threshold for object detection. </span>
-<span class="sd">            Defaults: `confidence_th = 0.5`. </span>
+<span class="sd">            The new confidence threshold for object detection.</span>
+<span class="sd">            Defaults: `confidence_th = 0.5`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -775,73 +842,71 @@ document.write(`
 <span class="sd">        Example</span>
 <span class="sd">        -------</span>
 
-<span class="sd">        Import required packages: </span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
-<span class="sd">            </span>
-<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">            &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">            &gt;&gt;&gt; import cv2 </span>
-<span class="sd">        </span>
+<span class="sd">        Import required packages:</span>
 
-<span class="sd">        Fetch &#39;planes.png&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):         </span>
-<span class="sd">            </span>
-<span class="sd">        .. code:: </span>
-<span class="sd">            </span>
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">            &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">            &gt;&gt;&gt; import cv2</span>
+
+
+<span class="sd">        Fetch &#39;planes.png&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):</span>
+
+<span class="sd">        .. code::</span>
+
 <span class="sd">            &gt;&gt;&gt; impath = c4d.datasets.image(&#39;planes&#39;)</span>
 <span class="sd">            Fetched successfully</span>
-<span class="sd">            </span>
 
-<span class="sd">        Load YOLOv3 detector and set 3 confidence threshold values to compare: </span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
 
-<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()  </span>
+<span class="sd">        Load YOLOv3 detector and set 3 confidence threshold values to compare:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()</span>
 <span class="sd">            Fetched successfully</span>
-<span class="sd">            &gt;&gt;&gt; confidence_thresholds = [0.9, 0.95, 0.99] </span>
+<span class="sd">            &gt;&gt;&gt; confidence_thresholds = [0.9, 0.95, 0.99]</span>
 
-<span class="sd">            </span>
-<span class="sd">        Run the detector on each threshold: </span>
-<span class="sd">            </span>
-<span class="sd">        .. code:: </span>
+
+<span class="sd">        Run the detector on each threshold:</span>
+
+<span class="sd">        .. code::</span>
 
 <span class="sd">            &gt;&gt;&gt; _, axs = plt.subplots(1, 3)</span>
 <span class="sd">            &gt;&gt;&gt; for i, confidence_threshold in enumerate(confidence_thresholds):</span>
 <span class="sd">            ...   yolo3.confidence_th = confidence_threshold</span>
-<span class="sd">            ...   img = cv2.imread(impath) </span>
+<span class="sd">            ...   img = cv2.imread(impath)</span>
 <span class="sd">            ...   pts = yolo3.detect(img)</span>
 <span class="sd">            ...   for p in pts:</span>
 <span class="sd">            ...     cv2.rectangle(img, p.box[0], p.box[1], [0, 255, 0], 2) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">            ...   axs[i].imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">            ...   axs[i].set_title(f&quot;Confidence Threshold: {confidence_threshold}&quot;, fontsize = 6)</span>
-<span class="sd">            ...   axs[i].axis(&#39;off&#39;) # doctest: +IGNORE_OUTPUT </span>
+<span class="sd">            ...   axs[i].axis(&#39;off&#39;) # doctest: +IGNORE_OUTPUT</span>
 
 
 <span class="sd">        .. figure:: /_examples/yolov3/confidence_th.png</span>
 
 
-<span class="sd">        A single object being missed, particularly when setting the confidence threshold to 0.99, </span>
-<span class="sd">        suggests that the model is highly confident in its predictions. </span>
-<span class="sd">        This level of performance is typically achievable when the model </span>
-<span class="sd">        has been trained on a diverse and representative dataset, </span>
-<span class="sd">        encompassing a wide variety of object instances, backgrounds, </span>
-<span class="sd">        and conditions. </span>
+<span class="sd">        A single object being missed, particularly when setting the confidence threshold to 0.99,</span>
+<span class="sd">        suggests that the model is highly confident in its predictions.</span>
+<span class="sd">        This level of performance is typically achievable when the model</span>
+<span class="sd">        has been trained on a diverse and representative dataset,</span>
+<span class="sd">        encompassing a wide variety of object instances, backgrounds,</span>
+<span class="sd">        and conditions.</span>
 
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span>
 
     <span class="nd">@confidence_th</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">confidence_th</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span> <span class="o">=</span> <span class="n">val</span>
-        
-
 
 <div class="viewcode-block" id="yolov3.detect">
 <a class="viewcode-back" href="../../../api/generated/yolov3/c4dynamics.detectors.yolo3_opencv.yolov3.detect.html#c4dynamics.detectors.yolo3_opencv.yolov3.detect">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">pixelpoint</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detects objects in a frame using the YOLOv3 model.</span>
 
 <span class="sd">        At each call, the detector performs the following steps:</span>
@@ -852,35 +917,35 @@ document.write(`
 
 <span class="sd">        3. Extracts detected objects based on a confidence threshold, calculates bounding box coordinates, and filters results using Non-Maximum Suppression (NMS).</span>
 
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        frame : numpy.array </span>
+<span class="sd">        frame : numpy.array</span>
 <span class="sd">            An input frame for object detection.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : list[pixelpoint]</span>
-<span class="sd">            A list of :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` objects representing detected objects, </span>
+<span class="sd">            A list of :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` objects representing detected objects,</span>
 <span class="sd">            each containing bounding box coordinates and class label.</span>
 
-<span class="sd">            </span>
+
 <span class="sd">        Examples</span>
-<span class="sd">        --------        </span>
+<span class="sd">        --------</span>
 
 <span class="sd">        **Setup**</span>
 
 <span class="sd">        Import required packages:</span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
-<span class="sd">        </span>
-<span class="sd">            &gt;&gt;&gt; import cv2  # opencv-python </span>
-<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d </span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; import cv2  # opencv-python</span>
+<span class="sd">            &gt;&gt;&gt; import c4dynamics as c4d</span>
 <span class="sd">            &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
 
-<span class="sd">        </span>
-<span class="sd">            </span>
-<span class="sd">        Fetch &#39;planes.png&#39; and &#39;aerobatics.mp4&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):         </span>
+
+
+<span class="sd">        Fetch &#39;planes.png&#39; and &#39;aerobatics.mp4&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):</span>
 
 <span class="sd">        .. code::</span>
 
@@ -890,50 +955,50 @@ document.write(`
 <span class="sd">            Fetched successfully</span>
 
 
-<span class="sd">            </span>
-<span class="sd">        Load YOLOv3 detector: </span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
 
-<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()  </span>
+<span class="sd">        Load YOLOv3 detector:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; yolo3 = c4d.detectors.yolov3()</span>
 <span class="sd">            Fetched successfully</span>
 
 
-<span class="sd">            </span>
+
 
 <span class="sd">        Let the auxiliary function:</span>
 
-<span class="sd">        .. code:: </span>
+<span class="sd">        .. code::</span>
 
 <span class="sd">            &gt;&gt;&gt; def ptup(n): return &#39;(&#39; + str(n[0]) + &#39;, &#39; + str(n[1]) + &#39;)&#39;</span>
 
-<span class="sd">            </span>
+
 
 <span class="sd">        **Object detection in a single frame**</span>
-<span class="sd">        </span>
 
-<span class="sd">        .. code:: </span>
 
-<span class="sd">            &gt;&gt;&gt; img = cv2.imread(impath) </span>
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; img = cv2.imread(impath)</span>
 <span class="sd">            &gt;&gt;&gt; pts = yolo3.detect(img)</span>
 <span class="sd">            &gt;&gt;&gt; for p in pts:</span>
-<span class="sd">            ...   cv2.rectangle(img, p.box[0], p.box[1], [0, 255, 0], 2) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">        </span>
-<span class="sd">        .. code:: </span>
+<span class="sd">            ...   cv2.rectangle(img, p.box[0], p.box[1], [0, 255, 0], 2) # doctest: +IGNORE_OUTPUT</span>
 
-<span class="sd">            &gt;&gt;&gt; plt.figure() # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">            &gt;&gt;&gt; plt.axis(False) # doctest: +IGNORE_OUTPUT </span>
-<span class="sd">            &gt;&gt;&gt; plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # doctest: +IGNORE_OUTPUT  </span>
-<span class="sd">  </span>
-<span class="sd">            </span>
+<span class="sd">        .. code::</span>
+
+<span class="sd">            &gt;&gt;&gt; plt.figure() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">            &gt;&gt;&gt; plt.axis(False) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">            &gt;&gt;&gt; plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # doctest: +IGNORE_OUTPUT</span>
+
+
 <span class="sd">        .. figure:: /_examples/yolov3/single_image.png</span>
 
-<span class="sd">        </span>
+
 
 <span class="sd">        **Object detection in a video**</span>
-<span class="sd">        </span>
+
 <span class="sd">        .. code::</span>
-<span class="sd">            </span>
+
 <span class="sd">            &gt;&gt;&gt; video_cap = cv2.VideoCapture(vidpath)</span>
 <span class="sd">            &gt;&gt;&gt; while video_cap.isOpened():</span>
 <span class="sd">            ...   ret, frame = video_cap.read()</span>
@@ -948,69 +1013,71 @@ document.write(`
 
 
 
-<span class="sd">        </span>
+
 <span class="sd">        **The output structure**</span>
-<span class="sd">        </span>
+
 
 <span class="sd">        The output of the detect() function is a list of :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` object.</span>
-<span class="sd">        The :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` has unique attributes to manipulate the detected object class and  </span>
-<span class="sd">        bounding box. </span>
+<span class="sd">        The :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` has unique attributes to manipulate the detected object class and</span>
+<span class="sd">        bounding box.</span>
 
 <span class="sd">        .. code::</span>
 
-<span class="sd">            &gt;&gt;&gt; print(&#39;{:^10} | {:^10} | {:^10} | {:^16} | {:^16} | {:^10} | {:^14}&#39; # doctest: +IGNORE_OUTPUT </span>
+<span class="sd">            &gt;&gt;&gt; print(&#39;{:^10} | {:^10} | {:^10} | {:^16} | {:^16} | {:^10} | {:^14}&#39; # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">            ...             .format(&#39;# object&#39;, &#39;center x&#39;, &#39;center y&#39;, &#39;box top-left&#39;, &#39;box bottom-right&#39;, &#39;class&#39;, &#39;frame size&#39;))</span>
 <span class="sd">            &gt;&gt;&gt; # main loop:</span>
 <span class="sd">            &gt;&gt;&gt; for i, p in enumerate(pts):</span>
 <span class="sd">            ...   print(&#39;{:^10d} | {:^10.3f} | {:^10.3f} | {:^16} | {:^16} | {:^10} | {:^14}&#39;</span>
 <span class="sd">            ...         .format(i, p.x, p.y, ptup(p.box[0]), ptup(p.box[1]), p.class_id, ptup(p.fsize)))</span>
 <span class="sd">            ...   cv2.rectangle(img, p.box[0], p.box[1], [0, 0, 0], 2)      # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">            ...   point = (int((p.box[0][0] + p.box[1][0]) / 2 - 75), p.box[1][1] + 22) </span>
+<span class="sd">            ...   point = (int((p.box[0][0] + p.box[1][0]) / 2 - 75), p.box[1][1] + 22)</span>
 <span class="sd">            ...   cv2.putText(img, p.class_id, point, cv2.FONT_HERSHEY_SIMPLEX, 1, [0, 0, 0], 2)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">            # object  |  center x  |  center y  |   box top-left   | box bottom-right |   class    |  frame size  </span>
-<span class="sd">               0      |   0.584    |   0.376    |    (691, 234)    |    (802, 306)    | aeroplane  |  (1280, 720)  </span>
-<span class="sd">               1      |   0.457    |   0.473    |    (528, 305)    |    (642, 376)    | aeroplane  |  (1280, 720)  </span>
-<span class="sd">               2      |   0.471    |   0.322    |    (542, 196)    |    (661, 267)    | aeroplane  |  (1280, 720)  </span>
-<span class="sd">               3      |   0.546    |   0.873    |    (645, 588)    |    (752, 668)    | aeroplane  |  (1280, 720) </span>
+<span class="sd">            # object  |  center x  |  center y  |   box top-left   | box bottom-right |   class    |  frame size</span>
+<span class="sd">               0      |   0.584    |   0.376    |    (691, 234)    |    (802, 306)    | aeroplane  |  (1280, 720)</span>
+<span class="sd">               1      |   0.457    |   0.473    |    (528, 305)    |    (642, 376)    | aeroplane  |  (1280, 720)</span>
+<span class="sd">               2      |   0.471    |   0.322    |    (542, 196)    |    (661, 267)    | aeroplane  |  (1280, 720)</span>
+<span class="sd">               3      |   0.546    |   0.873    |    (645, 588)    |    (752, 668)    | aeroplane  |  (1280, 720)</span>
 
-<span class="sd">        .. code:: </span>
+<span class="sd">        .. code::</span>
 
 <span class="sd">            &gt;&gt;&gt; plt.figure()  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">            &gt;&gt;&gt; plt.axis(False) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">            &gt;&gt;&gt; plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">        </span>
+
 <span class="sd">        .. figure:: /_examples/yolov3/outformat.png</span>
 
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#</span>
         <span class="c1"># Step 1: Preprocess the Frame</span>
-        <span class="c1">#   - Create a blob (binary large object) from the input frame with the </span>
+        <span class="c1">#   - Create a blob (binary large object) from the input frame with the</span>
         <span class="c1">#       specified dimensions</span>
         <span class="c1">#   - Normalize pixel values to a range of 0 to 1</span>
         <span class="c1">#   - Specify the dimensions of the input layer of the YOLOv3 model</span>
         <span class="c1">#   - Swap Red and Blue channels (BGR to RGB)</span>
         <span class="c1">#   - Set crop to False to preserve the original aspect ratio</span>
         <span class="c1">##</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="p">(</span><span class="n">MODEL_SIZE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MODEL_SIZE</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">swapRB</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">crop</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span>
+            <span class="n">frame</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="p">(</span><span class="n">MODEL_SIZE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MODEL_SIZE</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">swapRB</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
 
         <span class="c1">#</span>
         <span class="c1"># Step 2: Set Input to the YOLOv3 Model and Perform Forward Pass</span>
         <span class="c1">#   - Set the blob as the input to the YOLOv3 model</span>
         <span class="c1">#   - Get the names of the output layers of the model</span>
         <span class="c1">#   - Perform a forward pass through the model to obtain detections</span>
-        <span class="c1"># </span>
-        <span class="c1"># The returning detection structure: </span>
+        <span class="c1">#</span>
+        <span class="c1"># The returning detection structure:</span>
         <span class="c1">#   1) x_center</span>
         <span class="c1">#   2) y_center</span>
         <span class="c1">#   3) width</span>
         <span class="c1">#   4) height</span>
-        <span class="c1">#   5) confidence score </span>
+        <span class="c1">#   5) confidence score</span>
         <span class="c1">#   6:end) probabilities for each class</span>
         <span class="c1">##</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
         <span class="n">detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">)</span>
-        
+
         <span class="c1">#</span>
         <span class="c1"># Step 3: Extract Detected Objects</span>
         <span class="c1">#   - Iterate through the detected objects in the forward pass results</span>
@@ -1018,87 +1085,91 @@ document.write(`
         <span class="c1">#   - Calculate bounding box coordinates and convert to integers</span>
         <span class="c1">#   - Append bounding box coordinates and class labels to respective lists</span>
         <span class="c1">##</span>
-        <span class="n">raw</span> <span class="o">=</span> <span class="p">[]</span>            <span class="c1"># xc, yc, w, h     </span>
-        <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>          <span class="c1"># top left x, top left y, width, height</span>
-        <span class="n">classIDs</span> <span class="o">=</span> <span class="p">[]</span>           
+        <span class="n">raw</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># xc, yc, w, h</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># top left x, top left y, width, height</span>
+        <span class="n">classIDs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">confidences</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">fheight</span><span class="p">,</span> <span class="n">fwidth</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">detection</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">detection</span><span class="p">:</span>
-                
+
                 <span class="n">scores</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
                 <span class="n">classID</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
                 <span class="n">confidence</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">classID</span><span class="p">]</span>
-                
-                <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="n">classID</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span><span class="p">:</span>  <span class="c1"># Adjust the confidence threshold as needed</span>
 
-                    <span class="n">box</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="p">[</span><span class="n">fwidth</span><span class="p">,</span> <span class="n">fheight</span><span class="p">,</span> <span class="n">fwidth</span><span class="p">,</span> <span class="n">fheight</span><span class="p">]</span> <span class="c1"># relative (xc, yc, w, h) to pixels </span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">scores</span><span class="p">[</span><span class="n">classID</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span>
+                <span class="p">):</span>  <span class="c1"># Adjust the confidence threshold as needed</span>
+
+                    <span class="n">box</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="p">[</span>
+                        <span class="n">fwidth</span><span class="p">,</span>
+                        <span class="n">fheight</span><span class="p">,</span>
+                        <span class="n">fwidth</span><span class="p">,</span>
+                        <span class="n">fheight</span><span class="p">,</span>
+                    <span class="p">]</span>  <span class="c1"># relative (xc, yc, w, h) to pixels</span>
                     <span class="c1"># (center_x, center_y, width, height) = box.astype(&#39;int&#39;)</span>
 
-                    <span class="n">x</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1"># top left x </span>
-                    <span class="n">y</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1"># top left y </span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># top left x</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># top left y</span>
 
-                    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span> <span class="c1"># top left x, top left y, width, height</span>
+                    <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>  <span class="c1"># top left x, top left y, width, height</span>
                     <span class="n">confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">confidence</span><span class="p">))</span>
-                    <span class="n">classIDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">classID</span><span class="p">)</span> 
-                    <span class="n">raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span> 
-
+                    <span class="n">classIDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">classID</span><span class="p">)</span>
+                    <span class="n">raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">NMSBoxes</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">confidences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confidence_th</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nms_th</span><span class="p">))</span>
-        
+
         <span class="c1"># box_out = []</span>
         <span class="c1"># class_out = []</span>
         <span class="n">points_out</span> <span class="o">=</span> <span class="p">[]</span>
-
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># for i in indices.flatten():</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
                 <span class="c1"># (x, y) = (boxes[i][0], boxes[i][1])</span>
                 <span class="c1"># (w, h) = (boxes[i][2], boxes[i][3])</span>
-                <span class="c1">#               x top left, y top left,   x bottom right,           y bottom right </span>
+                <span class="c1">#               x top left, y top left,   x bottom right,           y bottom right</span>
                 <span class="c1"># box_out.append([boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]])</span>
 
                 <span class="c1"># points_out.append(pixelpoint(raw[i], self.class_names[classIDs[i]], (w, h)))</span>
-                <span class="n">pp</span> <span class="o">=</span> <span class="n">pixelpoint</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">fwidth</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fheight</span><span class="p">),</span> <span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">fwidth</span><span class="p">),</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">fheight</span><span class="p">))</span>
+                <span class="n">pp</span> <span class="o">=</span> <span class="n">pixelpoint</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">fwidth</span><span class="p">),</span>
+                    <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fheight</span><span class="p">),</span>
+                    <span class="n">w</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">fwidth</span><span class="p">),</span>
+                    <span class="n">h</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">fheight</span><span class="p">),</span>
+                <span class="p">)</span>
                 <span class="c1"># pp.units = &#39;normalized&#39;</span>
                 <span class="n">pp</span><span class="o">.</span><span class="n">fsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">fwidth</span><span class="p">,</span> <span class="n">fheight</span><span class="p">)</span>
                 <span class="n">pp</span><span class="o">.</span><span class="n">class_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">[</span><span class="n">classIDs</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="n">points_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span>
-                
+
                 <span class="c1"># class_out.append(self.class_names[classIDs[i]])</span>
 
         <span class="c1"># box_out = np.array(box_out)</span>
-        
-        <span class="k">return</span> <span class="n">points_out</span> <span class="c1"># box_out, class_out,  </span></div>
+
+        <span class="k">return</span> <span class="n">points_out</span>  <span class="c1"># box_out, class_out,</span></div>
 </div>
-
-
-
 
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-		<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-		
-		<span class="c1"># current_module = sys.modules[__name__].yolov3</span>
-		<span class="n">current_module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
-		<span class="k">try</span><span class="p">:</span>
-			<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span> 
-		<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>     
-			<span class="c1"># if hasattr(current_module, &quot;yolov3&quot;):</span>
-			<span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>   <span class="c1"># clears doctest examples</span>
-			<span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>   <span class="c1"># clears doctest examples</span>
-			<span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">confidence_th</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>   <span class="c1"># clears doctest examples</span>
-			<span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">nms_th</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>   <span class="c1"># clears doctest examples</span>
-		
-		<span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
-		
+    <span class="c1"># current_module = sys.modules[__name__].yolov3</span>
+    <span class="n">current_module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="c1"># if hasattr(current_module, &quot;yolov3&quot;):</span>
+        <span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># clears doctest examples</span>
+        <span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">detect</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># clears doctest examples</span>
+        <span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">confidence_th</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># clears doctest examples</span>
+        <span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="n">nms_th</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># clears doctest examples</span>
 
+    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -1146,7 +1217,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>c4dynamics.rotmat.rotmat &#8212; C4DYNAMICS v2.3</title>
+    <title>c4dynamics.utils.math &#8212; C4DYNAMICS v2.3</title>
   
   
   
@@ -43,7 +43,7 @@
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/c4dynamics/rotmat/rotmat';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/c4dynamics/utils/math';</script>
     <link rel="icon" href="../../../_static/c4dlogo.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -410,352 +410,185 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for c4dynamics.rotmat.rotmat</h1><div class="highlight"><pre>
+  <h1>Source code for c4dynamics.utils.math</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">erfinv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-<span class="c1"># import c4dynamics as c4d</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.utils.const</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2d</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.utils.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">asin</span><span class="p">,</span> <span class="n">atan2</span>
-
-
-<div class="viewcode-block" id="rotx">
-<a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.rotx.html#c4dynamics.rotmat.rotmat.rotx">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">rotx</span><span class="p">(</span><span class="n">phi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
-<span class="sd">    a positive rotation about the x-axis by an angle :math:`\\phi` in radians.</span>
-
-<span class="sd">    A right-hand rotation matrix about `x` is given by: </span>
-
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
-<span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            1 &amp; 0 &amp; 0 \\\\ </span>
-<span class="sd">                0 &amp; cos(\\varphi) &amp; sin(\\varphi) \\\\ </span>
-<span class="sd">                    0 &amp; -sin(\\varphi) &amp; cos(\\varphi) </span>
-<span class="sd">            \\end{bmatrix} </span>
-
-<span class="sd">        </span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    phi : float or int</span>
-<span class="sd">        The angle of rotation in radians.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array</span>
-<span class="sd">        A 3x3 rotation matrix representing the rotation about the x-axis.</span>
-
-<span class="sd">    </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; rotx(0)  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[1  0  0]</span>
-<span class="sd">     [0  1  0]</span>
-<span class="sd">     [0  0  1]]</span>
-
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; rotx(c4d.pi / 2)  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[1  0  0]</span>
-<span class="sd">     [0  0  1]</span>
-<span class="sd">     [0 -1  0]]</span>
-
-<span class="sd">           </span>
-<span class="sd">    &gt;&gt;&gt; v1 = [0, 0, 1]</span>
-<span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; rotx(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [0  1  0]</span>
-
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; rotx(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [0  0.707  0.707]</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)]])</span></div>
-
-
-
-<div class="viewcode-block" id="roty">
-<a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.roty.html#c4dynamics.rotmat.rotmat.roty">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">roty</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
-<span class="sd">    a positive rotation about the y-axis by an angle :math:`\\theta` in radians.</span>
-
-
-
-<span class="sd">    A right-hand rotation matrix about `y` is given by: </span>
-
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
-<span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            cos(\\theta) &amp; 0&amp; -sin(\\theta) \\\\</span>
-<span class="sd">                0 &amp; 1 &amp; 0 \\\\ </span>
-<span class="sd">                    sin(\\theta) &amp; 0 &amp; cos(\\theta)</span>
-<span class="sd">            \\end{bmatrix}  </span>
-
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    theta : float or int</span>
-<span class="sd">        The angle of rotation in radians.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array</span>
-<span class="sd">        A 3x3 rotation matrix representing the rotation about the y-axis.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; roty(0)  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[1  0  0]</span>
-<span class="sd">     [0  1  0]</span>
-<span class="sd">     [0  0  1]]</span>
-<span class="sd">           </span>
-<span class="sd">        </span>
-<span class="sd">    &gt;&gt;&gt; roty(c4d.pi / 2) # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[0  0 -1]</span>
-<span class="sd">     [0  1  0]</span>
-<span class="sd">     [1  0  0]]</span>
-
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; v1 = [0, 0, 1]</span>
-<span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; roty(phi) @ v1  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [-1  0  0]</span>
-
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; roty(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [-0.707  0  0.707]</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span></div>
-
-
-
-<div class="viewcode-block" id="rotz">
-<a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.rotz.html#c4dynamics.rotmat.rotmat.rotz">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">rotz</span><span class="p">(</span><span class="n">psi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
-<span class="sd">    a positive rotation about the z-axis by an angle :math:`\\psi` in radians.</span>
-
-<span class="sd">    A right-hand rotation matrix about `y` is given by: </span>
-
-
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
-<span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            cos(\\psi) &amp; sin(\\psi) &amp; 0 \\\\</span>
-<span class="sd">                -sin(\\psi) &amp; cos(\\psi) &amp; 0 \\\\ </span>
-<span class="sd">                    0 &amp; 0 &amp; 1</span>
-<span class="sd">            \\end{bmatrix}  </span>
-
-
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    psi : float or int</span>
-<span class="sd">        The angle of rotation in radians.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array</span>
-<span class="sd">        A 3x3 rotation matrix representing the rotation about the z-axis.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; rotz(0)  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[1  0  0]</span>
-<span class="sd">     [0  1  0]</span>
-<span class="sd">     [0  0  1]]</span>
-
-
-<span class="sd">    &gt;&gt;&gt; rotz(c4d.pi / 2)  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [[0   1  0]</span>
-<span class="sd">     [-1  0  0]</span>
-<span class="sd">     [0   0  1]]</span>
-
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; v1 = [0.707, 0.707, 0]</span>
-<span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; rotz(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [0.707  -0.707  0]</span>
-
-<span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
-<span class="sd">    &gt;&gt;&gt; rotz(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [1  0  0]</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span></div>
-
-
-
-<div class="viewcode-block" id="dcm321">
-<a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.dcm321.html#c4dynamics.rotmat.rotmat.dcm321">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dcm321</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix (DCM) for a sequence of </span>
-<span class="sd">    positive rotations around the axes in the following order: </span>
-<span class="sd">    :math:`z`, then :math:`y`, then :math:`x`.</span>
-
-<span class="sd">    The final form of the matrix is given by: </span>
-
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
-<span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">              c\\theta \\cdot c\\psi </span>
-<span class="sd">            &amp; c\\theta \\cdot s\\psi </span>
-<span class="sd">            &amp; -s\\theta \\\\</span>
-<span class="sd">                  s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\ </span>
-<span class="sd">                      c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi </span>
-<span class="sd">                    &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi </span>
-<span class="sd">                    &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">            \\end{bmatrix}  </span>
-
-<span class="sd">    where </span>
-
-<span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
-<span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
-<span class="sd">    - :math:`c\\theta \\equiv cos(\\theta)`</span>
-<span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
-<span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
-<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`    </span>
-
-
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    phi : float or int </span>
-<span class="sd">        The angle in radian of rotation about `x`, default :math:`\\phi = 0`. </span>
-<span class="sd">    theta : float or int </span>
-<span class="sd">        The angle in radian of rotation about `y`, default :math:`\\theta = 0`. </span>
-<span class="sd">    psi : float or int </span>
-<span class="sd">        The angle in radian of rotation about `z`, default :math:`\\psi = 0`. </span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array</span>
-<span class="sd">        3x3 Direction Cosine Matrix representing the combined rotation.</span>
-
-<span class="sd">        </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    The inertial velocity vector of an aircraft expressed in an inertial earth frame is given by:</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; v = [150, 0, 0]</span>
-<span class="sd">    </span>
-<span class="sd">    The attitude of the aircraft with respect to the inertial earth frame is</span>
-<span class="sd">    given by the 3 Euler angles: </span>
-
-<span class="sd">    .. math:: </span>
-
-<span class="sd">        \\phi = 0</span>
-<span class="sd">        </span>
-<span class="sd">        \\theta = 30 \\cdot {\\pi \\over 180}</span>
-<span class="sd">        </span>
-<span class="sd">        \\psi = 0</span>
-<span class="sd">            </span>
-<span class="sd">    The velcoty expressed in body frame:</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; dcm321(phi = 0, theta = 30 * c4d.d2r, psi = 0) @ v  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [129.9  0  75]</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rotx</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">@</span> <span class="n">roty</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">@</span> <span class="n">rotz</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="dcm321euler">
-<a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.dcm321euler.html#c4dynamics.rotmat.rotmat.dcm321euler">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dcm321euler</span><span class="p">(</span><span class="n">dcm</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;    </span>
-<span class="sd">    Extract Euler angles (roll, pitch, yaw) from a Direction Cosine Matrix (DCM) of 3-2-1 order.</span>
-
-<span class="sd">    The form of a 3-2-1 rotation matrix:   </span>
-
-<span class="sd">    .. math:: </span>
-
-<span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            c\\theta \\cdot c\\psi </span>
-<span class="sd">            &amp; c\\theta \\cdot s\\psi </span>
-<span class="sd">            &amp; -s\\theta \\\\</span>
-<span class="sd">                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - c\\varphi \\cdot c\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\ </span>
-<span class="sd">                    s\\varphi \\cdot s\\theta \\cdot s\\psi + s\\varphi \\cdot s\\psi </span>
-<span class="sd">                    &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi </span>
-<span class="sd">                    &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">            \\end{bmatrix}  </span>
-
-<span class="sd">    where </span>
-
-<span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
-<span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
-<span class="sd">    - :math:`c\\theta \\equiv cos(\\theta)`</span>
-<span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
-<span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
-<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`</span>
-<span class="sd">        </span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    dcm : numpy.array</span>
-<span class="sd">        3x3 Direction Cosine Matrix representing a rotation.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : tuple</span>
-<span class="sd">        A tuple containing Euler angles (yaw, pitch, roll) in degrees.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    Each set of Euler angles has a geometric singularity where </span>
-<span class="sd">    two angles are not uniquely defined.</span>
-<span class="sd">    It is always the second angle which defines this singular orientation: </span>
-
-<span class="sd">    - Symmetric Set: 2nd angle is 0 or 180 degrees. For example the 3-1-3 orbit angles with zero inclination.</span>
-<span class="sd">    - Asymmetric Set: 2nd angle is ±90 degrees. For example, the 3-2-1 angle of an aircraft with 90 degrees pitch. </span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; dcm321euler(np.eye(3)) # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    (0, 0, 0)    </span>
-<span class="sd">        </span>
-<span class="sd">    A rotation matrix that represents the attitude of an aircraft with respect to </span>
-<span class="sd">    an inertial earth frame is given by:</span>
-
-<span class="sd">    &gt;&gt;&gt; BI = np.array([[ 0.866,     0, -0.5      ]</span>
-<span class="sd">    ...                 , [ 0,      1,  0        ]</span>
-<span class="sd">    ...                 , [ 0.5,    0,  0.866    ]])</span>
-<span class="sd">    &gt;&gt;&gt; dcm321euler(BI) # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    (0, 30, 0)</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">psi</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">dcm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dcm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">r2d</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="o">-</span><span class="n">asin</span><span class="p">(</span><span class="n">dcm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">r2d</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">dcm</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">dcm</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">r2d</span>
-
-    <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">psi</span></div>
+<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
+<span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; </span>
+<span class="s2">Math functions aliasing.</span>
+
+
+<span class="s2">For convenience, C4dynamics aliases some of </span>
+<span class="s2">NumPy&#39;s trigonometric functions </span>
+<span class="s2">with slight variations in some of them.</span>
+
+<span class="s2">All c4dynamics math functions reside directly in the c4dynamics namespace.</span>
+<span class="s2">For example, if c4dynamics is imported as c4d, then the sin() function is given by c4d.sin(). </span>
+
+
+
+<span class="s2">.. code::</span>
+
+<span class="s2">    import numpy as np</span>
+<span class="s2">    import c4dynamics as c4d</span>
+
+<span class="s2">    </span>
+<span class="s2">.. data:: sin </span>
+
+<span class="s2">    ``c4d.sin = np.sin``</span>
+
+<span class="s2">.. data:: sind </span>
+
+<span class="s2">    ``c4d.sind = lambda n: np.sin(n * c4d.d2r)``</span>
+
+<span class="s2">.. data:: cos</span>
+
+<span class="s2">    ``c4d.cos = np.cos``</span>
+
+<span class="s2">.. data:: cosd </span>
+
+<span class="s2">    ``c4d.cosd = lambda n: np.cos(n * c4d.d2r)``</span>
+
+<span class="s2">.. data:: tan</span>
+
+<span class="s2">    ``c4d.tan = np.tan``</span>
+
+<span class="s2">.. data:: tand </span>
+
+<span class="s2">    ``c4d.tand = lambda n: np.tan(n * c4d.d2r)``</span>
+
+
+<span class="s2">.. data:: asin</span>
+
+<span class="s2">    ``c4d.asin = np.arcsin``</span>
+
+<span class="s2">.. data:: asind </span>
+
+<span class="s2">    ``c4d.asind = lambda n: np.arcsin(n) * c4d.r2d``</span>
+
+<span class="s2">.. data:: acos</span>
+
+<span class="s2">    ``c4d.acos = np.arccos``</span>
+
+<span class="s2">.. data:: acosd </span>
+
+<span class="s2">    ``c4d.acosd = lambda n: np.arccos(n) * c4d.r2d``</span>
+
+<span class="s2">.. data:: atan</span>
+
+<span class="s2">    ``c4d.atan = np.arctan``</span>
+
+<span class="s2">.. data:: atan2</span>
+
+<span class="s2">    ``c4d.atan2 = np.arctan2``</span>
+
+<span class="s2">.. data:: atan2d</span>
+
+<span class="s2">    ``c4d.atan2d = lambda y, x: np.arctan2(y, x) * c4d.r2d``</span>
+
+
+<span class="s2">.. data:: sqrt</span>
+
+<span class="s2">    ``c4d.sqrt = np.sqrt``</span>
+
+<span class="s2">.. data:: norm</span>
+
+<span class="s2">    ``c4d.norm = np.linalg.norm``</span>
+
+
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span>
+
+
+<span class="c1"># sind = lambda n: np.sin(n * c4d.d2r)</span>
+<div class="viewcode-block" id="sind">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.sind">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sind</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">d2r</span><span class="p">)</span></div>
+
+
+
+<span class="n">cos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span>
+
+
+<span class="c1"># cosd = lambda n: np.cos(n * c4d.d2r)</span>
+<div class="viewcode-block" id="cosd">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.cosd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosd</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">d2r</span><span class="p">)</span></div>
+
+
+
+<span class="n">tan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span>
+
+
+<span class="c1"># tand = lambda n: np.tan(n * c4d.d2r)</span>
+<div class="viewcode-block" id="tand">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.tand">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tand</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">d2r</span><span class="p">)</span></div>
+
+
+
+<span class="n">asin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span>
+
+
+<span class="c1"># asind = lambda n: np.arcsin(n) * c4d.r2d</span>
+<div class="viewcode-block" id="asind">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.asind">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">asind</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span></div>
+
+
+
+<span class="n">acos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span>
+
+
+<span class="c1"># acosd = lambda n: np.arccos(n) * c4d.r2d</span>
+<div class="viewcode-block" id="acosd">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.acosd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">acosd</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span></div>
+
+
+
+<span class="n">atan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span>
+
+
+<span class="c1"># atand = lambda n: np.arctan(n) * c4d.r2d</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">atand</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span>
+
+
+<span class="n">atan2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span>  <span class="c1"># atan2(y, x)</span>
+
+
+<span class="c1"># atan2d = lambda y, x: np.arctan2(y, x) * c4d.r2d  # atan2(y, x)</span>
+<div class="viewcode-block" id="atan2d">
+<a class="viewcode-back" href="../../../api/utils.math.html#c4dynamics.utils.math.atan2d">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">atan2d</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span></div>
+
+
+
+<span class="n">sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span>
+
+
+<span class="c1"># mrandn preserves matlab normal distributed numbers generation</span>
+<span class="c1"># XXX it doesnt preserve anything. just a suggested implementation to make in both sides.</span>
+<span class="c1"># no more it also doesnt generate normal distribution. see also the test test_mrandn currently disabled.</span>
+<span class="c1"># mrandn = lambda n=1: np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mrandn</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">erfinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>  <span class="c1"># noqa: F401</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
     <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>

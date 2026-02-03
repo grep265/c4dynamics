@@ -18,9 +18,27 @@
   </div>
 
 
-``The Python framework for state-space modeling and algorithm development.``
+.. raw:: html
 
-`Source repository <https://github.com/C4dynamics/C4dynamics>`_
+  <div class="text-center">
+    <p><code>The Python framework for state-space modeling and algorithm development.</code></p>
+  </div>
+
+.. raw:: html
+
+  <div class="text-center">
+    <strong>Published in the Journal of Open Source Software (JOSS)</strong><br>
+    <a href="https://doi.org/10.5281/zenodo.17931207">
+      <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17931207.svg">
+    </a>
+    <br>
+    <a href="https://doi.org/10.21105/joss.08776">
+      <img src="https://joss.theoj.org/papers/10.21105/joss.08776/status.svg">
+    </a>
+  </div>
+
+`Source Repository <https://github.com/C4dynamics/C4dynamics>`_
+
 
 **c4dynamics** is designed to 
 simplify the development of algorithms for dynamic systems, 

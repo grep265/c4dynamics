@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -412,402 +412,397 @@ document.write(`
                   
   <h1>Source code for c4dynamics.states.lib.rigidbody</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.states.lib.datapoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">datapoint</span>
 
+
 <div class="viewcode-block" id="rigidbody">
 <a class="viewcode-back" href="../../../../api/states.lib.rigidbody.html#c4dynamics.states.lib.rigidbody.rigidbody">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">rigidbody</span><span class="p">(</span><span class="n">datapoint</span><span class="p">):</span>  <span class="c1"># </span>
-<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  A rigid-body object </span>
-
-<span class="sd">  </span>
-<span class="sd">  The :class:`rigidbody` extends the :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;` </span>
-<span class="sd">  class to form an elementary rigidbody object in space, i.e. </span>
-<span class="sd">  an object with length and attitude. </span>
-
-<span class="sd">  It introduces attributes related to rotational dynamics, </span>
-<span class="sd">  such as angular position, angular velocity, and moment of inertia. </span>
-<span class="sd">  As such its state vector consists of the following variables: </span>
+<span class="k">class</span><span class="w"> </span><span class="nc">rigidbody</span><span class="p">(</span><span class="n">datapoint</span><span class="p">):</span>  <span class="c1">#</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A rigid-body object</span>
 
 
-<span class="sd">  .. math::</span>
+<span class="sd">    The :class:`rigidbody` extends the :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">    class to form an elementary rigidbody object in space, i.e.</span>
+<span class="sd">    an object with length and attitude.</span>
 
-<span class="sd">    X = [x, y, z, v_x, v_y, v_z, \\varphi, \\theta, \\psi, p, q, r)]^T </span>
-
-<span class="sd">  - Position coordinates, velocity coordinates. </span>
-<span class="sd">  - Angles, angular rates. </span>
-
-<span class="sd">  </span>
-
-<span class="sd">  **Arguments**</span>
-<span class="sd"> </span>
-<span class="sd">  x : float or int, optional</span>
-<span class="sd">      The x-position of the datapoint. Default value :math:`x = 0`. </span>
-<span class="sd">  y : float or int, optional</span>
-<span class="sd">      The y-position of the datapoint. Default value :math:`y = 0`. </span>
-<span class="sd">  z : float or int, optional</span>
-<span class="sd">      The z-position of the datapoint. Default value :math:`z = 0`. </span>
-<span class="sd">  vx : float or int, optional</span>
-<span class="sd">      Component of velocity along the x-axis. Default value :math:`v_x = 0`. </span>
-<span class="sd">  vy : float or int, optional</span>
-<span class="sd">      Component of velocity along the y-axis. Default value :math:`v_y = 0`. </span>
-<span class="sd">  vz : float or int, optional</span>
-<span class="sd">      Component of velocity along the z-axis. Default value :math:`v_z = 0`. </span>
-<span class="sd">  phi : float or int, optional</span>
-<span class="sd">      Euler angle representing rotation around the x-axis (rad). Default value :math:`\\varphi = 0`. </span>
-<span class="sd">  theta : float or int, optional</span>
-<span class="sd">      Euler angle representing rotation around the y-axis (rad). Default value :math:`\\theta = 0`.</span>
-<span class="sd">  psi : float or int, optional</span>
-<span class="sd">      Euler angle representing rotation around the z-axis (rad). Default value :math:`\\psi = 0`.</span>
-<span class="sd">  p : float or int, optional</span>
-<span class="sd">      Angular rate around the x-axis (roll). (rad/sec). Default value :math:`p = 0`. </span>
-<span class="sd">  q : float or int, optional</span>
-<span class="sd">      Angular rate around the y-axis (pitch). (rad/sec). Default value :math:`q = 0`. </span>
-<span class="sd">  r : float or int, optional</span>
-<span class="sd">      Angular rate around the z-axis (yaw). (rad/sec). Default value :math:`r = 0`.</span>
+<span class="sd">    It introduces attributes related to rotational dynamics,</span>
+<span class="sd">    such as angular position, angular velocity, and moment of inertia.</span>
+<span class="sd">    As such its state vector consists of the following variables:</span>
 
 
-<span class="sd">  The input arguments determine the initial values of the instance. </span>
-<span class="sd">  The vector of initial conditions can be retrieved by calling </span>
-<span class="sd">  :attr:`rigidbody.X0 &lt;c4dynamics.states.state.state.X0&gt;`:</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">      X = [x, y, z, v_x, v_y, v_z, \\varphi, \\theta, \\psi, p, q, r)]^T</span>
 
-<span class="sd">    &gt;&gt;&gt; from c4dynamics import rigidbody</span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; rb = rigidbody(z = 1000, theta = 10 * c4d.d2r, q = 0.5 * c4d.d2r)</span>
-<span class="sd">    &gt;&gt;&gt; rb.X0 # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    [0  0  1000  0  0  0  0  0.174  0  0  0.0087  0]</span>
+<span class="sd">    - Position coordinates, velocity coordinates.</span>
+<span class="sd">    - Angles, angular rates.</span>
 
 
-<span class="sd">  When the initial values are not known at the stage of constructing </span>
-<span class="sd">  the state object, it&#39;s possible to pass zeros and override them later </span>
-<span class="sd">  by direct assignment of the state variable with a `0` suffix. </span>
-<span class="sd">  See more at :attr:`state.X0 &lt;c4dynamics.states.state.state.X0&gt;`. </span>
+
+<span class="sd">    **Arguments**</span>
+
+<span class="sd">    x : float or int, optional</span>
+<span class="sd">        The x-position of the datapoint. Default value :math:`x = 0`.</span>
+<span class="sd">    y : float or int, optional</span>
+<span class="sd">        The y-position of the datapoint. Default value :math:`y = 0`.</span>
+<span class="sd">    z : float or int, optional</span>
+<span class="sd">        The z-position of the datapoint. Default value :math:`z = 0`.</span>
+<span class="sd">    vx : float or int, optional</span>
+<span class="sd">        Component of velocity along the x-axis. Default value :math:`v_x = 0`.</span>
+<span class="sd">    vy : float or int, optional</span>
+<span class="sd">        Component of velocity along the y-axis. Default value :math:`v_y = 0`.</span>
+<span class="sd">    vz : float or int, optional</span>
+<span class="sd">        Component of velocity along the z-axis. Default value :math:`v_z = 0`.</span>
+<span class="sd">    phi : float or int, optional</span>
+<span class="sd">        Euler angle representing rotation around the x-axis (rad). Default value :math:`\\varphi = 0`.</span>
+<span class="sd">    theta : float or int, optional</span>
+<span class="sd">        Euler angle representing rotation around the y-axis (rad). Default value :math:`\\theta = 0`.</span>
+<span class="sd">    psi : float or int, optional</span>
+<span class="sd">        Euler angle representing rotation around the z-axis (rad). Default value :math:`\\psi = 0`.</span>
+<span class="sd">    p : float or int, optional</span>
+<span class="sd">        Angular rate around the x-axis (roll). (rad/sec). Default value :math:`p = 0`.</span>
+<span class="sd">    q : float or int, optional</span>
+<span class="sd">        Angular rate around the y-axis (pitch). (rad/sec). Default value :math:`q = 0`.</span>
+<span class="sd">    r : float or int, optional</span>
+<span class="sd">        Angular rate around the z-axis (yaw). (rad/sec). Default value :math:`r = 0`.</span>
 
 
-<span class="sd">  Parameters </span>
-<span class="sd">  ==========</span>
+<span class="sd">    The input arguments determine the initial values of the instance.</span>
+<span class="sd">    The vector of initial conditions can be retrieved by calling</span>
+<span class="sd">    :attr:`rigidbody.X0 &lt;c4dynamics.states.state.state.X0&gt;`:</span>
 
-<span class="sd">  mass : float  </span>
-<span class="sd">      The mass of the datapoint     </span>
-<span class="sd">  I : [float, float, float] </span>
-<span class="sd">      An array of moments of inertia </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  See Also</span>
-<span class="sd">  ========</span>
-<span class="sd">  .lib</span>
-<span class="sd">  .rotmat </span>
-<span class="sd">  .state </span>
-<span class="sd">  .eqm</span>
+<span class="sd">      &gt;&gt;&gt; from c4dynamics import rigidbody</span>
 
+<span class="sd">    .. code::</span>
 
-<span class="sd">  Example</span>
-<span class="sd">  =======</span>
-<span class="sd">  </span>
-<span class="sd">  A simplified model of an aircraft autopilot is given by:  </span>
-<span class="sd">  </span>
-<span class="sd">  .. math:: </span>
-
-<span class="sd">    \\dot{z}(t) = 5 \\cdot \\theta(t)</span>
-
-<span class="sd">    \\dot{\\theta}(t) = -0.5 \\cdot \\theta(t) - 0.1 \\cdot z(t)</span>
-
-<span class="sd">  </span>
-<span class="sd">  Where:</span>
-
-<span class="sd">  - :math:`z` is the deviation of the aircraft from the required altitude</span>
-<span class="sd">  - :math:`\\theta` is the pitch angle </span>
-
-<span class="sd">  The aircraft is represented by a `rigidbody` object.</span>
-<span class="sd">  `scipy&#39;s odeint` is employed to solve the </span>
-<span class="sd">  dynamics equations and update the state vector `X`. </span>
-
-<span class="sd">  </span>
-<span class="sd">  import required packages: </span>
-
-<span class="sd">  .. code:: </span>
-<span class="sd">  </span>
-<span class="sd">    &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">    &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
-<span class="sd">    &gt;&gt;&gt; from scipy.integrate import odeint</span>
-<span class="sd">    &gt;&gt;&gt; import numpy as np </span>
-<span class="sd">  </span>
-<span class="sd">    </span>
-<span class="sd">  Settings and initial conditions: </span>
-<span class="sd">    </span>
-<span class="sd">  .. code:: </span>
-<span class="sd">  </span>
-<span class="sd">    &gt;&gt;&gt; dt, tf = 0.01, 15</span>
-<span class="sd">    &gt;&gt;&gt; tspan = np.arange(0, tf, dt)  </span>
-<span class="sd">    &gt;&gt;&gt; A = np.zeros((12, 12))</span>
-<span class="sd">    &gt;&gt;&gt; A[2, 7] =  5</span>
-<span class="sd">    &gt;&gt;&gt; A[7, 2] = -0.1</span>
-<span class="sd">    &gt;&gt;&gt; A[7, 7] = -0.5</span>
-<span class="sd">    &gt;&gt;&gt; f16 = c4d.rigidbody(z = 1, theta = 0)</span>
-<span class="sd">    &gt;&gt;&gt; for t in tspan:</span>
-<span class="sd">    ...   f16.X = odeint(lambda y, t: A @ y, f16.X, [t, t + dt])[-1] </span>
-<span class="sd">    ...   f16.store(t)</span>
+<span class="sd">      &gt;&gt;&gt; rb = rigidbody(z = 1000, theta = 10 * c4d.d2r, q = 0.5 * c4d.d2r)</span>
+<span class="sd">      &gt;&gt;&gt; rb.X0 # doctest: +NUMPY_FORMAT</span>
+<span class="sd">      [0  0  1000  0  0  0  0  0.174  0  0  0.0087  0]</span>
 
 
-<span class="sd">  .. code:: </span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; _, ax = plt.subplots(2, 1) </span>
-<span class="sd">    &gt;&gt;&gt; f16.plot(&#39;z&#39;, ax = ax[0])   # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; ax[0].set(xlabel = &#39;&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; f16.plot(&#39;theta&#39;, ax = ax[1], scale = c4d.r2d)</span>
-
-<span class="sd">  .. figure:: /_examples/rigidbody/intro_f16_autopilot.png</span>
-
-<span class="sd">  The :meth:`animate` method allows the user to play the attitude </span>
-<span class="sd">  histories given a 3D model (requires installation of `open3D`). </span>
-
-<span class="sd">  The model in the example can be fetched using the c4dynamics datasets module </span>
-<span class="sd">  (see :mod:`c4dynamics.datasets`):  </span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; modelpath = c4d.datasets.d3_model(&#39;f16&#39;) </span>
-<span class="sd">    Fetched successfully</span>
-
-<span class="sd">  .. code:: </span>
-
-<span class="sd">    &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38], [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12], [205, 149, 12])) / 255</span>
-<span class="sd">    &gt;&gt;&gt; f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r], modelcolor = f16colors)</span>
-
-<span class="sd">  .. figure:: /_examples/rigidbody/rb_intro_ap.gif</span>
-
-<span class="sd">  &#39;&#39;&#39;</span>
-  <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">psi</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">p</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">q</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">r</span><span class="p">:</span> <span class="nb">float</span>
-  
-
-  <span class="n">_ixx</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="n">_iyy</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="n">_izz</span> <span class="o">=</span> <span class="mi">0</span>
-
-  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="mi">0</span>
-                      <span class="p">,</span>  <span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
-                          <span class="p">):</span> 
-
-    <span class="n">rbargs</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span> <span class="n">vx</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="n">vy</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;vz&#39;</span><span class="p">,</span> <span class="n">vz</span><span class="p">)</span> 
-    
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> 
-    <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> 
+<span class="sd">    When the initial values are not known at the stage of constructing</span>
+<span class="sd">    the state object, it&#39;s possible to pass zeros and override them later</span>
+<span class="sd">    by direct assignment of the state variable with a `0` suffix.</span>
+<span class="sd">    See more at :attr:`state.X0 &lt;c4dynamics.states.state.state.X0&gt;`.</span>
 
 
-    <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">rbargs</span><span class="p">)</span>
-
-
-  <span class="nd">@property</span>
-  <span class="k">def</span><span class="w"> </span><span class="nf">I</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; </span>
-<span class="sd">    Gets and sets the array of moments of inertia. </span>
-
-<span class="sd">    .. math:: </span>
-
-<span class="sd">      I = [I_{xx}, I_{yy}, I_{zz}]</span>
-
-<span class="sd">      </span>
-<span class="sd">    Default: :math:`I = [0, 0, 0]`</span>
-
-<span class="sd">    </span>
 <span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    I : numpy.array or list</span>
-<span class="sd">        An array of three moments of inertia about each </span>
-<span class="sd">        one of the axes :math:`([I_{xx}, I_{yy}, I_{zz}])`.</span>
+<span class="sd">    ==========</span>
 
-<span class="sd">        </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array</span>
-<span class="sd">        An array of the three moments of inertia :math:`[I_{xx}, I_{yy}, I_{zz}]`.</span>
+<span class="sd">    mass : float</span>
+<span class="sd">        The mass of the datapoint</span>
+<span class="sd">    I : [float, float, float]</span>
+<span class="sd">        An array of moments of inertia</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    ========</span>
+<span class="sd">    .lib</span>
+<span class="sd">    .rotmat</span>
+<span class="sd">    .state</span>
+<span class="sd">    .eqm</span>
 
 
-<span class="sd">    Example </span>
-<span class="sd">    -------</span>
+<span class="sd">    Example</span>
+<span class="sd">    =======</span>
 
-<span class="sd">    The moment of inertia </span>
-<span class="sd">    determines how much torque is required for a </span>
-<span class="sd">    desired angular acceleration about a rotational axis. </span>
+<span class="sd">    A simplified model of an aircraft autopilot is given by:</span>
 
-<span class="sd">    </span>
-<span class="sd">    In this example, two physical pendulums with the same </span>
-<span class="sd">    initial conditions </span>
-<span class="sd">    show the effect of different moments of inertia </span>
-<span class="sd">    on the time period of an oscillation: </span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    .. math:: </span>
+<span class="sd">      \\dot{z}(t) = 5 \\cdot \\theta(t)</span>
 
-<span class="sd">      T = 2 \\cdot \\pi \\cdot \\sqrt{{I \\over m \\cdot g \\cdot l}}</span>
-<span class="sd">    </span>
-<span class="sd">    where here :math:`m` is the mass :math:`m = 1`, </span>
-<span class="sd">    :math:`l` is the length from the center of mass :math:`l = 1`, </span>
-<span class="sd">    :math:`g` is the gravity acceleration, </span>
-<span class="sd">    and :math:`I` is the moment of inertia about :math:`y`, :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`</span>
+<span class="sd">      \\dot{\\theta}(t) = -0.5 \\cdot \\theta(t) - 0.1 \\cdot z(t)</span>
 
-<span class="sd">    </span>
-<span class="sd">    Import required packages: </span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`z` is the deviation of the aircraft from the required altitude</span>
+<span class="sd">    - :math:`\\theta` is the pitch angle</span>
+
+<span class="sd">    The aircraft is represented by a `rigidbody` object.</span>
+<span class="sd">    `scipy&#39;s odeint` is employed to solve the</span>
+<span class="sd">    dynamics equations and update the state vector `X`.</span>
+
+
+<span class="sd">    import required packages:</span>
 
 <span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
-<span class="sd">      &gt;&gt;&gt; from matplotlib import pyplot as plt  </span>
+<span class="sd">      &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
 <span class="sd">      &gt;&gt;&gt; from scipy.integrate import odeint</span>
-<span class="sd">      &gt;&gt;&gt; import numpy as np </span>
+<span class="sd">      &gt;&gt;&gt; import numpy as np</span>
 
-<span class="sd">      </span>
-<span class="sd">    Settings and initial condtions: </span>
 
-<span class="sd">    .. code::</span>
-
-<span class="sd">      &gt;&gt;&gt; b = 0.5</span>
-<span class="sd">      &gt;&gt;&gt; dt = 0.01 </span>
-<span class="sd">      &gt;&gt;&gt; g = c4d.g_ms2 </span>
-<span class="sd">      &gt;&gt;&gt; theta0 = 80 * c4d.d2r</span>
-<span class="sd">      &gt;&gt;&gt; rb05  = c4d.rigidbody(theta = theta0)</span>
-<span class="sd">      &gt;&gt;&gt; rb05.I = [0, .5, 0] </span>
-<span class="sd">      &gt;&gt;&gt; rb005 = c4d.rigidbody(theta = theta0)</span>
-<span class="sd">      &gt;&gt;&gt; rb005.I = [0, .05, 0]</span>
-
-<span class="sd">      </span>
-
-<span class="sd">    Physical pendulum dynamics: </span>
+<span class="sd">    Settings and initial conditions:</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; def pendulum(yin, t, Iyy):</span>
-<span class="sd">      ...   theta, q = yin[7], yin[10]</span>
-<span class="sd">      ...   yout = np.zeros(12)</span>
-<span class="sd">      ...   yout[7] = q</span>
-<span class="sd">      ...   yout[10] = -g * c4d.sin(theta) / Iyy - b * q</span>
-<span class="sd">      ...   return yout</span>
+<span class="sd">      &gt;&gt;&gt; dt, tf = 0.01, 15</span>
+<span class="sd">      &gt;&gt;&gt; tspan = np.arange(0, tf, dt)</span>
+<span class="sd">      &gt;&gt;&gt; A = np.zeros((12, 12))</span>
+<span class="sd">      &gt;&gt;&gt; A[2, 7] =  5</span>
+<span class="sd">      &gt;&gt;&gt; A[7, 2] = -0.1</span>
+<span class="sd">      &gt;&gt;&gt; A[7, 7] = -0.5</span>
+<span class="sd">      &gt;&gt;&gt; f16 = c4d.rigidbody(z = 1, theta = 0)</span>
+<span class="sd">      &gt;&gt;&gt; for t in tspan:</span>
+<span class="sd">      ...   f16.X = odeint(lambda y, t: A @ y, f16.X, [t, t + dt])[-1]</span>
+<span class="sd">      ...   f16.store(t)</span>
 
-<span class="sd">      </span>
-
-<span class="sd">    Main loop </span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; for ti in np.arange(0, 5, dt):</span>
-<span class="sd">      ...   # Iyy = 0.5 </span>
-<span class="sd">      ...   rb05.X = odeint(pendulum, rb05.X, [ti, ti + dt], (rb05.I[1],))[1]</span>
-<span class="sd">      ...   rb05.store(ti)</span>
-<span class="sd">      ...   # Iyy = 0.05 </span>
-<span class="sd">      ...   rb005.X = odeint(pendulum, rb005.X, [ti, ti + dt], (rb005.I[1],))[1]</span>
-<span class="sd">      ...   rb005.store(ti)</span>
+<span class="sd">      &gt;&gt;&gt; _, ax = plt.subplots(2, 1)</span>
+<span class="sd">      &gt;&gt;&gt; f16.plot(&#39;z&#39;, ax = ax[0])   # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; ax[0].set(xlabel = &#39;&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; f16.plot(&#39;theta&#39;, ax = ax[1], scale = c4d.r2d)</span>
 
-<span class="sd">      </span>
-<span class="sd">    Plot results:</span>
+<span class="sd">    .. figure:: /_examples/rigidbody/intro_f16_autopilot.png</span>
+
+<span class="sd">    The :meth:`animate` method allows the user to play the attitude</span>
+<span class="sd">    histories given a 3D model (requires installation of `open3D`).</span>
+
+<span class="sd">    The model in the example can be fetched using the c4dynamics datasets module</span>
+<span class="sd">    (see :mod:`c4dynamics.datasets`):</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; rb05.plot(&#39;theta&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; rb005.plot(&#39;theta&#39;, ax = plt.gca(), color = &#39;c&#39;)</span>
-<span class="sd">    </span>
-<span class="sd">    .. figure:: /_examples/rigidbody/Iyy_pendulum.png</span>
+<span class="sd">      &gt;&gt;&gt; modelpath = c4d.datasets.d3_model(&#39;f16&#39;)</span>
+<span class="sd">      Fetched successfully</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38], [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12], [205, 149, 12])) / 255</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r], modelcolor = f16colors)</span>
+
+<span class="sd">    .. figure:: /_examples/rigidbody/rb_intro_ap.gif</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">psi</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">p</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">q</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">r</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="n">_ixx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_iyy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_izz</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="n">rbargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;vx&quot;</span><span class="p">,</span> <span class="n">vx</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;vy&quot;</span><span class="p">,</span> <span class="n">vy</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;vz&quot;</span><span class="p">,</span> <span class="n">vz</span><span class="p">)</span>
+
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;psi&quot;</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="n">rbargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+        <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">rbargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">I</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: E741,E743</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets and sets the array of moments of inertia.</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">          I = [I_{xx}, I_{yy}, I_{zz}]</span>
 
 
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_ixx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iyy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_izz</span><span class="p">])</span> 
-  
-  <span class="nd">@I</span><span class="o">.</span><span class="n">setter</span>
-  <span class="k">def</span><span class="w"> </span><span class="nf">I</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span> 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_ixx</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   
-    <span class="bp">self</span><span class="o">.</span><span class="n">_iyy</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  
-    <span class="bp">self</span><span class="o">.</span><span class="n">_izz</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  
+<span class="sd">        Default: :math:`I = [0, 0, 0]`</span>
 
 
-  <span class="nd">@property</span>
-  <span class="k">def</span><span class="w"> </span><span class="nf">angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; </span>
-<span class="sd">    Returns an array of Euler angles. </span>
-<span class="sd">     </span>
-<span class="sd">    </span>
-<span class="sd">    .. math:: </span>
-<span class="sd">      </span>
-<span class="sd">      angles = [\\varphi, \\theta, \\psi]</span>
-
-<span class="sd">    </span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array </span>
-<span class="sd">        An array of three Euler angles, about each one of the axes </span>
-<span class="sd">        :math:`([\\varphi, \\theta, \\psi])` </span>
-<span class="sd">  </span>
-<span class="sd">        </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    .. code:: </span>
-<span class="sd">    </span>
-<span class="sd">      &gt;&gt;&gt; rb = c4d.rigidbody(phi = 135)</span>
-<span class="sd">      &gt;&gt;&gt; rb.angles # doctest: +NUMPY_FORMAT </span>
-<span class="sd">      [135  0  0]</span>
-<span class="sd">    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">])</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        I : numpy.array or list</span>
+<span class="sd">            An array of three moments of inertia about each</span>
+<span class="sd">            one of the axes :math:`([I_{xx}, I_{yy}, I_{zz}])`.</span>
 
 
-  <span class="nd">@property</span>
-  <span class="k">def</span><span class="w"> </span><span class="nf">ang_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; </span>
-<span class="sd">    Returns an array of angular rates. </span>
-<span class="sd">     </span>
-<span class="sd">    .. math:: </span>
-
-<span class="sd">      angular rates = [p, q, r]</span>
-
-<span class="sd">    </span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.array </span>
-<span class="sd">        An array of three angular rates of the body axes </span>
-<span class="sd">        :math:`([p, q, r])` </span>
-<span class="sd">  </span>
-<span class="sd">        </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    .. code:: </span>
-
-<span class="sd">      &gt;&gt;&gt; q0 = 30</span>
-<span class="sd">      &gt;&gt;&gt; rb = c4d.rigidbody(q = q0)</span>
-<span class="sd">      &gt;&gt;&gt; rb.ang_rates # doctest: +NUMPY_FORMAT </span>
-<span class="sd">      [0  30  0]</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">])</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.array</span>
+<span class="sd">            An array of the three moments of inertia :math:`[I_{xx}, I_{yy}, I_{zz}]`.</span>
 
 
-  <span class="nd">@property</span>
-  <span class="k">def</span><span class="w"> </span><span class="nf">BR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        The moment of inertia</span>
+<span class="sd">        determines how much torque is required for a</span>
+<span class="sd">        desired angular acceleration about a rotational axis.</span>
+
+
+<span class="sd">        In this example, two physical pendulums with the same</span>
+<span class="sd">        initial conditions</span>
+<span class="sd">        show the effect of different moments of inertia</span>
+<span class="sd">        on the time period of an oscillation:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">          T = 2 \\cdot \\pi \\cdot \\sqrt{{I \\over m \\cdot g \\cdot l}}</span>
+
+<span class="sd">        where here :math:`m` is the mass :math:`m = 1`,</span>
+<span class="sd">        :math:`l` is the length from the center of mass :math:`l = 1`,</span>
+<span class="sd">        :math:`g` is the gravity acceleration,</span>
+<span class="sd">        and :math:`I` is the moment of inertia about :math:`y`, :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`</span>
+
+
+<span class="sd">        Import required packages:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">          &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">          &gt;&gt;&gt; from scipy.integrate import odeint</span>
+<span class="sd">          &gt;&gt;&gt; import numpy as np</span>
+
+
+<span class="sd">        Settings and initial condtions:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; b = 0.5</span>
+<span class="sd">          &gt;&gt;&gt; dt = 0.01</span>
+<span class="sd">          &gt;&gt;&gt; g = c4d.g_ms2</span>
+<span class="sd">          &gt;&gt;&gt; theta0 = 80 * c4d.d2r</span>
+<span class="sd">          &gt;&gt;&gt; rb05  = c4d.rigidbody(theta = theta0)</span>
+<span class="sd">          &gt;&gt;&gt; rb05.I = [0, .5, 0]</span>
+<span class="sd">          &gt;&gt;&gt; rb005 = c4d.rigidbody(theta = theta0)</span>
+<span class="sd">          &gt;&gt;&gt; rb005.I = [0, .05, 0]</span>
+
+
+
+<span class="sd">        Physical pendulum dynamics:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; def pendulum(yin, t, Iyy):</span>
+<span class="sd">          ...   theta, q = yin[7], yin[10]</span>
+<span class="sd">          ...   yout = np.zeros(12)</span>
+<span class="sd">          ...   yout[7] = q</span>
+<span class="sd">          ...   yout[10] = -g * c4d.sin(theta) / Iyy - b * q</span>
+<span class="sd">          ...   return yout</span>
+
+
+
+<span class="sd">        Main loop</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; for ti in np.arange(0, 5, dt):</span>
+<span class="sd">          ...   # Iyy = 0.5</span>
+<span class="sd">          ...   rb05.X = odeint(pendulum, rb05.X, [ti, ti + dt], (rb05.I[1],))[1]</span>
+<span class="sd">          ...   rb05.store(ti)</span>
+<span class="sd">          ...   # Iyy = 0.05</span>
+<span class="sd">          ...   rb005.X = odeint(pendulum, rb005.X, [ti, ti + dt], (rb005.I[1],))[1]</span>
+<span class="sd">          ...   rb005.store(ti)</span>
+
+
+<span class="sd">        Plot results:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; rb05.plot(&#39;theta&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; rb005.plot(&#39;theta&#39;, ax = plt.gca(), color = &#39;c&#39;)</span>
+
+<span class="sd">        .. figure:: /_examples/rigidbody/Iyy_pendulum.png</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_ixx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iyy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_izz</span><span class="p">])</span>
+
+    <span class="nd">@I</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">I</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>  <span class="c1"># noqa: E741,E743</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ixx</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iyy</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_izz</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an array of Euler angles.</span>
+
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">          angles = [\\varphi, \\theta, \\psi]</span>
+
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.array</span>
+<span class="sd">            An array of three Euler angles, about each one of the axes</span>
+<span class="sd">            :math:`([\\varphi, \\theta, \\psi])`</span>
+
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; rb = c4d.rigidbody(phi = 135)</span>
+<span class="sd">          &gt;&gt;&gt; rb.angles # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [135  0  0]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ang_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an array of angular rates.</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">          angular rates = [p, q, r]</span>
+
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.array</span>
+<span class="sd">            An array of three angular rates of the body axes</span>
+<span class="sd">            :math:`([p, q, r])`</span>
+
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; q0 = 30</span>
+<span class="sd">          &gt;&gt;&gt; rb = c4d.rigidbody(q = q0)</span>
+<span class="sd">          &gt;&gt;&gt; rb.ang_rates # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0  30  0]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">BR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Returns a Body-from-Reference Direction Cosine Matrix (DCM). </span>
 
 
@@ -867,14 +862,13 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; v_body  # doctest: +NUMPY_FORMAT  </span>
 <span class="sd">      [0.707  -0.707  0.0]</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">dcm321</span><span class="p">(</span><span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">dcm321</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">)</span>
 
-
-  <span class="nd">@property</span> 
-  <span class="k">def</span><span class="w"> </span><span class="nf">RB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
-<span class="w">    </span><span class="sd">&#39;&#39;&#39; </span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Returns a Reference-from-Body Direction Cosine Matrix (DCM). </span>
 
 <span class="sd">    </span>
@@ -937,136 +931,135 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; v_inertial   # doctest: +NUMPY_FORMAT </span>
 <span class="sd">      [2.0  0.0  0.0]</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BR</span><span class="p">)</span>
-
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BR</span><span class="p">)</span>
 
 <div class="viewcode-block" id="rigidbody.inteqm">
 <a class="viewcode-back" href="../../../../api/generated/rb/c4dynamics.states.lib.rigidbody.rigidbody.inteqm.html#c4dynamics.states.lib.rigidbody.rigidbody.inteqm">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">inteqm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="c1"># type: ignore </span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Advances the state vector, :attr:`rigidbody.X &lt;c4dynamics.states.state.state.X&gt;`, </span>
-<span class="sd">    with respect to the input</span>
-<span class="sd">    forces and moments on a single step of time, `dt`.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inteqm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Advances the state vector, :attr:`rigidbody.X &lt;c4dynamics.states.state.state.X&gt;`,</span>
+<span class="sd">        with respect to the input</span>
+<span class="sd">        forces and moments on a single step of time, `dt`.</span>
 
-<span class="sd">    Integrates equations of six degrees motion using the Runge-Kutta method. </span>
+<span class="sd">        Integrates equations of six degrees motion using the Runge-Kutta method.</span>
 
-<span class="sd">    This method numerically integrates the equations of motion for a dynamic system</span>
-<span class="sd">    using the fourth-order Runge-Kutta method as given by </span>
-<span class="sd">    :func:`eqm.int6 &lt;c4dynamics.eqm.integrate.int6&gt;`. </span>
+<span class="sd">        This method numerically integrates the equations of motion for a dynamic system</span>
+<span class="sd">        using the fourth-order Runge-Kutta method as given by</span>
+<span class="sd">        :func:`eqm.int6 &lt;c4dynamics.eqm.integrate.int6&gt;`.</span>
 
-<span class="sd">    The derivatives of the equations are of six dimensional motion as </span>
-<span class="sd">    given by </span>
-<span class="sd">    :py:func:`eqm.eqm6 &lt;c4dynamics.eqm.derivs.eqm6&gt;`. </span>
-<span class="sd">    </span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    forces : numpy.array or list</span>
-<span class="sd">        An external forces vector acting on the body, `forces = [Fx, Fy, Fz]`  </span>
-<span class="sd">    moments : numpy.array or list</span>
-<span class="sd">        An external moments vector acting on the body, `moments = [Mx, My, Mz]`</span>
-<span class="sd">    dt : float or int</span>
-<span class="sd">        Interval time step for integration.</span>
+<span class="sd">        The derivatives of the equations are of six dimensional motion as</span>
+<span class="sd">        given by</span>
+<span class="sd">        :py:func:`eqm.eqm6 &lt;c4dynamics.eqm.derivs.eqm6&gt;`.</span>
 
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    out : numpy.float64</span>
-<span class="sd">        An acceleration array at the final time step.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forces : numpy.array or list</span>
+<span class="sd">            An external forces vector acting on the body, `forces = [Fx, Fy, Fz]`</span>
+<span class="sd">        moments : numpy.array or list</span>
+<span class="sd">            An external moments vector acting on the body, `moments = [Mx, My, Mz]`</span>
+<span class="sd">        dt : float or int</span>
+<span class="sd">            Interval time step for integration.</span>
 
 
-<span class="sd">    Warning </span>
-<span class="sd">    -------  </span>
-<span class="sd">    This method is not recommanded when the vectors </span>
-<span class="sd">    of forces or moments depend on the state variables.</span>
-<span class="sd">    Since the vectors of forces and moments are provided once at the </span>
-<span class="sd">    entrance to the integration, they remain constant </span>
-<span class="sd">    for the entire steps. </span>
-<span class="sd">    Therefore, when the forces or moments depend on the state variables </span>
-<span class="sd">    the results of this method are not accurate and may lead to instability.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.float64</span>
+<span class="sd">            An acceleration array at the final time step.</span>
 
-<span class="sd">    </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    A torque is applied by spacecraft thrusters to stabilize </span>
-<span class="sd">    the roll in a constant rate.  </span>
 
-<span class="sd">    Import required packages: </span>
+<span class="sd">        Warning</span>
+<span class="sd">        -------</span>
+<span class="sd">        This method is not recommanded when the vectors</span>
+<span class="sd">        of forces or moments depend on the state variables.</span>
+<span class="sd">        Since the vectors of forces and moments are provided once at the</span>
+<span class="sd">        entrance to the integration, they remain constant</span>
+<span class="sd">        for the entire steps.</span>
+<span class="sd">        Therefore, when the forces or moments depend on the state variables</span>
+<span class="sd">        the results of this method are not accurate and may lead to instability.</span>
 
-<span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">      &gt;&gt;&gt; from matplotlib import pyplot as plt </span>
-<span class="sd">      &gt;&gt;&gt; import numpy as np </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        A torque is applied by spacecraft thrusters to stabilize</span>
+<span class="sd">        the roll in a constant rate.</span>
 
-<span class="sd">    </span>
-<span class="sd">    Settings and initial conditions: </span>
+<span class="sd">        Import required packages:</span>
 
-<span class="sd">    .. code::</span>
+<span class="sd">        .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; dt = 0.001</span>
-<span class="sd">      &gt;&gt;&gt; torque = [0.1, 0, 0]</span>
-<span class="sd">      &gt;&gt;&gt; rb = c4d.rigidbody()</span>
-<span class="sd">      &gt;&gt;&gt; rb.I = [0.5, 0, 0]  # Moment of inertia about x</span>
+<span class="sd">          &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">          &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">          &gt;&gt;&gt; import numpy as np</span>
 
-<span class="sd">      </span>
-<span class="sd">    Main loop: </span>
 
-<span class="sd">    .. code::</span>
+<span class="sd">        Settings and initial conditions:</span>
 
-<span class="sd">      &gt;&gt;&gt; for ti in np.arange(0, 5, dt):</span>
-<span class="sd">      ...   rb.inteqm(np.zeros(3), torque, dt)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      ...   if rb.p &gt;= 10 * c4d.d2r:</span>
-<span class="sd">      ...     torque = [0, 0, 0]</span>
-<span class="sd">      ...   rb.store(ti)  </span>
+<span class="sd">        .. code::</span>
 
-<span class="sd">      </span>
-<span class="sd">    Plot results: </span>
+<span class="sd">          &gt;&gt;&gt; dt = 0.001</span>
+<span class="sd">          &gt;&gt;&gt; torque = [0.1, 0, 0]</span>
+<span class="sd">          &gt;&gt;&gt; rb = c4d.rigidbody()</span>
+<span class="sd">          &gt;&gt;&gt; rb.I = [0.5, 0, 0]  # Moment of inertia about x</span>
 
-<span class="sd">    .. code:: </span>
 
-<span class="sd">      &gt;&gt;&gt; rb.plot(&#39;p&#39;)</span>
+<span class="sd">        Main loop:</span>
 
-<span class="sd">    .. figure:: /_examples/rigidbody/inteqm_rollstable.png</span>
-<span class="sd">        </span>
-<span class="sd">    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># from c4dynamics.eqm import eqm6</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">eqm</span><span class="o">.</span><span class="n">int6</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">derivs_out</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">acc</span> </div>
+<span class="sd">        .. code::</span>
 
+<span class="sd">          &gt;&gt;&gt; for ti in np.arange(0, 5, dt):</span>
+<span class="sd">          ...   rb.inteqm(np.zeros(3), torque, dt)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   if rb.p &gt;= 10 * c4d.d2r:</span>
+<span class="sd">          ...     torque = [0, 0, 0]</span>
+<span class="sd">          ...   rb.store(ti)</span>
+
+
+<span class="sd">        Plot results:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; rb.plot(&#39;p&#39;)</span>
+
+<span class="sd">        .. figure:: /_examples/rigidbody/inteqm_rollstable.png</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># from c4dynamics.eqm import eqm6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">eqm</span><span class="o">.</span><span class="n">int6</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">moments</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">derivs_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">acc</span></div>
 
 
 <div class="viewcode-block" id="rigidbody.animate">
 <a class="viewcode-back" href="../../../../api/generated/rb/c4dynamics.states.lib.rigidbody.rigidbody.animate.html#c4dynamics.states.lib.rigidbody.rigidbody.animate">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelpath</span><span class="p">,</span> <span class="n">angle0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> 
-              <span class="p">,</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span> <span class="o">=</span> <span class="mf">1e-3</span> 
-                <span class="p">,</span> <span class="n">savedir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cbackground</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">modelpath</span><span class="p">,</span>
+        <span class="n">angle0</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">modelcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">savedir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cbackground</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">):</span>
 
-    <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelpath</span><span class="p">,</span> <span class="n">angle0</span><span class="p">,</span> <span class="n">modelcolor</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">cbackground</span><span class="p">)</span></div>
+        <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelpath</span><span class="p">,</span> <span class="n">angle0</span><span class="p">,</span> <span class="n">modelcolor</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">cbackground</span><span class="p">)</span></div>
 </div>
 
 
 
-
-<span class="n">rigidbody</span><span class="o">.</span><span class="n">animate</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">animate</span><span class="o">.</span><span class="vm">__doc__</span> 
-
+<span class="n">rigidbody</span><span class="o">.</span><span class="n">animate</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">animate</span><span class="o">.</span><span class="vm">__doc__</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>
-    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
-  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;__main__.rigidbody.animate&quot;</span><span class="p">,</span> <span class="s2">&quot;__main__.rigidbody&quot;</span><span class="p">])</span>
-  
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>  <span class="c1"># noqa: F401</span>
 
-
-
+        <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;__main__.rigidbody.animate&quot;</span><span class="p">,</span> <span class="s2">&quot;__main__.rigidbody&quot;</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -1114,7 +1107,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>
