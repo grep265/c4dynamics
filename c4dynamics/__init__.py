@@ -30,23 +30,23 @@ rotmat
 """
 
 import os
-import sys 
+import sys
 import doctest
 import warnings
 import subprocess
-import numpy as np 
+import numpy as np
 
 #
 # body objects
 ##
-from . import rotmat as rotmat 
-from .states.lib.pixelpoint import pixelpoint as pixelpoint 
+from . import rotmat as rotmat
+from .states.lib.pixelpoint import pixelpoint as pixelpoint
 from .states.lib.datapoint import datapoint as datapoint
-from .states.lib.datapoint import create as create 
+from .states.lib.datapoint import create as create
 from .states.state import state as state
 
 # rotmat is required to importing rigidbody:
-from .states.lib.rigidbody import rigidbody as rigidbody # rotmat is required to import rigidbody.        
+from .states.lib.rigidbody import rigidbody as rigidbody  # rotmat is required to import rigidbody.
 
 #
 # routines
@@ -56,14 +56,14 @@ from . import eqm as eqm
 #
 # utils
 ##
-from .utils.const import * # noqa: F403 
-from .utils.math import * # noqa: F403
+from .utils.const import *  # noqa: F403
+from .utils.math import *  # noqa: F403
 from .utils.gen_gif import gif as gif
 from .utils.cprint import cprint as cprint
 from .utils.plottools import plotdefaults as plotdefaults
 from .utils.plottools import _figdef as _figdef
 from .utils.plottools import _legdef as _legdef
-from .utils import tictoc as tictoc 
+from .utils import tictoc as tictoc
 from .utils.tictoc import tic as tic
 from .utils.tictoc import toc as toc
 from .utils._struct import struct as struct
@@ -221,7 +221,8 @@ def rundoctests(module, exclude_functions=[]):
     import doctest
     import contextlib
     import os
-    from c4dynamics import IgnoreOutputChecker #, cprint
+    from c4dynamics import IgnoreOutputChecker  # , cprint
+
     # from matplotlib import pyplot as plt
     from pathlib import Path
 

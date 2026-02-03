@@ -601,14 +601,14 @@ if __name__ == "__main__":
     current_module = sys.modules[__name__]
 
     try:
-        import open3d as o3d   # OPEN3D AVAILABLE   # noqa: F401
+        import open3d as o3d  # OPEN3D AVAILABLE   # noqa: F401
     except ImportError:  # OPEN3D UNAVAILABLE
         # remove the doctests for d3_model if open3d is not available
         if hasattr(current_module, "d3_model"):
             current_module.d3_model.__doc__ = ""  # clears doctest examples
 
     try:
-        import cv2 # noqa: F401
+        import cv2  # noqa: F401
     except ImportError:
         if hasattr(current_module, "video"):
             current_module.video.__doc__ = ""  # clears doctest examples

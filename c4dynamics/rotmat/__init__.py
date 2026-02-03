@@ -19,7 +19,7 @@ import sys
 
 sys.path.append(".")
 
-from c4dynamics.rotmat.rotmat import rotx as rotx 
+from c4dynamics.rotmat.rotmat import rotx as rotx
 from c4dynamics.rotmat.rotmat import roty as roty
 from c4dynamics.rotmat.rotmat import rotz as rotz
 from c4dynamics.rotmat.rotmat import dcm321 as dcm321

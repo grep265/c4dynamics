@@ -1,4 +1,3 @@
-
 import sys
 
 sys.path.append(".")
@@ -6,7 +5,6 @@ sys.path.append(".")
 from c4dynamics.filters.kalman import kalman as kalman
 from c4dynamics.filters.ekf import ekf as ekf
 from c4dynamics.filters.lowpass import lowpass as lowpass
-
 
 """
 
@@ -114,7 +112,6 @@ that same results could be achieved by using discrete matrices.
 """
 
 if __name__ == "__main__":
-    
 
     from c4dynamics import rundoctests
 

@@ -89,27 +89,60 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
 
 """
 sin = np.sin
+
+
 # sind = lambda n: np.sin(n * c4d.d2r)
-def sind(n): return np.sin(n * c4d.d2r)
+def sind(n):
+    return np.sin(n * c4d.d2r)
+
+
 cos = np.cos
+
+
 # cosd = lambda n: np.cos(n * c4d.d2r)
-def cosd(n): return np.cos(n * c4d.d2r)
+def cosd(n):
+    return np.cos(n * c4d.d2r)
+
+
 tan = np.tan
+
+
 # tand = lambda n: np.tan(n * c4d.d2r)
-def tand(n): return np.tan(n * c4d.d2r)
+def tand(n):
+    return np.tan(n * c4d.d2r)
+
 
 asin = np.arcsin
+
+
 # asind = lambda n: np.arcsin(n) * c4d.r2d
-def asind(n): return np.arcsin(n) * c4d.r2d
+def asind(n):
+    return np.arcsin(n) * c4d.r2d
+
+
 acos = np.arccos
+
+
 # acosd = lambda n: np.arccos(n) * c4d.r2d
-def acosd(n): return np.arccos(n) * c4d.r2d
+def acosd(n):
+    return np.arccos(n) * c4d.r2d
+
+
 atan = np.arctan
+
+
 # atand = lambda n: np.arctan(n) * c4d.r2d
-def atand(n): return np.arctan(n) * c4d.r2d
+def atand(n):
+    return np.arctan(n) * c4d.r2d
+
+
 atan2 = np.arctan2  # atan2(y, x)
+
+
 # atan2d = lambda y, x: np.arctan2(y, x) * c4d.r2d  # atan2(y, x)
-def atan2d(y, x): return np.arctan2(y, x) * c4d.r2d
+def atan2d(y, x):
+    return np.arctan2(y, x) * c4d.r2d
+
 
 sqrt = np.sqrt
 norm = np.linalg.norm
@@ -119,7 +152,8 @@ norm = np.linalg.norm
 # XXX it doesnt preserve anything. just a suggested implementation to make in both sides.
 # no more it also doesnt generate normal distribution. see also the test test_mrandn currently disabled.
 # mrandn = lambda n=1: np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
-def mrandn(n = 1): return np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
+def mrandn(n=1):
+    return np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
 
 
 if __name__ == "__main__":

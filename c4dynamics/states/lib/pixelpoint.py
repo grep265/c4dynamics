@@ -721,7 +721,7 @@ if __name__ == "__main__":
     current_module = sys.modules[__name__]
 
     try:
-        import cv2 # noqa: F401
+        import cv2  # noqa: F401
     except ImportError:
         # if hasattr(current_module, "yolov3"):
         current_module.pixelpoint.__doc__ = ""  # clears doctest examples
