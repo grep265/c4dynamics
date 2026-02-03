@@ -34,9 +34,8 @@ untracked/
 build/
 c4dynamics.egg-info/
 dist/
-# source
 .venv (Ignored Item Conflict)/
-c4dynamics-2.0.3
+c4dynamics-*/**
 
 # files in the base 
 # =================
@@ -132,3 +131,4 @@ ChatGPT Image Jan 7, 2026, 07_24_34 PM.png
 state objects vs numpy arrays.pdf
 state objects vs numpy arrays.pptx
 docs/source/programs/mpc-steering_appendix.ipynb
+
