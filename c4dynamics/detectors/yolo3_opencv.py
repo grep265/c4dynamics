@@ -1,4 +1,5 @@
-import os, sys 
+import os
+import sys 
 # optional vision modules
 try:
     import cv2

@@ -2,7 +2,8 @@
 # pragma: no cover
 
 # import time 
-import os, sys 
+import os
+import sys 
 import argparse
 sys.path.append('')
 sys.path.append('examples')
@@ -21,7 +22,7 @@ import numpy as np
 import pickle 
 # from scipy.interpolate import interp1d 
 
-from programs._mtracks import mTracks, Trkstate 
+from programs._mtracks import Trkstate 
 # import multiprocessing 
 
 def plottracks(fol, trkid = None, block = True): 
@@ -262,7 +263,7 @@ if __name__ == '__main__':
 
 
   if args.debug: 
-    input(f'Run python debugger using process id. \nSelect the pyenv process. \nPress to continue and wait')
+    input('Run python debugger using process id. \nSelect the pyenv process. \nPress to continue and wait')
   args_dict.pop('debug')
 
   videoname = args.vidname

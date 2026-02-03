@@ -108,8 +108,8 @@ def show_warning(message, category, filename, lineno, file = None, line = None):
     # Apply formatting for c4warn warnings
 
     # FIXME suppressing is absolutely not working. 
-    message1 = str(message) + f"\n"
-    message2 = f"To suppress c4dynamics' warnings, run: import warnings, import c4dynamics as c4d, warnings.simplefilter('ignore', c4d.c4warn)\n"
+    message1 = str(message) + "\n"
+    message2 = "To suppress c4dynamics' warnings, run: import warnings, import c4dynamics as c4d, warnings.simplefilter('ignore', c4d.c4warn)\n"
 
     print(f"\n{YELLOW}{message1}{RESET}{message2} (File: {filename}, Line: {lineno})")
   else:
@@ -182,7 +182,7 @@ class IgnoreOutputChecker(doctest.OutputChecker):
       return np.fromstring(text, sep = ',')
     
     except ValueError:
-      print(f"\n \033[31m DOCSTRING ERROR: Could not convert to an array \033[0m", file = sys.stderr)
+      print("\n \033[31m DOCSTRING ERROR: Could not convert to an array \033[0m", file = sys.stderr)
       return None  # Return None if conversion fails
 
 
@@ -211,7 +211,9 @@ def testmod_filtering(module, filter_functions = [], **kwargs):
 
 
 def rundoctests(module, exclude_functions = []):
-  import doctest, contextlib, os
+  import doctest
+  import contextlib
+  import os
   from c4dynamics import IgnoreOutputChecker, cprint
   from matplotlib import pyplot as plt
   from pathlib import Path 

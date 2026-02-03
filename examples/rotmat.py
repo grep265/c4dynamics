@@ -9,7 +9,7 @@ from c4dynamics.rotmat import rotx
 from c4dynamics.rotmat import roty
 from c4dynamics.rotmat import rotz
 from c4dynamics.rotmat import dcm321euler
-from c4dynamics.rotmat import dcm321euler, dcm321
+from c4dynamics.rotmat import dcm321
 
 
 c4d.cprint('rot x', 'y')

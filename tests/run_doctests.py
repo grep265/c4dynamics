@@ -1,8 +1,8 @@
 # type: ignore
 
-import os, sys 
+import os
+import sys 
 import subprocess
-from io import StringIO
 
 sys.path.append('.')
 import c4dynamics as c4d 

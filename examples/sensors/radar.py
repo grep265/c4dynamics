@@ -1,6 +1,7 @@
 # type: ignore
 
-import sys, os 
+import sys
+import os 
 sys.path.append('.')
 import c4dynamics as c4d
 
@@ -17,7 +18,6 @@ from matplotlib import pyplot as plt
 from scipy.integrate import odeint 
 plt.style.use('dark_background')  
 plt.switch_backend('TkAgg')
-from matplotlib.ticker import ScalarFormatter
 
 # from PIL import Image
 # import cProfile 

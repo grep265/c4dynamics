@@ -5,7 +5,6 @@ import numpy as np
 import sys 
 sys.path.append('.')
 from c4dynamics import state, rigidbody  # Adjust import according to your project structure
-from c4dynamics.sensors.seeker import seeker
 from c4dynamics.sensors.radar import radar  # Replace with the actual module where radar is defined
 
 class TestRadar(unittest.TestCase):

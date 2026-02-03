@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch, call
-import os
 import sys 
 sys.path.append('.')
 import c4dynamics as c4d  

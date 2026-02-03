@@ -5,7 +5,8 @@ from pptx import Presentation
 from pptx.util import Inches
 import argparse
 import natsort
-import os, re
+import os
+import re
 
 
 def slides_gen(fol): 
@@ -58,7 +59,7 @@ if __name__ == '__main__':
 
 
   if args.debug: 
-    input(f'Run python debugger using process id. \nSelect the pyenv process. \nPress to continue and wait')
+    input('Run python debugger using process id. \nSelect the pyenv process. \nPress to continue and wait')
   args_dict.pop('debug')
 
   slides_gen(**args_dict)

@@ -1,4 +1,5 @@
-import sys, os 
+import sys
+import os 
 sys.path.append('.')
 
 
@@ -10,7 +11,8 @@ from c4dynamics.eqm.integrate import *
 
 if __name__ == "__main__":
 
-  import doctest, contextlib
+  import doctest
+  import contextlib
   from c4dynamics import IgnoreOutputChecker, cprint
   
   # Register the custom OutputChecker

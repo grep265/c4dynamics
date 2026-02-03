@@ -1,6 +1,7 @@
 # type: ignore
 
-import sys, os
+import sys
+import os
 sys.path.append('')
 import c4dynamics as c4d
 

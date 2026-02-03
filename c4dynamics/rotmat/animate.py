@@ -1,4 +1,5 @@
-import os, sys 
+import os
+import sys 
 import time 
 import numpy as np 
 sys.path.append('.')
@@ -315,7 +316,7 @@ def animate(rb, modelpath: str, angle0: list = [0, 0, 0]
   
 
   if not rb._data:
-    warnings.warn(f"""No stored data for the given rigidbody.""" , c4d.c4warn)
+    warnings.warn("""No stored data for the given rigidbody.""" , c4d.c4warn)
     return None
 
   # 
@@ -349,7 +350,7 @@ def animate(rb, modelpath: str, angle0: list = [0, 0, 0]
     # if not 3 colums array, raise an error: 
     modelcolor = np.atleast_2d(modelcolor)
     if modelcolor.shape[1] != 3:  # Example condition: if modelcolor is empty
-      raise ValueError(f"modelcolor must be three columns array for RGB.")
+      raise ValueError("modelcolor must be three columns array for RGB.")
 
     # if one row, duplicate
     if modelcolor.shape[1] != 1 and modelcolor.shape[0] == 1:  

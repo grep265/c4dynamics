@@ -1,11 +1,11 @@
 # type: ignore
 
-import sys, os 
+import sys
+import os 
 sys.path.append('.')
 import c4dynamics as c4d
 import cv2
 from c4dynamics.utils.tictoc import * 
-import numpy as np 
 
 from matplotlib import pyplot as plt 
 plt.rcParams["font.family"] = "Times New Roman"   
@@ -201,7 +201,7 @@ def coconames(coconamespath = r'C:\c4dynamics\c4dynamics\resources\detectors\yol
   for i in range(1, 81):
     print(f"'{coconames[i-1]}', ", end = '')
     if i % 5 == 0: 
-      print(f'\n')
+      print('\n')
 
 
   for s1, s2 in zip(coconames, c4d.detectors.yolo3.class_names):

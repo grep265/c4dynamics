@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # pragma: no cover
 
-import os, sys
+import os
+import sys
 sys.path.append('')
 import c4dynamics as c4d 
 import pickle 

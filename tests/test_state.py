@@ -89,7 +89,6 @@ class TestState(unittest.TestCase):
 
     def test_plot(self):
         """Test the plot method (mocked for unit tests)."""
-        import matplotlib.pyplot as plt
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", c4d.c4warn)
             ax = self.state_instance.plot('x', scale=1, darkmode=False)

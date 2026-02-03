@@ -7,13 +7,12 @@ from matplotlib import pyplot as plt
 plt.style.use('dark_background')  
 plt.switch_backend('TkAgg')
 
-import os, sys
+import os
+import sys
 sys.path.append('')
 
 import c4dynamics as c4d 
 
-from scipy.linalg import solve_discrete_are
-from enum import Enum  
 
 
 savedir = os.path.join(c4d.c4dir(os.getcwd()), 'docs', 'source', '_examples', 'filters') 
@@ -60,7 +59,6 @@ c4d.cprint(f'The system is observable (rank = n = {n}).' if rank == n else 'The 
 
 def drawkf(kf = None, trueobj = None, measures = None, title = '', filename = None, std = False): 
   
-  from matplotlib.ticker import ScalarFormatter
   textsize = 10
 
   # pdb.set_trace()

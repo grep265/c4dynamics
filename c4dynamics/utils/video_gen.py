@@ -14,8 +14,8 @@
    show improvemnet for better dynamics modelling. 
    
 '''
-import os, sys
-import socket
+import os
+import sys
 import cv2
 import numpy as np
 from enum import Enum

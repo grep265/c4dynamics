@@ -1,6 +1,5 @@
 import numpy as np
 
-import c4dynamics as c4d 
 
 # np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)                 
 

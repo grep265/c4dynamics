@@ -1,12 +1,11 @@
 # type: ignore
 
 # from matplotlib import pyplot as plt 
-import sys, os
+import sys
+import os
 sys.path.append('.')
 import c4dynamics as c4d 
 import cv2 
-import numpy as np
-import pooch 
 # import shutil 
 from c4dynamics.datasets._manager import imagesmap, videosmap, nnsmap, d3smap 
 from c4dynamics.datasets._registry import CACHE_DIR

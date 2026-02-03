@@ -1,10 +1,10 @@
 # type: ignore
 
 import unittest
-import os, sys
+import os
+import sys
 import hashlib
 from unittest.mock import patch, mock_open
-import pooch
 sys.path.append('.')
 from c4dynamics.datasets._manager import (CACHE_DIR, sha256, clear_cache, image, video, nn_model, d3_model)
 

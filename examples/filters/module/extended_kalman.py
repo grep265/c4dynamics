@@ -7,7 +7,8 @@ from matplotlib import pyplot as plt
 plt.style.use('dark_background')  
 # plt.switch_backend('TkAgg')
 
-import os, sys
+import os
+import sys
 sys.path.append('')
 
 import c4dynamics as c4d 
@@ -31,7 +32,6 @@ zerr, vzerr, betaerr = 25, -150, 300
 
 def drawekf(ekf = None, trueobj = None, measures = None, title = '', filename = None, std = False): 
 
-  from matplotlib.ticker import ScalarFormatter
   textsize = 10
   
 

@@ -4,7 +4,6 @@ import sys
 sys.path.append('.')
 import c4dynamics as c4d 
 from c4dynamics.sensors.seeker import seeker
-import warnings 
 from typing import Optional
 
 # np.warnings.filterwarnings('ignore', category = np.VisibleDeprecationWarning)                 

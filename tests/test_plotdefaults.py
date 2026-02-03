@@ -1,11 +1,9 @@
 # type: ignore
 
 import unittest
-import numpy as np
 import matplotlib.pyplot as plt
 
 import sys 
-from unittest.mock import patch
 sys.path.append('.')
 import c4dynamics as c4d  # Assuming c4dynamics contains your functions
 

@@ -1,4 +1,4 @@
-import os, sys 
+import sys 
 import numpy as np
 sys.path.append('.')
 import c4dynamics as c4d 
@@ -804,7 +804,7 @@ class state:
       if not self._data:
         # empty array  
         # c4d.cprint('Warning: no history of state samples.', 'r')
-        warnings.warn(f"""No history of state samples.""" , c4d.c4warn)
+        warnings.warn("""No history of state samples.""" , c4d.c4warn)
 
         return np.array([])
       
@@ -1257,7 +1257,7 @@ class state:
     if not self.cartesian():
       # c4d.cprint('Warning: Position is valid when at least one cartesian'
       #             ' coordinate variable (x, y, z) exists.', 'm')
-      warnings.warn(f"""Position is valid when at least one cartesian """
+      warnings.warn("""Position is valid when at least one cartesian """
                         """coordinate variable (x, y, z) exists.""" , c4d.c4warn)
       return np.array([])
       
@@ -1313,7 +1313,7 @@ class state:
     if self.cartesian() < 2:
       # c4d.cprint('Warning: Velocity is valid when at least one velocity '
       #             'coordinate variable (vx, vy, vz) exists.', 'm')
-      warnings.warn(f"""Velocity is valid when at least one velocity """
+      warnings.warn("""Velocity is valid when at least one velocity """
                         """coordinate variable (vx, vy, vz) exists.""" , c4d.c4warn)
       return np.array([])
 

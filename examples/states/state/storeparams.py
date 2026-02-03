@@ -1,6 +1,6 @@
 # type: ignore
 
-import os, sys
+import sys
 sys.path.append('')
 import numpy as np 
 import c4dynamics as c4d 

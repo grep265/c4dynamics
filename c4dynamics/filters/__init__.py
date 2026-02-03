@@ -104,7 +104,8 @@ im not sure the model uncertainty behaves in that way.
 that same results could be achieved by using discrete matrices.
 '''
 
-import sys, os
+import sys
+import os
 sys.path.append('.')
 
 from c4dynamics.filters.kalman import kalman

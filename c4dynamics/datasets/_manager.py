@@ -1,7 +1,8 @@
 from typing import Optional
 import hashlib
 import shutil
-import os, sys 
+import os
+import sys 
 
 sys.path.append('.')
 from c4dynamics.datasets._registry import CACHE_DIR, image_register, video_register, nn_register, d3_register, d3_f16_register

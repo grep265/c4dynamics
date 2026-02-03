@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # pragma: no cover
 
-import sys, os, re
+import os
+import re
 # print(sys.version)
 import natsort
 
 from pptx import Presentation
 from pptx.util import Inches
-from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 from lxml import etree
 import tkinter as tk

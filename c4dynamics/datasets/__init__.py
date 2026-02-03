@@ -61,7 +61,8 @@ the internet connectivity.
 
 '''
 
-import sys, os
+import sys
+import os
 sys.path.append('.')
 
 from c4dynamics.datasets._manager import sha256, image, video, nn_model, d3_model, download_all, clear_cache  

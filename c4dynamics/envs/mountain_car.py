@@ -4,7 +4,7 @@ sys.path.append('.')
 import c4dynamics as c4d 
 # import warnings 
 # from typing import Optional
-from scipy import integrate, optimize
+from scipy import integrate
 
 
 class mountain_car(c4d.state):
@@ -439,14 +439,14 @@ class mountain_car(c4d.state):
     if False: 
       import matplotlib.pyplot as plt 
       plt.switch_backend('qtagg') 
-      plt.plot(self.x_interval, np.ones_like(self.x_interval), 'o'); 
-      plt.plot(xi, 1, 'rx', markersize = 12);
-      plt.title(f'{x_ind} / {self.n_bins}');
+      plt.plot(self.x_interval, np.ones_like(self.x_interval), 'o') 
+      plt.plot(xi, 1, 'rx', markersize = 12)
+      plt.title(f'{x_ind} / {self.n_bins}')
       plt.show(block = True)
 
-      plt.plot(self.vel_interval, np.ones_like(self.vel_interval), 'o'); 
-      plt.plot(self.velocity, 1, 'rx', markersize = 12);
-      plt.title(f'{vel_ind} / {self.n_bins}');
+      plt.plot(self.vel_interval, np.ones_like(self.vel_interval), 'o') 
+      plt.plot(self.velocity, 1, 'rx', markersize = 12)
+      plt.title(f'{vel_ind} / {self.n_bins}')
       plt.show(block = True)
 
     return vel_ind.item() - 1, x_ind.item() - 1
@@ -551,7 +551,6 @@ class mountain_car(c4d.state):
 
   def animate(self, file_path = './simulation_animate.gif', debug = False):
 
-    from animation_tools import animateit 
     from IPython.display import Image
 
     # debug = False

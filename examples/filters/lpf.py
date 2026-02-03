@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt 
 plt.style.use('dark_background')  
 
-import os, sys
+import sys
 sys.path.append('')
 import c4dynamics as c4d 
 

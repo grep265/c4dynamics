@@ -12,7 +12,8 @@
    
 '''
 
-import os, sys 
+import os
+import sys 
 sys.path.append('.')
 
 from c4dynamics.detectors.yolo3_opencv import yolov3

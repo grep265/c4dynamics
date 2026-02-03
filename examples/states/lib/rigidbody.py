@@ -1,7 +1,9 @@
 # type: ignore
 
 from matplotlib import pyplot as plt 
-import sys, os, socket 
+import sys
+import os
+import socket 
 sys.path.append('.')
 import c4dynamics as c4d
 import numpy as np 

@@ -64,14 +64,14 @@ c4d.cprint('list to numpy: ' + str(1000 * t3) + ' ms', 'y')
 
 ## gif
 import socket
-import sys, os
+import sys
+import os
 
 if socket.gethostname() != 'ZivMeri-PC':
     print('chaning dir')
     os.chdir('\\\\192.168.1.244\\d\\Dropbox\\c4dynamics')
 
 
-    from IPython.display import Image
 
 
     # sys.path.append(os.path.join(os.getcwd(), '..'))
@@ -117,7 +117,6 @@ if socket.gethostname() != 'ZivMeri-PC':
 
 
 
-    from IPython.display import Image
 
     gifname = 'f16_monochrome_gif.gif'
     c4d.gif(outfol, gifname, duration = 1)
@@ -135,7 +134,8 @@ if socket.gethostname() != 'ZivMeri-PC':
   os.chdir('\\\\192.168.1.244\\d\\Dropbox\\c4dynamics')
 
 
-import sys, os
+import sys
+import os
 
 # sys.path.append(os.path.join(os.getcwd(), '..'))
 import numpy as np 
