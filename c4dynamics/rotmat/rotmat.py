@@ -1,13 +1,14 @@
 import numpy as np
-import sys 
-sys.path.append('.')
-# import c4dynamics as c4d 
-from c4dynamics.utils.const import *  
-from c4dynamics.utils.math import *  
+import sys
+
+sys.path.append(".")
+# import c4dynamics as c4d
+from c4dynamics.utils.const import *
+from c4dynamics.utils.math import *
 
 
 def rotx(phi):
-    ''' 
+    """ 
     Generate a 3x3 Direction Cosine Matrix for 
     a positive rotation about the x-axis by an angle :math:`\\phi` in radians.
 
@@ -59,12 +60,12 @@ def rotx(phi):
     >>> rotx(phi) @ v1 # doctest: +NUMPY_FORMAT
     [0  0.707  0.707]
 
-    '''
+    """
     return np.array([[1, 0, 0], [0, cos(phi), sin(phi)], [0, -sin(phi), cos(phi)]])
 
 
 def roty(theta):
-    ''' 
+    """ 
     Generate a 3x3 Direction Cosine Matrix for 
     a positive rotation about the y-axis by an angle :math:`\\theta` in radians.
 
@@ -116,12 +117,12 @@ def roty(theta):
     >>> roty(phi) @ v1 # doctest: +NUMPY_FORMAT
     [-0.707  0  0.707]
 
-    '''
+    """
     return np.array([[cos(theta), 0, -sin(theta)], [0, 1, 0], [sin(theta), 0, cos(theta)]])
 
 
 def rotz(psi):
-    ''' 
+    """ 
     Generate a 3x3 Direction Cosine Matrix for 
     a positive rotation about the z-axis by an angle :math:`\\psi` in radians.
 
@@ -172,12 +173,12 @@ def rotz(psi):
     >>> rotz(phi) @ v1 # doctest: +NUMPY_FORMAT
     [1  0  0]
     
-    '''
+    """
     return np.array([[cos(psi), sin(psi), 0], [-sin(psi), cos(psi), 0], [0, 0, 1]])
 
 
-def dcm321(phi = 0.0, theta = 0.0, psi = 0.0):
-    '''
+def dcm321(phi=0.0, theta=0.0, psi=0.0):
+    """
     Generate a 3x3 Direction Cosine Matrix (DCM) for a sequence of 
     positive rotations around the axes in the following order: 
     :math:`z`, then :math:`y`, then :math:`x`.
@@ -247,12 +248,12 @@ def dcm321(phi = 0.0, theta = 0.0, psi = 0.0):
     >>> dcm321(phi = 0, theta = 30 * c4d.d2r, psi = 0) @ v  # doctest: +NUMPY_FORMAT
     [129.9  0  75]
 
-    '''
+    """
     return rotx(phi) @ roty(theta) @ rotz(psi)
 
 
 def dcm321euler(dcm):
-    '''    
+    """    
     Extract Euler angles (roll, pitch, yaw) from a Direction Cosine Matrix (DCM) of 3-2-1 order.
 
     The form of a 3-2-1 rotation matrix:   
@@ -315,18 +316,17 @@ def dcm321euler(dcm):
     >>> dcm321euler(BI) # doctest: +NUMPY_FORMAT
     (0, 30, 0)
 
-    '''
-    
-    psi   =  atan2(dcm[0, 1], dcm[0, 0]) * r2d
+    """
+
+    psi = atan2(dcm[0, 1], dcm[0, 0]) * r2d
     theta = -asin(dcm[0, 2]) * r2d
-    phi   =  atan2(dcm[1, 2], dcm[2, 2]) * r2d
+    phi = atan2(dcm[1, 2], dcm[2, 2]) * r2d
 
-    return phi, theta, psi 
-
+    return phi, theta, psi
 
 
 if __name__ == "__main__":
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
+    from c4dynamics import rundoctests
 
+    rundoctests(sys.modules[__name__])

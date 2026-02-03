@@ -3,8 +3,10 @@
 import unittest
 
 import sys
-sys.path.append('')
-from c4dynamics.filters import lowpass 
+
+sys.path.append("")
+from c4dynamics.filters import lowpass
+
 
 class TestLowpassFilter(unittest.TestCase):
 
@@ -55,5 +57,6 @@ class TestLowpassFilter(unittest.TestCase):
             output = lp_filter.sample(x)
             self.assertAlmostEqual(output, expected_outputs[i])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

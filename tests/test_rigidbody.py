@@ -3,27 +3,39 @@
 import unittest
 import numpy as np
 import sys
-sys.path.append('.')
-from c4dynamics import rigidbody 
-import c4dynamics as c4d 
-import os
 
+sys.path.append(".")
+from c4dynamics import rigidbody
+import c4dynamics as c4d
+import os
 
 try:
     import open3d as o3d
+
     o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Error)
     OPEN3D_AVAILABLE = True
 except ImportError:
     OPEN3D_AVAILABLE = False
 
-    
 
 class TestRigidbody(unittest.TestCase):
 
     def setUp(self):
         """Set up a basic rigidbody instance for testing."""
-        self.rb = rigidbody(x=1.0, y=2.0, z=3.0, vx=4.0, vy=5.0, vz=6.0, 
-                            phi=0.1, theta=0.2, psi=0.3, p=0.4, q=0.5, r=0.6)
+        self.rb = rigidbody(
+            x=1.0,
+            y=2.0,
+            z=3.0,
+            vx=4.0,
+            vy=5.0,
+            vz=6.0,
+            phi=0.1,
+            theta=0.2,
+            psi=0.3,
+            p=0.4,
+            q=0.5,
+            r=0.6,
+        )
 
     def test_initialization(self):
         """Test initialization of rigidbody with given parameters."""
@@ -74,12 +86,11 @@ class TestRigidbody(unittest.TestCase):
         acc = self.rb.inteqm(forces, moments, dt)
         self.assertIsInstance(acc, np.ndarray)  # Check if acceleration is returned as numpy array
 
-
     @unittest.skipUnless(OPEN3D_AVAILABLE, "Skipping Open3D tests because Open3D is not installed")
     @unittest.skipIf("DISPLAY" not in os.environ, "Skipping GUI test in headless mode")
     def test_animate_method(self):
         """Test the animate method."""
-        modelpath = c4d.datasets.d3_model('bunny') # "path/to/model"  # Mock model path
+        modelpath = c4d.datasets.d3_model("bunny")  # "path/to/model"  # Mock model path
         angle0 = [0, 0, 0]
         modelcolor = None
         dt = 1e-3
@@ -108,5 +119,6 @@ class TestRigidbody(unittest.TestCase):
     #     expected_repr = "rigidbody(x=1.0, y=2.0, z=3.0, vx=4.0, vy=5.0, vz=6.0, phi=0.1, theta=0.2, psi=0.3, p=0.4, q=0.5, r=0.6)"
     #     self.assertEqual(repr(self.rb), expected_repr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

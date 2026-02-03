@@ -3,38 +3,34 @@
 
 import os
 import sys
-sys.path.append('')
-import c4dynamics as c4d 
-import pickle 
 
+sys.path.append("")
+import c4dynamics as c4d
+import pickle
 
-if __name__ == '__main__':
-  
-  for a in sys.argv: 
-    c4d.cprint(a, 'm')
-  
-  if len(sys.argv) >= 2:
-    fol = sys.argv[1]
-  else:
-    raise AttributeError('folder name is missing') 
+if __name__ == "__main__":
 
-  # fol = 'examples\out\cars1'
-  ptspath = os.path.join(fol, 'detections.pkl')
+    for a in sys.argv:
+        c4d.cprint(a, "m")
 
-  if os.path.exists(ptspath):
-    print('path exists')
-    with open(ptspath, 'rb') as file:
-      pklpts = pickle.load(file)
-  else: 
-    raise FileNotFoundError(f'{ptspath} is missing')
+    if len(sys.argv) >= 2:
+        fol = sys.argv[1]
+    else:
+        raise AttributeError("folder name is missing")
 
-  for i, dp in pklpts.items(): 
+    # fol = 'examples\out\cars1'
+    ptspath = os.path.join(fol, "detections.pkl")
 
-    c4d.cprint(str(i), 'c', end = ')  ')
-    for p in dp:
-      c4d.cprint(p.class_id, end = '  ')
-    c4d.cprint()
+    if os.path.exists(ptspath):
+        print("path exists")
+        with open(ptspath, "rb") as file:
+            pklpts = pickle.load(file)
+    else:
+        raise FileNotFoundError(f"{ptspath} is missing")
 
+    for i, dp in pklpts.items():
 
-
-
+        c4d.cprint(str(i), "c", end=")  ")
+        for p in dp:
+            c4d.cprint(p.class_id, end="  ")
+        c4d.cprint()

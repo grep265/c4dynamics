@@ -1,18 +1,29 @@
-import sys 
-sys.path.append('.')
+import sys
 
-TXTCOLORS =     { 'k': '30', 'black':   '30'
-                , 'r': '31', 'red':     '31'
-                , 'g': '32', 'green':   '32'
-                , 'y': '33', 'yellow':  '33'
-                , 'b': '34', 'blue':    '34'
-                , 'm': '35', 'magenta': '35'
-                , 'c': '36', 'cyan':    '36'
-                , 'w': '37', 'white':   '37'
-                    }
+sys.path.append(".")
 
-def cprint(txt = '', color = 'white', end = '\n'):
-  '''
+TXTCOLORS = {
+    "k": "30",
+    "black": "30",
+    "r": "31",
+    "red": "31",
+    "g": "32",
+    "green": "32",
+    "y": "33",
+    "yellow": "33",
+    "b": "34",
+    "blue": "34",
+    "m": "35",
+    "magenta": "35",
+    "c": "36",
+    "cyan": "36",
+    "w": "37",
+    "white": "37",
+}
+
+
+def cprint(txt="", color="white", end="\n"):
+    """
     Printing colored text in the console.
 
     Parameters
@@ -20,15 +31,15 @@ def cprint(txt = '', color = 'white', end = '\n'):
 
     txt : str
         The text to be printed.
-    
+
     color : str, optional
         The color of the text. Default is 'white'.
-    
+
     Example
     -------
 
-    .. code:: 
-    
+    .. code::
+
       >>> import c4dynamics as c4d
       >>> carr = ['y', 'w', 'r', 'm', 'c', 'g', 'k', 'b']
       >>> for c in carr:
@@ -44,20 +55,17 @@ def cprint(txt = '', color = 'white', end = '\n'):
       <span style="color:green">C4DYNAMICS</span><br>
       <span style="color:black">C4DYNAMICS</span><br>
       <span style="color:blue">C4DYNAMICS</span><br>
- 
-  '''
-  settxt = '\033['
 
+    """
+    settxt = "\033["
 
-  settxt += TXTCOLORS[color] 
-      
-  print(settxt + 'm' + str(txt) + '\033[0m', end = end)
+    settxt += TXTCOLORS[color]
+
+    print(settxt + "m" + str(txt) + "\033[0m", end=end)
 
 
 if __name__ == "__main__":
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
+    from c4dynamics import rundoctests
 
-
-
+    rundoctests(sys.modules[__name__])

@@ -3,10 +3,12 @@
 import unittest
 import numpy as np
 from unittest.mock import MagicMock
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 import c4dynamics as c4d
 from c4dynamics.sensors import seeker
+
 
 class TestSeeker(unittest.TestCase):
 
@@ -32,7 +34,7 @@ class TestSeeker(unittest.TestCase):
     def test_attributes(self):
         """Test that bias and scale factor properties are set and retrieved correctly."""
         seeker_instance = seeker()
-        
+
         # Test setting and getting bias
         seeker_instance.bias = 0.5
         self.assertEqual(seeker_instance.bias, 0.5)
@@ -80,10 +82,10 @@ class TestSeeker(unittest.TestCase):
     def test_measure_time_interval(self):
         """Test that measure does not update if time interval is less than dt."""
         seeker_instance = seeker(origin=self.origin, dt=1)
-        
+
         # Initial measurement at t=0
         seeker_instance.measure(target=self.target, t=0)
-        
+
         # Try measuring at t=0.5, should return None, None
         az, el = seeker_instance.measure(target=self.target, t=0.5)
         self.assertIsNone(az)
@@ -97,13 +99,16 @@ class TestSeeker(unittest.TestCase):
         az_values = []
         el_values = []
         for _ in range(10):
-            az, el = seeker_instance.measure(target=self.target, t=seeker_instance._lastsample + seeker_instance.dt)
+            az, el = seeker_instance.measure(
+                target=self.target, t=seeker_instance._lastsample + seeker_instance.dt
+            )
             az_values.append(az)
             el_values.append(el)
-        
+
         # Check that we have variability in az and el due to noise
         self.assertGreater(np.std(az_values), 0)
         self.assertGreater(np.std(el_values), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

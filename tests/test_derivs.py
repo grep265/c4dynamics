@@ -3,11 +3,13 @@
 import unittest
 import numpy as np
 import sys
-sys.path.append('.')
+
+sys.path.append(".")
 from c4dynamics.utils.math import *
 from c4dynamics.states.lib.datapoint import datapoint
 from c4dynamics.states.lib.rigidbody import rigidbody
 from c4dynamics.eqm import eqm3, eqm6
+
 
 class TestEquationsOfMotion(unittest.TestCase):
 
@@ -24,7 +26,7 @@ class TestEquationsOfMotion(unittest.TestCase):
         """Test eqm3 under free-fall conditions with no initial velocity."""
         F = np.array([0, 0, -9.8 * self.dp.mass])  # gravity
         self.dp.vx, self.dp.vy, self.dp.vz = 0, 0, 0  # initial velocity
-        
+
         result = eqm3(self.dp, F)
         expected = np.array([0, 0, 0, 0, 0, -9.8])  # zero initial velocity, acceleration -9.8 m/s²
 
@@ -34,7 +36,7 @@ class TestEquationsOfMotion(unittest.TestCase):
         """Test eqm6 under torque on y-axis with no initial angular velocity."""
         F = np.array([0, 0, 0])  # No translational force
         M = np.array([0, 1.0, 0])  # Torque on y-axis
-        
+
         # No initial angular or linear velocity
         self.rb.vx, self.rb.vy, self.rb.vz = 0, 0, 0
         self.rb.p, self.rb.q, self.rb.r = 0, 0, 0  # angular velocities
@@ -47,12 +49,13 @@ class TestEquationsOfMotion(unittest.TestCase):
     def test_eqm3_constant_velocity(self):
         """Test eqm3 with constant velocity and zero force."""
         F = np.array([0, 0, 0])  # No force
-        self.dp.vx, self.dp.vy, self.dp.vz = 5., 5., 5.  # constant velocity in each axis
+        self.dp.vx, self.dp.vy, self.dp.vz = 5.0, 5.0, 5.0  # constant velocity in each axis
 
         result = eqm3(self.dp, F)
         expected = np.array([5, 5, 5, 0, 0, 0])  # Constant velocity, no acceleration
 
         np.testing.assert_almost_equal(result, expected, decimal=5)
+
 
 if __name__ == "__main__":
     unittest.main()

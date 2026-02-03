@@ -1,10 +1,11 @@
 import numpy as np
 from scipy.special import erfinv
-import sys 
-sys.path.append('.')
-import c4dynamics as c4d 
+import sys
 
-__doc__ = ''' 
+sys.path.append(".")
+import c4dynamics as c4d
+
+__doc__ = """ 
 Math functions aliasing.
 
 
@@ -86,39 +87,35 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
     ``c4d.norm = np.linalg.norm``
 
 
-'''
-sin     = np.sin
-sind    = lambda n: np.sin(n * c4d.d2r)
-cos     = np.cos
-cosd    = lambda n: np.cos(n * c4d.d2r)
-tan     = np.tan
-tand    = lambda n: np.tan(n * c4d.d2r)
+"""
+sin = np.sin
+sind = lambda n: np.sin(n * c4d.d2r)
+cos = np.cos
+cosd = lambda n: np.cos(n * c4d.d2r)
+tan = np.tan
+tand = lambda n: np.tan(n * c4d.d2r)
 
-asin    = np.arcsin
-asind   = lambda n: np.arcsin(n) * c4d.r2d
-acos    = np.arccos
-acosd   = lambda n: np.arccos(n) * c4d.r2d 
-atan    = np.arctan
-atand   = lambda n: np.arctan(n) * c4d.r2d 
-atan2   = np.arctan2 # atan2(y, x)
-atan2d  = lambda y, x: np.arctan2(y, x) * c4d.r2d # atan2(y, x)
+asin = np.arcsin
+asind = lambda n: np.arcsin(n) * c4d.r2d
+acos = np.arccos
+acosd = lambda n: np.arccos(n) * c4d.r2d
+atan = np.arctan
+atand = lambda n: np.arctan(n) * c4d.r2d
+atan2 = np.arctan2  # atan2(y, x)
+atan2d = lambda y, x: np.arctan2(y, x) * c4d.r2d  # atan2(y, x)
 
-sqrt    = np.sqrt        
-norm    = np.linalg.norm
+sqrt = np.sqrt
+norm = np.linalg.norm
 
- 
-# mrandn preserves matlab normal distributed numbers generation 
-# XXX it doesnt preserve anything. just a suggested implementation to make in both sides. 
-# no more it also doesnt generate normal distribution. see also the test test_mrandn currently disabled. 
-mrandn = lambda n = 1: np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
 
+# mrandn preserves matlab normal distributed numbers generation
+# XXX it doesnt preserve anything. just a suggested implementation to make in both sides.
+# no more it also doesnt generate normal distribution. see also the test test_mrandn currently disabled.
+mrandn = lambda n=1: np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
 
 
 if __name__ == "__main__":
 
-  from c4dynamics import rundoctests
-  rundoctests(sys.modules[__name__])
+    from c4dynamics import rundoctests
 
-
-
-
+    rundoctests(sys.modules[__name__])

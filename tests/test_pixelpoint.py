@@ -2,9 +2,11 @@
 
 import unittest
 import numpy as np
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 from c4dynamics import pixelpoint  # Adjust import as necessary
+
 
 class TestPixelPoint(unittest.TestCase):
 
@@ -29,8 +31,8 @@ class TestPixelPoint(unittest.TestCase):
 
     def test_class_id_property(self):
         """Test the class_id property."""
-        self.pp.class_id = 'car'
-        self.assertEqual(self.pp.class_id, 'car')
+        self.pp.class_id = "car"
+        self.assertEqual(self.pp.class_id, "car")
 
         with self.assertRaises(TypeError):
             self.pp.class_id = 123  # Should raise TypeError
@@ -43,12 +45,9 @@ class TestPixelPoint(unittest.TestCase):
     def test_Xpixels_property(self):
         """Test the Xpixels property."""
         self.pp.fsize = (800, 600)  # Set frame size
-        expected_Xpixels = np.array([
-            10 * 800,  # x
-            20 * 600,  # y
-            30 * 800,  # w
-            40 * 600   # h
-        ], dtype=np.int32)
+        expected_Xpixels = np.array(
+            [10 * 800, 20 * 600, 30 * 800, 40 * 600], dtype=np.int32  # x  # y  # w  # h
+        )
         np.testing.assert_array_equal(self.pp.Xpixels, expected_Xpixels)
 
     def test_boxcenter_static_method(self):
@@ -65,5 +64,6 @@ class TestPixelPoint(unittest.TestCase):
         # self.assertIsInstance(detections, dict)  # Check if detections are returned as a dict
         pass  # Uncomment and complete when a suitable video is available
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

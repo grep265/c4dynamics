@@ -2,9 +2,9 @@
 
 
 import sys
-sys.path.append('')
-import c4dynamics as c4d 
 
+sys.path.append("")
+import c4dynamics as c4d
 
 dp = c4d.datapoint()
 print(dp)
@@ -17,5 +17,3 @@ print(rb)
 pp = c4d.pixelpoint()
 print(pp)
 # [ x  y  w  h ]
-
-

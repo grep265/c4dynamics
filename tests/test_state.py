@@ -2,11 +2,12 @@
 
 import unittest
 import numpy as np
-import sys 
-sys.path.append('.')
+import sys
+
+sys.path.append(".")
 from c4dynamics import state  # Adjust import based on your structure
 import c4dynamics as c4d
-import warnings 
+import warnings
 
 
 class TestState(unittest.TestCase):
@@ -18,9 +19,9 @@ class TestState(unittest.TestCase):
     def test_initialization(self):
         """Test if the state instance is initialized correctly."""
         self.assertEqual(self.state_instance.X0.tolist(), [1.0, 2.0, 3.0, 0.5, 1.5, 2.5])
-        self.assertEqual(self.state_instance._didx['x'], 1)
-        self.assertEqual(self.state_instance._didx['y'], 2)
-        self.assertEqual(self.state_instance._didx['z'], 3)
+        self.assertEqual(self.state_instance._didx["x"], 1)
+        self.assertEqual(self.state_instance._didx["y"], 2)
+        self.assertEqual(self.state_instance._didx["z"], 3)
 
     def test_reserved_keys(self):
         """Test initialization with reserved keys raises ValueError."""
@@ -29,10 +30,14 @@ class TestState(unittest.TestCase):
 
     def test_X_property(self):
         """Test the X property getter and setter."""
-        self.assertTrue(np.array_equal(self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5])))
-        
+        self.assertTrue(
+            np.array_equal(self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5]))
+        )
+
         self.state_instance.X = np.array([4.0, 5.0, 6.0, 0.6, 1.6, 2.6])
-        self.assertTrue(np.array_equal(self.state_instance.X, np.array([4.0, 5.0, 6.0, 0.6, 1.6, 2.6])))
+        self.assertTrue(
+            np.array_equal(self.state_instance.X, np.array([4.0, 5.0, 6.0, 0.6, 1.6, 2.6]))
+        )
 
     def test_X_property_value_error(self):
         """Test the setter for X raises ValueError on incorrect length."""
@@ -45,18 +50,26 @@ class TestState(unittest.TestCase):
     def test_addvars(self):
         """Test adding new variables with addvars method."""
         self.state_instance.addvars(vx_new=1.0, vy_new=2.0)
-        self.assertEqual(self.state_instance._didx['vx_new'], 7)  # It should be the next index
-        self.assertTrue(np.array_equal(self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 1.0, 2.0])))
-        self.assertTrue(np.array_equal(self.state_instance.X0, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 1.0, 2.0])))
+        self.assertEqual(self.state_instance._didx["vx_new"], 7)  # It should be the next index
+        self.assertTrue(
+            np.array_equal(
+                self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 1.0, 2.0])
+            )
+        )
+        self.assertTrue(
+            np.array_equal(
+                self.state_instance.X0, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 1.0, 2.0])
+            )
+        )
 
     def test_addvars_reserved_key(self):
         """Test that addvars raises ValueError for reserved keys."""
         with self.assertRaises(ValueError):
             self.state_instance.addvars(X=1.0)
-        
+
         with self.assertRaises(ValueError):
             self.state_instance.addvars(X_=1.0)
-        
+
         with self.assertRaises(ValueError):
             self.state_instance.addvars(X0=1.0)
 
@@ -66,14 +79,18 @@ class TestState(unittest.TestCase):
         self.state_instance.store(t=1)
         self.state_instance.store(t=2)
         self.state_instance.addvars(vx_new=5.0, vy_new=10.0)
-        
+
         # Check that new variables are in _didx
-        self.assertEqual(self.state_instance._didx['vx_new'], 7)
-        self.assertEqual(self.state_instance._didx['vy_new'], 8)
-        
+        self.assertEqual(self.state_instance._didx["vx_new"], 7)
+        self.assertEqual(self.state_instance._didx["vy_new"], 8)
+
         # Check that X is updated correctly
-        self.assertTrue(np.array_equal(self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 5.0, 10.0])))
-        
+        self.assertTrue(
+            np.array_equal(
+                self.state_instance.X, np.array([1.0, 2.0, 3.0, 0.5, 1.5, 2.5, 5.0, 10.0])
+            )
+        )
+
         # Check that stored data has zero columns for new variables
         self.assertEqual(len(self.state_instance._data), 3)
         for row in self.state_instance._data:
@@ -91,18 +108,17 @@ class TestState(unittest.TestCase):
         """Test the plot method (mocked for unit tests)."""
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", c4d.c4warn)
-            ax = self.state_instance.plot('x', scale=1, darkmode=False)
+            ax = self.state_instance.plot("x", scale=1, darkmode=False)
         self.assertIsNone(ax)  # Ensure a valid axis is returned
         self.state_instance.store()
         self.state_instance.store()
-        ax = self.state_instance.plot('x', scale=1, darkmode=False)
+        ax = self.state_instance.plot("x", scale=1, darkmode=False)
         self.assertIsNotNone(ax)  # Ensure a valid axis is returned
-
 
     def test_data(self):
         """Test the data method."""
         self.state_instance.store(t=0)
-        data_t, data_x = self.state_instance.data('x')
+        data_t, data_x = self.state_instance.data("x")
         self.assertEqual(data_t.tolist(), [0])
         self.assertEqual(data_x.tolist(), [1.0])
 
@@ -137,12 +153,15 @@ class TestState(unittest.TestCase):
         """Test the dist method."""
         other_state = state(x=4.0, y=5.0, z=6.0)
         distance = self.state_instance.dist(other_state)
-        self.assertAlmostEqual(distance, np.sqrt((1.0 - 4.0) ** 2 + (2.0 - 5.0) ** 2 + (3.0 - 6.0) ** 2))
+        self.assertAlmostEqual(
+            distance, np.sqrt((1.0 - 4.0) ** 2 + (2.0 - 5.0) ** 2 + (3.0 - 6.0) ** 2)
+        )
 
     def test_cartesian_method(self):
         """Test the cartesian method."""
         is_cartesian = self.state_instance.cartesian()
         self.assertTrue(is_cartesian)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
