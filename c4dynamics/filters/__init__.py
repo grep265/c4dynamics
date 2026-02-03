@@ -1,3 +1,13 @@
+
+import sys
+
+sys.path.append(".")
+
+from c4dynamics.filters.kalman import kalman as kalman
+from c4dynamics.filters.ekf import ekf as ekf
+from c4dynamics.filters.lowpass import lowpass as lowpass
+
+
 """
 
 .. list-table::
@@ -103,16 +113,8 @@ im not sure the model uncertainty behaves in that way.
 that same results could be achieved by using discrete matrices.
 """
 
-import sys
-import os
-
-sys.path.append(".")
-
-from c4dynamics.filters.kalman import kalman
-from c4dynamics.filters.ekf import ekf
-from c4dynamics.filters.lowpass import lowpass
-
 if __name__ == "__main__":
+    
 
     from c4dynamics import rundoctests
 

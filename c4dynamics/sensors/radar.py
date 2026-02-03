@@ -696,7 +696,7 @@ class radar(seeker):
 
         az, _ = super().measure(target, t=t, store=False)
 
-        if az == None:  # elapsed time is not enough
+        if az is None:  # elapsed time is not enough
             return None, None, None
 
         self.range = self.dist(target) + self.rng_noise_std * np.random.randn()

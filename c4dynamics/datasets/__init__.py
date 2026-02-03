@@ -62,19 +62,25 @@ the internet connectivity.
 """
 
 import sys
-import os
 
 sys.path.append(".")
 
-from c4dynamics.datasets._manager import (
-    sha256,
-    image,
-    video,
-    nn_model,
-    d3_model,
-    download_all,
-    clear_cache,
-)
+# from c4dynamics.datasets._manager import (
+#     sha256,
+#     image,
+#     video,
+#     nn_model,
+#     d3_model,
+#     download_all,
+#     clear_cache,
+# )
+from c4dynamics.datasets._manager import sha256 as sha256
+from c4dynamics.datasets._manager import image as image
+from c4dynamics.datasets._manager import video as video
+from c4dynamics.datasets._manager import nn_model as nn_model
+from c4dynamics.datasets._manager import d3_model as d3_model
+from c4dynamics.datasets._manager import download_all as download_all
+from c4dynamics.datasets._manager import clear_cache as clear_cache
 
 if __name__ == "__main__":
 

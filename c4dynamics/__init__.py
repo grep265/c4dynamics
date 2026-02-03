@@ -30,50 +30,57 @@ rotmat
 """
 
 import os
+import sys 
 import doctest
 import warnings
+import subprocess
+import numpy as np 
 
 #
 # body objects
 ##
-from .states.state import state
-from .states.lib.pixelpoint import pixelpoint
-from .states.lib.datapoint import datapoint, create
-from . import rotmat
+from .states.state import state as state
+from .states.lib.pixelpoint import pixelpoint as pixelpoint
+from .states.lib.datapoint import datapoint as datapoint
+from .states.lib.datapoint import create as create 
+from . import rotmat as rotmat
 
 # rotmat is required to importing rigidbody:
-from .states.lib.rigidbody import rigidbody  # rotmat is required to import rigidbody.
+from .states.lib.rigidbody import rigidbody as rigidbody # rotmat is required to import rigidbody.
 
 #
 # routines
 ##
-from . import eqm
+from . import eqm as eqm
 
 #
 # utils
 ##
-from .utils.const import *
-from .utils.math import *
-from .utils.gen_gif import gif
-from .utils.cprint import cprint
-from .utils.plottools import plotdefaults, _figdef, _legdef
-from .utils import tictoc
-from .utils.tictoc import tic, toc
-from .utils._struct import struct
-from .utils.idx2keys import idx2keys
-from . import datasets
+from .utils.const import * # noqa: F403 
+from .utils.math import * # noqa: F403
+from .utils.gen_gif import gif as gif
+from .utils.cprint import cprint as cprint
+from .utils.plottools import plotdefaults as plotdefaults
+from .utils.plottools import _figdef as _figdef
+from .utils.plottools import _legdef as _legdef
+from .utils import tictoc as tictoc 
+from .utils.tictoc import tic as tic
+from .utils.tictoc import toc as toc
+from .utils._struct import struct as struct
+from .utils.idx2keys import idx2keys as idx2keys
+from . import datasets as datasets
 
 #
 # sensors
 ##
-from . import sensors
-from . import filters
-from . import detectors
+from . import sensors as sensors
+from . import filters as filters
+from . import detectors as detectors
 
 #
 # reinforcement learning
 ##
-from . import envs
+from . import envs as envs
 
 #
 # version
@@ -214,8 +221,8 @@ def rundoctests(module, exclude_functions=[]):
     import doctest
     import contextlib
     import os
-    from c4dynamics import IgnoreOutputChecker, cprint
-    from matplotlib import pyplot as plt
+    from c4dynamics import IgnoreOutputChecker #, cprint
+    # from matplotlib import pyplot as plt
     from pathlib import Path
 
     tofile = False
@@ -293,8 +300,6 @@ KEYWORDS
 # install all. actually maybe 90% of the users use only numpy
 # and pyplot so it's a good practice to offer another full-req.txt
 # file and add an import check for those not necessary:
-import os
-import subprocess
 
 
 def ensure_package(package_name):

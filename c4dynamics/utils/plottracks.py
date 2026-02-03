@@ -1,33 +1,24 @@
 # -*- coding: utf-8 -*-
 # pragma: no cover
-
 # import time
 import os
 import sys
 import argparse
-
 sys.path.append("")
 sys.path.append("examples")
 import c4dynamics as c4d
-
 # c4d.cprint('im in ' + os.getcwd(), 'y')
 # for p in sys.path:
 #   c4d.cprint(p, 'c')
-
 from matplotlib import pyplot as plt
-
-plt.style.use("dark_background")
-plt.switch_backend("TkAgg")
-
 # from enum import Enum
 import numpy as np
 import pickle
-
 # from scipy.interpolate import interp1d
-
 from programs._mtracks import Trkstate
-
 # import multiprocessing
+plt.style.use("dark_background")
+plt.switch_backend("TkAgg")
 
 
 def plottracks(fol, trkid=None, block=True):

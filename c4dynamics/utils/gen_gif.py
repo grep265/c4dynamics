@@ -133,7 +133,7 @@ if __name__ == "__main__":
     from c4dynamics import rundoctests
 
     try:
-        import open3d as o3d
+        import open3d as o3d # noqa: F401
 
         rundoctests(sys.modules[__name__])
     except ImportError:

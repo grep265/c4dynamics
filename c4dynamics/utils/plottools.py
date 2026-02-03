@@ -1,4 +1,3 @@
-import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import sys
@@ -72,39 +71,6 @@ def plotdefaults(ax, title, xlabel="", ylabel="", fontsize=8, ilines=None):
     .. figure:: /_examples/utils/plotdefaults.png
 
     """
-    if False:
-        #
-        # line
-        ##
-        lwidth = 2
-        # set colors suite to the lines:
-        scolors = {
-            "cyan": np.array([0, 1, 1]),
-            "magenta": np.array([1, 0, 1]),
-            "gold": np.array([1, 0.84, 0]),
-            "deepskyblue": np.array([0, 0.75, 1]),
-            "limegreen": np.array([0.2, 0.8, 0.2]),
-            "coral": np.array([1, 0.5, 0.31]),
-            "orchid": np.array([0.85, 0.44, 0.84]),
-            "tomato": np.array([1, 0.39, 0.28]),
-            "dodgerblue": np.array([0.12, 0.56, 1]),
-            "palevioletred": np.array([0.86, 0.44, 0.58]),
-        }
-
-        if ilines is None:
-            lcolors = lcolors
-        else:
-            lcolors = np.array(list(scolors.values()))[ilines, :]
-
-        for line, color in zip(ax.get_lines(), lcolors):
-            line.set_color(color)
-            line.set_linewidth(lwidth)
-            lwidth = 1
-
-        #
-        # legend
-        ##
-        ax.legend(fontsize="small", facecolor=None)
 
     #
     # axis

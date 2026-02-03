@@ -3,8 +3,8 @@ import sys
 
 sys.path.append(".")
 # import c4dynamics as c4d
-from c4dynamics.utils.const import *
-from c4dynamics.utils.math import *
+from c4dynamics.utils.const import r2d 
+from c4dynamics.utils.math import sin, cos, asin, atan2
 
 
 def rotx(phi):

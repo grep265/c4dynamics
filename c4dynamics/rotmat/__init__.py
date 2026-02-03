@@ -19,8 +19,12 @@ import sys
 
 sys.path.append(".")
 
-from c4dynamics.rotmat.rotmat import rotx, roty, rotz, dcm321, dcm321euler
-from c4dynamics.rotmat.animate import animate
+from c4dynamics.rotmat.rotmat import rotx as rotx 
+from c4dynamics.rotmat.rotmat import roty as roty
+from c4dynamics.rotmat.rotmat import rotz as rotz
+from c4dynamics.rotmat.rotmat import dcm321 as dcm321
+from c4dynamics.rotmat.rotmat import dcm321euler as dcm321euler
+from c4dynamics.rotmat.animate import animate as animate
 
 if __name__ == "__main__":
 

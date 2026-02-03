@@ -18,7 +18,9 @@
 import sys
 
 sys.path.append(".")
-from c4dynamics.states.lib import *
+from c4dynamics.states.lib import datapoint as datapoint
+from c4dynamics.states.lib import pixelpoint as pixelpoint
+from c4dynamics.states.lib import rigidbody as rigidbody
 
 if __name__ == "__main__":
 

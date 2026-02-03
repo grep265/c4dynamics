@@ -12,12 +12,11 @@
 
 """
 
-import os
 import sys
 
 sys.path.append(".")
 
-from c4dynamics.detectors.yolo3_opencv import yolov3
+from c4dynamics.detectors.yolo3_opencv import yolov3 as yolov3
 
 if __name__ == "__main__":
 

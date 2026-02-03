@@ -28,9 +28,9 @@ import sys
 
 sys.path.append(".")
 
-from c4dynamics.sensors.radar import radar
-from c4dynamics.sensors.lineofsight import lineofsight
-from c4dynamics.sensors.seeker import seeker
+from c4dynamics.sensors.radar import radar as radar
+from c4dynamics.sensors.lineofsight import lineofsight as lineofsight
+from c4dynamics.sensors.seeker import seeker as seeker
 
 # Background Material
 # -------------------

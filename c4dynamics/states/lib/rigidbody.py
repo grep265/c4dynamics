@@ -204,7 +204,7 @@ class rigidbody(datapoint):  #
         c4d.state.__init__(self, **rbargs)
 
     @property
-    def I(self):
+    def I(self):  # noqa: E741,E743
         """
         Gets and sets the array of moments of inertia.
 
@@ -317,7 +317,7 @@ class rigidbody(datapoint):  #
         return np.array([self._ixx, self._iyy, self._izz])
 
     @I.setter
-    def I(self, I):
+    def I(self, I):  # noqa: E741,E743
         self._ixx = I[0]
         self._iyy = I[1]
         self._izz = I[2]
@@ -633,7 +633,7 @@ if __name__ == "__main__":
     from c4dynamics import rundoctests
 
     try:
-        import open3d as o3d
+        import open3d as o3d # noqa: F401
 
         rundoctests(sys.modules[__name__])
     except ImportError:
