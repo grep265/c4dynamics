@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -411,30 +411,37 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.utils.plottools</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span> 
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span> 
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarFormatter</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>  <span class="c1"># noqa: F401</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
 
 <span class="c1"># pragma: no cover</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_figdef</span><span class="p">():</span>
     <span class="n">factorsize</span> <span class="o">=</span> <span class="mi">4</span>
-    <span class="n">aspectratio</span> <span class="o">=</span> <span class="mi">1080</span> <span class="o">/</span> <span class="mi">1920</span> 
-    <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">200</span>
-                <span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">factorsize</span><span class="p">,</span> <span class="n">factorsize</span> <span class="o">*</span> <span class="n">aspectratio</span><span class="p">)</span> 
-                        <span class="p">,</span> <span class="n">gridspec_kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">.9</span>
-                                            <span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">.2</span><span class="p">})</span>
+    <span class="n">aspectratio</span> <span class="o">=</span> <span class="mi">1080</span> <span class="o">/</span> <span class="mi">1920</span>
+    <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">factorsize</span><span class="p">,</span> <span class="n">factorsize</span> <span class="o">*</span> <span class="n">aspectratio</span><span class="p">),</span>
+        <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+    <span class="p">)</span>
+
 
 <span class="c1"># pragma: no cover</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_legdef</span><span class="p">():</span> 
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_legdef</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="plotdefaults">
 <a class="viewcode-back" href="../../../api/generated/utils/c4dynamics.utils.plottools.plotdefaults.html#c4dynamics.utils.plottools.plotdefaults">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">plotdefaults</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">ilines</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plotdefaults</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ilines</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Setting default properties on a matplotlib axis.</span>
 
@@ -443,85 +450,53 @@ document.write(`
 
 <span class="sd">    ax : matplotlib.axes.Axes</span>
 <span class="sd">        The matplotlib axis on which to set the properties.</span>
-<span class="sd">    </span>
+
 <span class="sd">    title : str</span>
 <span class="sd">        Plot title.</span>
-<span class="sd">        </span>
+
 <span class="sd">    xlabel : str</span>
 <span class="sd">        The label for the x-axis.</span>
-<span class="sd">    </span>
+
 <span class="sd">    ylabel : str</span>
 <span class="sd">        The label for the y-axis.</span>
-<span class="sd">    </span>
+
 <span class="sd">    fontsize : int, optional</span>
 <span class="sd">        The font size for the title, x-axis label, y-axis label, and tick labels. Default is 14.</span>
 
-<span class="sd">        </span>
+
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d   </span>
+<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
 <span class="sd">      &gt;&gt;&gt; f16 = c4d.rigidbody()</span>
 <span class="sd">      &gt;&gt;&gt; dt = .01</span>
-<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, 9, dt): </span>
-<span class="sd">      ...   if t &lt; 3: </span>
+<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, 9, dt):</span>
+<span class="sd">      ...   if t &lt; 3:</span>
 <span class="sd">      ...     f16.phi += dt * 180 / 9 * c4d.d2r</span>
-<span class="sd">      ...   elif t &lt; 6: </span>
+<span class="sd">      ...   elif t &lt; 6:</span>
 <span class="sd">      ...     f16.phi += dt * 180 / 6 * c4d.d2r</span>
 <span class="sd">      ...   else:</span>
 <span class="sd">      ...     f16.phi += dt * 180 / 3  * c4d.d2r</span>
 <span class="sd">      ...   f16.store(t)</span>
 <span class="sd">      &gt;&gt;&gt; ax = plt.subplot()</span>
-<span class="sd">      &gt;&gt;&gt; ax.plot(*f16.data(&#39;phi&#39;, c4d.r2d), &#39;m&#39;, linewidth = 2) # doctest: +IGNORE_OUTPUT </span>
+<span class="sd">      &gt;&gt;&gt; ax.plot(*f16.data(&#39;phi&#39;, c4d.r2d), &#39;m&#39;, linewidth = 2) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; c4d.plotdefaults(ax, &#39;$\\varphi$&#39;, &#39;Time&#39;, &#39;deg&#39;, fontsize = 18)</span>
 
-<span class="sd">        </span>
+
 <span class="sd">    .. figure:: /_examples/utils/plotdefaults.png</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="c1">#</span>
-        <span class="c1"># line</span>
-        <span class="c1">## </span>
-        <span class="n">lwidth</span> <span class="o">=</span> <span class="mi">2</span> 
-        <span class="c1"># set colors suite to the lines: </span>
-        <span class="n">scolors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cyan&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-                    <span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-                    <span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-                    <span class="p">,</span> <span class="s1">&#39;deepskyblue&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-                        <span class="p">,</span> <span class="s1">&#39;limegreen&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
-                        <span class="p">,</span> <span class="s1">&#39;coral&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.31</span><span class="p">])</span>
-                        <span class="p">,</span> <span class="s1">&#39;orchid&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">])</span>
-                            <span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.39</span><span class="p">,</span> <span class="mf">0.28</span><span class="p">])</span>
-                            <span class="p">,</span> <span class="s1">&#39;dodgerblue&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.56</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-                            <span class="p">,</span> <span class="s1">&#39;palevioletred&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.86</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">,</span> <span class="mf">0.58</span><span class="p">])}</span> 
-        
-        <span class="k">if</span> <span class="n">ilines</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-            <span class="n">lcolors</span> <span class="o">=</span> <span class="n">lcolors</span> 
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="n">lcolors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">scolors</span><span class="o">.</span><span class="n">values</span><span class="p">()))[</span><span class="n">ilines</span><span class="p">,</span> <span class="p">:]</span>
-
-
-        <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_lines</span><span class="p">(),</span> <span class="n">lcolors</span><span class="p">):</span>
-            <span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> 
-            <span class="n">line</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="n">lwidth</span><span class="p">)</span>
-            <span class="n">lwidth</span> <span class="o">=</span> <span class="mi">1</span>
-            
-        <span class="c1">#</span>
-        <span class="c1"># legend</span>
-        <span class="c1">##</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> 
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#</span>
-    <span class="c1"># axis </span>
+    <span class="c1"># axis</span>
     <span class="c1">##</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span> <span class="o">=</span> <span class="s1">&#39;Times New Roman&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span> <span class="o">=</span> <span class="s1">&#39;Times New Roman&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span> <span class="o">=</span> <span class="s1">&#39;Times New Roman&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span> <span class="o">=</span> <span class="n">fontsize</span><span class="p">,</span> <span class="n">labelfontfamily</span> <span class="o">=</span> <span class="s1">&#39;Times New Roman&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s2">&quot;Times New Roman&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s2">&quot;Times New Roman&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s2">&quot;Times New Roman&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">labelfontfamily</span><span class="o">=</span><span class="s2">&quot;Times New Roman&quot;</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_major_formatter</span><span class="p">()</span><span class="o">.</span><span class="n">set_useOffset</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -531,12 +506,9 @@ document.write(`
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
-
-
-
+    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -584,7 +556,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

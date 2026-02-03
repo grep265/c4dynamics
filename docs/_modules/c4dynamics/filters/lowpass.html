@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -411,18 +411,17 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.filters.lowpass</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
 
 <div class="viewcode-block" id="lowpass">
 <a class="viewcode-back" href="../../../api/filters.lpf.html#c4dynamics.filters.lowpass.lowpass">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">lowpass</span><span class="p">(</span><span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A first-order low-pass filter for smoothing signals, supporting both discrete and continuous systems.</span>
 
 <span class="sd">    Parameters</span>
@@ -451,7 +450,7 @@ document.write(`
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; filter_continuous = lowpass(dt=0.01, tau=0.1, y0=0)</span>
 <span class="sd">      &gt;&gt;&gt; filter_discrete = lowpass(alpha=0.5, y0=1)</span>
@@ -459,60 +458,67 @@ document.write(`
 <span class="sd">      0.09...</span>
 <span class="sd">      &gt;&gt;&gt; filter_discrete.sample(2.0)</span>
 <span class="sd">      1.5</span>
-<span class="sd">  &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                  <span class="n">tau</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># Initialize alpha based on the provided parameters</span>
-    <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tau</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="k">if</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tau</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For a continuous system, `dt` and `tau` must be positive.&quot;</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span>
-    <span class="k">elif</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For a discrete system, `alpha` must be in the range (0, 1).&quot;</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system.&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tau</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Initialize alpha based on the provided parameters</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tau</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tau</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For a continuous system, `dt` and `tau` must be positive.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span>
+        <span class="k">elif</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For a discrete system, `alpha` must be in the range (0, 1).&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system.&quot;</span>
+            <span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y0</span>  <span class="c1"># Initial state value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y0</span>  <span class="c1"># Initial state value</span>
 
 <div class="viewcode-block" id="lowpass.sample">
 <a class="viewcode-back" href="../../../api/generated/lpf/c4dynamics.filters.lowpass.lowpass.sample.html#c4dynamics.filters.lowpass.lowpass.sample">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">      Applies the low-pass filter to the input value and returns the filtered output.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the low-pass filter to the input value and returns the filtered output.</span>
 
-<span class="sd">      Parameters</span>
-<span class="sd">      ----------</span>
-<span class="sd">      x : float</span>
-<span class="sd">          Input value to be filtered.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : float</span>
+<span class="sd">            Input value to be filtered.</span>
 
-<span class="sd">      Returns</span>
-<span class="sd">      -------</span>
-<span class="sd">      float</span>
-<span class="sd">          The filtered output value after applying the low-pass filter.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The filtered output value after applying the low-pass filter.</span>
 
-<span class="sd">      Notes</span>
-<span class="sd">      -----</span>
-<span class="sd">      - For a continuous system: `y&#39;(t) = -y(t) / tau + x(t) / tau`</span>
-<span class="sd">      - For a discrete system: `y[k] = (1 - alpha) * y[k-1] + alpha * x[k]`</span>
-<span class="sd">      - The filter&#39;s state (`self.y`) is updated in place.</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - For a continuous system: `y&#39;(t) = -y(t) / tau + x(t) / tau`</span>
+<span class="sd">        - For a discrete system: `y[k] = (1 - alpha) * y[k-1] + alpha * x[k]`</span>
+<span class="sd">        - The filter&#39;s state (`self.y`) is updated in place.</span>
 
-<span class="sd">      Example</span>
-<span class="sd">      -------</span>
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
 
-<span class="sd">      .. code::</span>
+<span class="sd">        .. code::</span>
 
-<span class="sd">        &gt;&gt;&gt; lp_filter = lowpass(alpha=0.5)</span>
-<span class="sd">        &gt;&gt;&gt; lp_filter.sample(2.0)</span>
-<span class="sd">        1.0</span>
-<span class="sd">        &gt;&gt;&gt; lp_filter.sample(3.0)</span>
-<span class="sd">        2.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Update the filter&#39;s state</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span></div>
+<span class="sd">          &gt;&gt;&gt; lp_filter = lowpass(alpha=0.5)</span>
+<span class="sd">          &gt;&gt;&gt; lp_filter.sample(2.0)</span>
+<span class="sd">          1.0</span>
+<span class="sd">          &gt;&gt;&gt; lp_filter.sample(3.0)</span>
+<span class="sd">          2.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Update the filter&#39;s state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span></div>
 </div>
 
 
@@ -530,14 +536,14 @@ document.write(`
     <span class="n">optionflags</span> <span class="o">=</span> <span class="n">doctest</span><span class="o">.</span><span class="n">FAIL_FAST</span>
 
     <span class="k">if</span> <span class="n">tofile</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tests/_out/output.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tests/_out/output.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stderr</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">optionflags</span><span class="o">=</span><span class="n">optionflags</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">optionflags</span><span class="o">=</span><span class="n">optionflags</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">failed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">cprint</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: all tests passed!&quot;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="n">cprint</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: all tests passed!&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">failed</span><span class="si">}</span><span class="s2"> test(s) failed.&quot;</span><span class="p">)</span>
 </pre></div>
@@ -587,7 +593,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

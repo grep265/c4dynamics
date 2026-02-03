@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -412,40 +412,42 @@ document.write(`
                   
   <h1>Source code for c4dynamics.filters.ekf</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># import c4dynamics as c4d </span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">kalman</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># import c4dynamics as c4d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">kalman</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
 
 <div class="viewcode-block" id="ekf">
 <a class="viewcode-back" href="../../../api/filters.ekf.html#c4dynamics.filters.ekf.ekf">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ekf</span><span class="p">(</span><span class="n">kalman</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Extended Kalman Filter class for handling nonlinear dynamics by </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extended Kalman Filter class for handling nonlinear dynamics by</span>
 <span class="sd">    incorporating functions for nonlinear state transitions and measurements.</span>
-<span class="sd">    </span>
-<span class="sd">    This subclass extends the base </span>
+
+<span class="sd">    This subclass extends the base</span>
 <span class="sd">    :class:`kalman &lt;c4dynamics.filters.kalman.kalman&gt;`</span>
-<span class="sd">    class to handle cases where </span>
-<span class="sd">    system dynamics or measurements are nonlinear. The Jacobian matrices </span>
-<span class="sd">    `F` and `H` can be dynamically updated as linearizations of the </span>
+<span class="sd">    class to handle cases where</span>
+<span class="sd">    system dynamics or measurements are nonlinear. The Jacobian matrices</span>
+<span class="sd">    `F` and `H` can be dynamically updated as linearizations of the</span>
 <span class="sd">    nonlinear functions.</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    X : dict</span>
-<span class="sd">        Initial state estimate dictionary, where key-value pairs </span>
+<span class="sd">        Initial state estimate dictionary, where key-value pairs</span>
 <span class="sd">        represent state variables and their initial values.</span>
 <span class="sd">    P0 : np.ndarray</span>
-<span class="sd">        Initial error covariance matrix, defining the initial </span>
+<span class="sd">        Initial error covariance matrix, defining the initial</span>
 <span class="sd">        uncertainty for each state variable.</span>
 <span class="sd">    F : np.ndarray, optional</span>
 <span class="sd">        State transition Jacobian matrix; defaults to an identity matrix</span>
 <span class="sd">        if not provided, assuming a linear system model.</span>
 <span class="sd">    H : np.ndarray, optional</span>
-<span class="sd">        Measurement Jacobian matrix; defaults to a zero matrix if not </span>
+<span class="sd">        Measurement Jacobian matrix; defaults to a zero matrix if not</span>
 <span class="sd">        provided.</span>
 <span class="sd">    G : np.ndarray, optional</span>
 <span class="sd">        Control input matrix, mapping control inputs to the state.</span>
@@ -454,274 +456,270 @@ document.write(`
 <span class="sd">    R : np.ndarray, optional</span>
 <span class="sd">        Measurement noise covariance matrix.</span>
 
-<span class="sd">        </span>
+
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
-<span class="sd">    A detailed example can be found in the introduction </span>
+<span class="sd">    A detailed example can be found in the introduction</span>
 <span class="sd">    to the c4dynamics.filters module.</span>
-<span class="sd">    The mechanism of this class is similar to </span>
-<span class="sd">    the :class:`kalman &lt;c4dynamics.filters.kalman.kalman&gt;`, </span>
-<span class="sd">    so the examples provided there may serve as </span>
+<span class="sd">    The mechanism of this class is similar to</span>
+<span class="sd">    the :class:`kalman &lt;c4dynamics.filters.kalman.kalman&gt;`,</span>
+<span class="sd">    so the examples provided there may serve as</span>
 <span class="sd">    inspiration for using `ekf`.</span>
 
-<span class="sd">  &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">P0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
-                <span class="p">,</span> <span class="n">F</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                  <span class="p">,</span> <span class="n">H</span><span class="p">:</span>  <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="p">,</span> <span class="n">G</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                      <span class="p">,</span> <span class="n">Q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                        <span class="p">,</span> <span class="n">R</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="c1"># F and H are necessary also for ekf because they are required to the ricatti.</span>
-    <span class="c1"># yes but the can be delivered at each call in the immediate linearized form.  </span>
-    
-    <span class="k">if</span> <span class="n">F</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-      <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">P0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">P0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">F</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">G</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">R</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># F and H are necessary also for ekf because they are required to the ricatti.</span>
+        <span class="c1"># yes but the can be delivered at each call in the immediate linearized form.</span>
 
-    <span class="k">if</span> <span class="n">H</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-      <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">P0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">F</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">P0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
+        <span class="k">if</span> <span class="n">H</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">P0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">P0</span> <span class="o">=</span> <span class="n">P0</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_ekf</span> <span class="o">=</span> <span class="kc">True</span> 
-
-
-
-
-
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">P0</span><span class="o">=</span><span class="n">P0</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ekf</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="ekf.predict">
 <a class="viewcode-back" href="../../../api/generated/ekf/c4dynamics.filters.ekf.ekf.predict.html#c4dynamics.filters.ekf.ekf.predict">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># type: ignore</span>
-                    <span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                      <span class="p">,</span> <span class="n">Q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> 
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">      Predicts the next state of the system based on the current state</span>
-<span class="sd">      and an optional nonlinear state transition function.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">F</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">u</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predicts the next state of the system based on the current state</span>
+<span class="sd">        and an optional nonlinear state transition function.</span>
 
-<span class="sd">      Parameters</span>
-<span class="sd">      ----------</span>
-<span class="sd">      F : np.ndarray, optional</span>
-<span class="sd">          The state transition Jacobian matrix. If not provided, the </span>
-<span class="sd">          previously set `F` matrix is used.</span>
-<span class="sd">      fx : np.ndarray, optional</span>
-<span class="sd">          Nonlinear state transition function derivative. If specified, </span>
-<span class="sd">          this value is used for updating the state with nonlinear dynamics.</span>
-<span class="sd">      dt : float, optional</span>
-<span class="sd">          Time step duration. Must be provided if `fx` is specified.</span>
-<span class="sd">      u : np.ndarray, optional</span>
-<span class="sd">          Control input vector, affecting the state based on the `G` matrix.</span>
-<span class="sd">      Q : np.ndarray, optional</span>
-<span class="sd">          Process noise covariance matrix, representing uncertainty in </span>
-<span class="sd">          the model during prediction.</span>
-<span class="sd">      </span>
-<span class="sd">      Raises</span>
-<span class="sd">      ------</span>
-<span class="sd">      TypeError</span>
-<span class="sd">          If `fx` is provided without a corresponding `dt` value.</span>
-<span class="sd">      </span>
-<span class="sd">      Examples</span>
-<span class="sd">      --------</span>
-<span class="sd">      The examples in this section are intended to </span>
-<span class="sd">      demonstrate the usage of the `ekf` class and specifically the `predict` method. </span>
-<span class="sd">      However, they are not limited to nonlinear dynamics.</span>
-<span class="sd">      For detailed usage that highlights the properties of nonlinear dynamics, </span>
-<span class="sd">      refer to the :mod:`filters &lt;c4dynamics.filters&gt;` module introduction.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        F : np.ndarray, optional</span>
+<span class="sd">            The state transition Jacobian matrix. If not provided, the</span>
+<span class="sd">            previously set `F` matrix is used.</span>
+<span class="sd">        fx : np.ndarray, optional</span>
+<span class="sd">            Nonlinear state transition function derivative. If specified,</span>
+<span class="sd">            this value is used for updating the state with nonlinear dynamics.</span>
+<span class="sd">        dt : float, optional</span>
+<span class="sd">            Time step duration. Must be provided if `fx` is specified.</span>
+<span class="sd">        u : np.ndarray, optional</span>
+<span class="sd">            Control input vector, affecting the state based on the `G` matrix.</span>
+<span class="sd">        Q : np.ndarray, optional</span>
+<span class="sd">            Process noise covariance matrix, representing uncertainty in</span>
+<span class="sd">            the model during prediction.</span>
 
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If `fx` is provided without a corresponding `dt` value.</span>
 
-<span class="sd">      </span>
-<span class="sd">      Import required packages: </span>
-
-<span class="sd">      .. code:: </span>
-
-<span class="sd">        &gt;&gt;&gt; from c4dynamics.filters import ekf </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        The examples in this section are intended to</span>
+<span class="sd">        demonstrate the usage of the `ekf` class and specifically the `predict` method.</span>
+<span class="sd">        However, they are not limited to nonlinear dynamics.</span>
+<span class="sd">        For detailed usage that highlights the properties of nonlinear dynamics,</span>
+<span class="sd">        refer to the :mod:`filters &lt;c4dynamics.filters&gt;` module introduction.</span>
 
 
 
-<span class="sd">      Plain `predict` step </span>
-<span class="sd">      (predict in steady-state mode where the process variance matrix </span>
-<span class="sd">      remains constant </span>
-<span class="sd">      and is provided once to initialize the filter): </span>
+<span class="sd">        Import required packages:</span>
 
-<span class="sd">      .. code:: </span>
+<span class="sd">        .. code::</span>
 
-<span class="sd">        &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200)</span>
-<span class="sd">        &gt;&gt;&gt; print(_ekf)</span>
-<span class="sd">        [ x ]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X          # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P          # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.25]]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.predict()</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X          # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P          # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.3]]</span>
+<span class="sd">          &gt;&gt;&gt; from c4dynamics.filters import ekf</span>
 
 
-<span class="sd">      Predict with control input: </span>
 
-<span class="sd">      .. code:: </span>
+<span class="sd">        Plain `predict` step</span>
+<span class="sd">        (predict in steady-state mode where the process variance matrix</span>
+<span class="sd">        remains constant</span>
+<span class="sd">        and is provided once to initialize the filter):</span>
 
-<span class="sd">        &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X      # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P         # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.25]]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.predict(u = 1)</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [150]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.3]]</span>
+<span class="sd">        .. code::</span>
 
-
-<span class="sd">        </span>
-<span class="sd">      Predict with updated process noise covariance matrix: </span>
-
-<span class="sd">      .. code:: </span>
-
-<span class="sd">        &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.25]]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.predict(u = 1, Q = 0.01)</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [150] </span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.26]]</span>
-
-<span class="sd">      </span>
+<span class="sd">          &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200)</span>
+<span class="sd">          &gt;&gt;&gt; print(_ekf)</span>
+<span class="sd">          [ x ]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X          # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P          # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.25]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.predict()</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X          # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P          # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.3]]</span>
 
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">        Predict with control input:</span>
 
-    <span class="k">if</span> <span class="n">fx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
-      <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;For nonlinear derivatives inpout (fx), dt must be provided.&#39;</span><span class="p">)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="n">dt</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearF</span> <span class="o">=</span> <span class="kc">True</span> 
-    
+<span class="sd">        .. code::</span>
 
-    <span class="k">if</span> <span class="n">F</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="c1"># &quot;if F&quot; is not enough because F is an array and </span>
-      <span class="c1"># the truth value of an array with more than one </span>
-      <span class="c1"># element is ambiguous.  </span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">F</span><span class="p">)</span> 
+<span class="sd">          &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X      # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P         # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.25]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.predict(u = 1)</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [150]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.3]]</span>
 
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="p">)</span>
-    
-    <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearF</span> <span class="o">=</span> <span class="kc">True</span>   </div>
 
-    
-  
- 
+
+<span class="sd">        Predict with updated process noise covariance matrix:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.25]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.predict(u = 1, Q = 0.01)</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [150]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.26]]</span>
+
+
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">fx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;For nonlinear derivatives inpout (fx), dt must be provided.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="n">dt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearF</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">F</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># &quot;if F&quot; is not enough because F is an array and</span>
+            <span class="c1"># the truth value of an array with more than one</span>
+            <span class="c1"># element is ambiguous.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearF</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
 <div class="viewcode-block" id="ekf.update">
 <a class="viewcode-back" href="../../../api/generated/ekf/c4dynamics.filters.ekf.ekf.update.html#c4dynamics.filters.ekf.ekf.update">[docs]</a>
-  <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="c1"># type: ignore</span>
-                <span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="p">,</span> <span class="n">hx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                        <span class="p">,</span> <span class="n">R</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                        <span class="p">):</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">      Updates the state estimate based on the latest measurement, using an</span>
-<span class="sd">      optional nonlinear measurement function.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">R</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the state estimate based on the latest measurement, using an</span>
+<span class="sd">        optional nonlinear measurement function.</span>
 
-<span class="sd">      Parameters</span>
-<span class="sd">      ----------</span>
-<span class="sd">      z : np.ndarray</span>
-<span class="sd">          Measurement vector, representing observed values from the system.</span>
-<span class="sd">      H : np.ndarray, optional</span>
-<span class="sd">          Measurement Jacobian matrix. If provided, it overrides the </span>
-<span class="sd">          previously set `H` matrix for this update step.</span>
-<span class="sd">      hx : np.ndarray, optional</span>
-<span class="sd">          Nonlinear measurement function output. If provided, it is used </span>
-<span class="sd">          as the current estimate of the state based on measurement data.</span>
-<span class="sd">      R : np.ndarray, optional</span>
-<span class="sd">          Measurement noise covariance matrix, representing the uncertainty </span>
-<span class="sd">          in the measurements.</span>
-
-
-<span class="sd">      Examples</span>
-<span class="sd">      --------</span>
-<span class="sd">      The examples in this section are intended to </span>
-<span class="sd">      demonstrate the usage of the `ekf` class and specifically the `update` method. </span>
-<span class="sd">      However, they are not limited to nonlinear dynamics.</span>
-<span class="sd">      For detailed usage that highlights the properties of nonlinear dynamics, </span>
-<span class="sd">      refer to the :mod:`filters &lt;c4dynamics.filters&gt;` module introduction.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z : np.ndarray</span>
+<span class="sd">            Measurement vector, representing observed values from the system.</span>
+<span class="sd">        H : np.ndarray, optional</span>
+<span class="sd">            Measurement Jacobian matrix. If provided, it overrides the</span>
+<span class="sd">            previously set `H` matrix for this update step.</span>
+<span class="sd">        hx : np.ndarray, optional</span>
+<span class="sd">            Nonlinear measurement function output. If provided, it is used</span>
+<span class="sd">            as the current estimate of the state based on measurement data.</span>
+<span class="sd">        R : np.ndarray, optional</span>
+<span class="sd">            Measurement noise covariance matrix, representing the uncertainty</span>
+<span class="sd">            in the measurements.</span>
 
 
-<span class="sd">      Import required packages: </span>
-
-<span class="sd">      .. code:: </span>
-
-<span class="sd">        &gt;&gt;&gt; from c4dynamics.filters import ekf </span>
-
-
-
-<span class="sd">      Plain update step: </span>
-
-<span class="sd">      .. code:: </span>
-
-<span class="sd">        &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200)</span>
-<span class="sd">        &gt;&gt;&gt; print(_ekf)</span>
-<span class="sd">        [ x ]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P                # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.25]]     </span>
-<span class="sd">        &gt;&gt;&gt; _ekf.update(z = 100)  # returns Kalman gain   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.001...]]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X                # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0.124...]   </span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P                # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.249...]]</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        The examples in this section are intended to</span>
+<span class="sd">        demonstrate the usage of the `ekf` class and specifically the `update` method.</span>
+<span class="sd">        However, they are not limited to nonlinear dynamics.</span>
+<span class="sd">        For detailed usage that highlights the properties of nonlinear dynamics,</span>
+<span class="sd">        refer to the :mod:`filters &lt;c4dynamics.filters&gt;` module introduction.</span>
 
 
-<span class="sd">        </span>
-<span class="sd">      Update with modified measurement noise covariance matrix: </span>
+<span class="sd">        Import required packages:</span>
 
-<span class="sd">      .. code:: </span>
+<span class="sd">        .. code::</span>
 
-<span class="sd">        &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [0]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0.25]]</span>
-<span class="sd">        &gt;&gt;&gt; K = _ekf.update(z = 150, R = 0)</span>
-<span class="sd">        &gt;&gt;&gt; K   # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[1]]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.X  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [150]</span>
-<span class="sd">        &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
-<span class="sd">        [[0]]</span>
-<span class="sd">                </span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">hx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">hx</span> 
-      <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearH</span> <span class="o">=</span> <span class="kc">True</span> 
+<span class="sd">          &gt;&gt;&gt; from c4dynamics.filters import ekf</span>
 
-    <span class="k">if</span> <span class="n">H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> 
 
-    <span class="n">K</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearH</span> <span class="o">=</span> <span class="kc">False</span> 
-    <span class="k">return</span> <span class="n">K</span> </div>
+
+<span class="sd">        Plain update step:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200)</span>
+<span class="sd">          &gt;&gt;&gt; print(_ekf)</span>
+<span class="sd">          [ x ]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P                # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.25]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.update(z = 100)  # returns Kalman gain   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.001...]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X                # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0.124...]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P                # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.249...]]</span>
+
+
+
+<span class="sd">        Update with modified measurement noise covariance matrix:</span>
+
+<span class="sd">        .. code::</span>
+
+<span class="sd">          &gt;&gt;&gt; _ekf = ekf({&#39;x&#39;: 0}, P0 = 0.5**2, F = 1, G = 150, H = 1, R = 200, Q = 0.05)</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [0]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0.25]]</span>
+<span class="sd">          &gt;&gt;&gt; K = _ekf.update(z = 150, R = 0)</span>
+<span class="sd">          &gt;&gt;&gt; K   # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[1]]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.X  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [150]</span>
+<span class="sd">          &gt;&gt;&gt; _ekf.P  # doctest: +NUMPY_FORMAT</span>
+<span class="sd">          [[0]]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">hx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearH</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+        <span class="n">K</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nonlinearH</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">K</span></div>
 </div>
-
 
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
-
-
-
-
+    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -769,7 +767,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

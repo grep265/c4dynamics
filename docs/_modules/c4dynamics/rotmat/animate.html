@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -411,469 +411,468 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.rotmat.animate</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span> 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span> 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span> 
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
 
 <div class="viewcode-block" id="animate">
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.animate.animate.html#c4dynamics.rotmat.animate.animate">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span><span class="n">rb</span><span class="p">,</span> <span class="n">modelpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">angle0</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> 
-              <span class="p">,</span> <span class="n">modelcolor</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span> 
-                <span class="p">,</span> <span class="n">savedir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cbackground</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>  
-<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  Animate a rigidbody. </span>
+<span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span>
+    <span class="n">rb</span><span class="p">,</span>
+    <span class="n">modelpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">angle0</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">modelcolor</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">savedir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cbackground</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Animate a rigidbody.</span>
 
-<span class="sd">  Animates the rigid body&#39;s motion using a 3D model </span>
-<span class="sd">  according to the 3-2-1 Euler angles histories.</span>
+<span class="sd">    Animates the rigid body&#39;s motion using a 3D model</span>
+<span class="sd">    according to the 3-2-1 Euler angles histories.</span>
 
-<span class="sd">  **Important Note**</span>
-<span class="sd">  </span>
-<span class="sd">  Using the `animate` function requires installation of `Open3D` which is not a prerequisite of `C4dynamics`.</span>
-<span class="sd">  For the different ways to install `Open3D` please refer to its `official website &lt;https://www.open3d.org/&gt;`_. </span>
-<span class="sd">  A direct installation with pip: </span>
+<span class="sd">    **Important Note**</span>
 
-<span class="sd">  :: </span>
-
-<span class="sd">    pip install open3d</span>
-
-
-<span class="sd">  Parameters</span>
-<span class="sd">  ----------</span>
-
-<span class="sd">  modelpath : str</span>
-<span class="sd">      A path to a single file model or a path to a folder containing multiple </span>
-<span class="sd">      model files.</span>
-<span class="sd">      If the provided path is of a folder, only model files should exist in it. </span>
-<span class="sd">      Typically supported files for mesh models are .obj, .stl, .ply.</span>
-<span class="sd">      Supported point cloud file is .pcd.</span>
-<span class="sd">      If your point cloud file has .ply extension, convert it to a .pcd first. </span>
-<span class="sd">      You may do that by using `Open3D`, see note below. </span>
-<span class="sd">  </span>
-<span class="sd">  angle0 : array_like, optional </span>
-<span class="sd">      Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing</span>
-<span class="sd">      the model attitude with respect to the screen frame, see note below. </span>
-<span class="sd">  </span>
-<span class="sd">  modelcolor : array_like, optional </span>
-<span class="sd">      Colors array [R, G, B] of values between 0 and 1. </span>
-<span class="sd">      The shape of `modelcolor` is `mx3`, where m is either 1 or as </span>
-<span class="sd">      the number of the model files.</span>
-<span class="sd">      If `m &gt; 1`, then the order of the colors in the array </span>
-<span class="sd">      should match the alphabetical order of the files in `modelpath`.</span>
-<span class="sd">  </span>
-<span class="sd">  dt : float, optional</span>
-<span class="sd">      Time step between two frames for the animation. </span>
-<span class="sd">      Default is 1msec. </span>
-<span class="sd">  </span>
-<span class="sd">  savedir : str, optional</span>
-<span class="sd">      If provided, saves each frame as an image in the specified directory. </span>
-<span class="sd">      Default is None.</span>
-<span class="sd">      </span>
-
-<span class="sd">  Note</span>
-<span class="sd">  ----</span>
-<span class="sd">  - Currently, only 321 Euler order of rotation is supported. </span>
-<span class="sd">    Therefore if the stored angular state is produced by </span>
-<span class="sd">    using other set of Euler angles, they have to be converted to a 321 set first. </span>
-<span class="sd">  - If the provided path is of a folder, only model files should exist in it. </span>
-<span class="sd">    Typically supported files for mesh models are .obj, .stl, .ply.</span>
-<span class="sd">    Supported point cloud file is .pcd.</span>
-<span class="sd">    If your point cloud file has .ply extension, convert it to a .pcd first. </span>
-<span class="sd">    You may do that by using `Open3D`: </span>
-<span class="sd">    </span>
-<span class="sd">    .. code::</span>
-
-<span class="sd">      &gt;&gt;&gt; import open3d as o3d</span>
-<span class="sd">      &gt;&gt;&gt; pcd = o3d.io.read_point_cloud(&#39;model.ply&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; o3d.io.write_point_cloud(&#39;model.pcd&#39;, pcd) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    </span>
-<span class="sd">    For more info see `Open3D documentation &lt;https://www.open3d.org/docs/release/tutorial/geometry/file_io.html&gt;`_</span>
-<span class="sd">  - Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing</span>
-<span class="sd">    the model attitude with respect to the screen frame, see note below. </span>
-<span class="sd">    The screen frame is defined as follows: </span>
+<span class="sd">    Using the `animate` function requires installation of `Open3D` which is not a prerequisite of `C4dynamics`.</span>
+<span class="sd">    For the different ways to install `Open3D` please refer to its `official website &lt;https://www.open3d.org/&gt;`_.</span>
+<span class="sd">    A direct installation with pip:</span>
 
 <span class="sd">    ::</span>
 
-<span class="sd">      x: right</span>
-<span class="sd">      y: up</span>
-<span class="sd">      z: outside </span>
+<span class="sd">      pip install open3d</span>
 
-<span class="sd">    Default attitude [0, 0, 0].</span>
 
-<span class="sd">  Examples</span>
-<span class="sd">  --------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 
-<span class="sd">  The 3D models used in the following examples can be downloaded and </span>
-<span class="sd">  fetched by c4dynamics&#39; datasets: </span>
+<span class="sd">    modelpath : str</span>
+<span class="sd">        A path to a single file model or a path to a folder containing multiple</span>
+<span class="sd">        model files.</span>
+<span class="sd">        If the provided path is of a folder, only model files should exist in it.</span>
+<span class="sd">        Typically supported files for mesh models are .obj, .stl, .ply.</span>
+<span class="sd">        Supported point cloud file is .pcd.</span>
+<span class="sd">        If your point cloud file has .ply extension, convert it to a .pcd first.</span>
+<span class="sd">        You may do that by using `Open3D`, see note below.</span>
 
-<span class="sd">  .. code:: </span>
+<span class="sd">    angle0 : array_like, optional</span>
+<span class="sd">        Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing</span>
+<span class="sd">        the model attitude with respect to the screen frame, see note below.</span>
 
-<span class="sd">    &gt;&gt;&gt; import c4dynamics as c4d </span>
+<span class="sd">    modelcolor : array_like, optional</span>
+<span class="sd">        Colors array [R, G, B] of values between 0 and 1.</span>
+<span class="sd">        The shape of `modelcolor` is `mx3`, where m is either 1 or as</span>
+<span class="sd">        the number of the model files.</span>
+<span class="sd">        If `m &gt; 1`, then the order of the colors in the array</span>
+<span class="sd">        should match the alphabetical order of the files in `modelpath`.</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    dt : float, optional</span>
+<span class="sd">        Time step between two frames for the animation.</span>
+<span class="sd">        Default is 1msec.</span>
 
-<span class="sd">    &gt;&gt;&gt; bunnypath = c4d.datasets.d3_model(&#39;bunny&#39;) # &#39;bunny.pcd&#39;: point cloud data file</span>
-<span class="sd">    Fetched successfully</span>
-<span class="sd">    &gt;&gt;&gt; bunnymesh_path = c4d.datasets.d3_model(&#39;bunnymesh&#39;) # &#39;bunny_mesh.ply&#39;: polygon file</span>
-<span class="sd">    Fetched successfully</span>
-<span class="sd">    &gt;&gt;&gt; f16path = c4d.datasets.d3_model(&#39;f16&#39;) # folder of 10 stl files. </span>
-<span class="sd">    Fetched successfully</span>
+<span class="sd">    savedir : str, optional</span>
+<span class="sd">        If provided, saves each frame as an image in the specified directory.</span>
+<span class="sd">        Default is None.</span>
 
-<span class="sd">  For more details, refer to :mod:`c4dynamics.datasets`.</span>
 
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    - Currently, only 321 Euler order of rotation is supported.</span>
+<span class="sd">      Therefore if the stored angular state is produced by</span>
+<span class="sd">      using other set of Euler angles, they have to be converted to a 321 set first.</span>
+<span class="sd">    - If the provided path is of a folder, only model files should exist in it.</span>
+<span class="sd">      Typically supported files for mesh models are .obj, .stl, .ply.</span>
+<span class="sd">      Supported point cloud file is .pcd.</span>
+<span class="sd">      If your point cloud file has .ply extension, convert it to a .pcd first.</span>
+<span class="sd">      You may do that by using `Open3D`:</span>
 
+<span class="sd">      .. code::</span>
 
-<span class="sd">  **Animate Stanford bunny**</span>
-<span class="sd">  </span>
-<span class="sd">  </span>
-<span class="sd">  1. The Stanford bunny is a computer graphics 3D test model </span>
-<span class="sd">  developed by Greg Turk and Marc Levoy in 1994 at Stanford University. </span>
-<span class="sd">  The model consists of 69,451 triangles, with the data determined by </span>
-<span class="sd">  3D scanning a ceramic figurine of a rabbit. For more details, refer to </span>
-<span class="sd">  `The Stanford 3D Scanning Repository &lt;https://graphics.stanford.edu/data/3Dscanrep/#bunny&gt;`_</span>
+<span class="sd">        &gt;&gt;&gt; import open3d as o3d</span>
+<span class="sd">        &gt;&gt;&gt; pcd = o3d.io.read_point_cloud(&#39;model.ply&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">        &gt;&gt;&gt; o3d.io.write_point_cloud(&#39;model.pcd&#39;, pcd) # doctest: +IGNORE_OUTPUT</span>
 
-<span class="sd">  </span>
+<span class="sd">      For more info see `Open3D documentation &lt;https://www.open3d.org/docs/release/tutorial/geometry/file_io.html&gt;`_</span>
+<span class="sd">    - Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing</span>
+<span class="sd">      the model attitude with respect to the screen frame, see note below.</span>
+<span class="sd">      The screen frame is defined as follows:</span>
 
-<span class="sd">  .. code:: </span>
+<span class="sd">      ::</span>
 
-<span class="sd">    &gt;&gt;&gt; bunny = c4d.rigidbody()</span>
-<span class="sd">    &gt;&gt;&gt; # generate an arbitrary attitude motion</span>
-<span class="sd">    &gt;&gt;&gt; dt = 0.01</span>
-<span class="sd">    &gt;&gt;&gt; T = 5</span>
-<span class="sd">    &gt;&gt;&gt; for t in np.arange(0, T, dt): </span>
-<span class="sd">    ...   bunny.psi += dt * 360 * c4d.d2r / T</span>
-<span class="sd">    ...   bunny.store(t)</span>
-<span class="sd">    &gt;&gt;&gt; bunny.animate(bunnypath, cbackground = [0, 0, 0])</span>
-<span class="sd">  </span>
-<span class="sd">  .. figure:: /_examples/animate/bunny.gif</span>
+<span class="sd">        x: right</span>
+<span class="sd">        y: up</span>
+<span class="sd">        z: outside</span>
 
-<span class="sd">    </span>
-<span class="sd">  2. You can change the model&#39;s color by setting the `modelcolor` parameter.</span>
-<span class="sd">  Here is an example of a mesh version of Stanford bunny with a custom color:  </span>
+<span class="sd">      Default attitude [0, 0, 0].</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5])</span>
+<span class="sd">    The 3D models used in the following examples can be downloaded and</span>
+<span class="sd">    fetched by c4dynamics&#39; datasets:</span>
 
-<span class="sd">  .. figure:: /_examples/animate/bunny_red.gif</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  </span>
-<span class="sd">  **Motion of a dynamic system**</span>
-<span class="sd">  </span>
+<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
 
-<span class="sd">  3. An F16 has the following Euler angles: </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  .. code:: </span>
+<span class="sd">      &gt;&gt;&gt; bunnypath = c4d.datasets.d3_model(&#39;bunny&#39;) # &#39;bunny.pcd&#39;: point cloud data file</span>
+<span class="sd">      Fetched successfully</span>
+<span class="sd">      &gt;&gt;&gt; bunnymesh_path = c4d.datasets.d3_model(&#39;bunnymesh&#39;) # &#39;bunny_mesh.ply&#39;: polygon file</span>
+<span class="sd">      Fetched successfully</span>
+<span class="sd">      &gt;&gt;&gt; f16path = c4d.datasets.d3_model(&#39;f16&#39;) # folder of 10 stl files.</span>
+<span class="sd">      Fetched successfully</span>
 
-<span class="sd">    &gt;&gt;&gt; f16 = c4d.rigidbody()</span>
-<span class="sd">    &gt;&gt;&gt; dt = 0.01</span>
-<span class="sd">    &gt;&gt;&gt; for t in np.arange(0, 9, dt): </span>
-<span class="sd">    ...   if t &lt; 3: </span>
-<span class="sd">    ...     f16.psi += dt * 180 * c4d.d2r / 3</span>
-<span class="sd">    ...   elif t &lt; 6: </span>
-<span class="sd">    ...     f16.theta += dt * 180 * c4d.d2r / 3</span>
-<span class="sd">    ...   else:</span>
-<span class="sd">    ...     f16.phi -= dt * 180 * c4d.d2r / 3 </span>
-<span class="sd">    ...   f16.store(t)</span>
+<span class="sd">    For more details, refer to :mod:`c4dynamics.datasets`.</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_eulers.png</span>
-<span class="sd">  </span>
-<span class="sd">  The jet model is consisted of multiple files, therefore the `f16` rigidbody object</span>
-<span class="sd">  that was simulated with the above motion is provided with a path to the consisting folder.  </span>
 
-<span class="sd">  .. code::</span>
 
-<span class="sd">    &gt;&gt;&gt; f16.animate(f16path)</span>
+<span class="sd">    **Animate Stanford bunny**</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16.gif</span>
 
-<span class="sd">  </span>
-<span class="sd">  4. It&#39;s obvious that the animated model doesn&#39;t follow the required rotation as simulated above. </span>
-<span class="sd">  This because the model initial postion isn&#39;t aligned with the screen frame. </span>
-<span class="sd">  To align the aircraft body frame which defined as:</span>
-<span class="sd">  </span>
-<span class="sd">  :: </span>
+<span class="sd">    1. The Stanford bunny is a computer graphics 3D test model</span>
+<span class="sd">    developed by Greg Turk and Marc Levoy in 1994 at Stanford University.</span>
+<span class="sd">    The model consists of 69,451 triangles, with the data determined by</span>
+<span class="sd">    3D scanning a ceramic figurine of a rabbit. For more details, refer to</span>
+<span class="sd">    `The Stanford 3D Scanning Repository &lt;https://graphics.stanford.edu/data/3Dscanrep/#bunny&gt;`_</span>
 
-<span class="sd">    x: centerline </span>
-<span class="sd">    z: perpendicular to x, downward </span>
-<span class="sd">    y: completes the right-hand coordinate system</span>
 
-<span class="sd">  With the screen frame which defined as: </span>
 
-<span class="sd">  :: </span>
-<span class="sd">  </span>
-<span class="sd">    x: rightward </span>
-<span class="sd">    y: upward </span>
-<span class="sd">    z: outside the screen  </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  We should examine a frame of the model before any rotation.</span>
-<span class="sd">  It can be achieved by using `Open3D`: </span>
-<span class="sd">  </span>
+<span class="sd">      &gt;&gt;&gt; bunny = c4d.rigidbody()</span>
+<span class="sd">      &gt;&gt;&gt; # generate an arbitrary attitude motion</span>
+<span class="sd">      &gt;&gt;&gt; dt = 0.01</span>
+<span class="sd">      &gt;&gt;&gt; T = 5</span>
+<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, T, dt):</span>
+<span class="sd">      ...   bunny.psi += dt * 360 * c4d.d2r / T</span>
+<span class="sd">      ...   bunny.store(t)</span>
+<span class="sd">      &gt;&gt;&gt; bunny.animate(bunnypath, cbackground = [0, 0, 0])</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    .. figure:: /_examples/animate/bunny.gif</span>
 
-<span class="sd">    &gt;&gt;&gt; import os </span>
-<span class="sd">    &gt;&gt;&gt; import open3d as o3d</span>
 
+<span class="sd">    2. You can change the model&#39;s color by setting the `modelcolor` parameter.</span>
+<span class="sd">    Here is an example of a mesh version of Stanford bunny with a custom color:</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">    &gt;&gt;&gt; model = []</span>
-<span class="sd">    &gt;&gt;&gt; for f in sorted(os.listdir(f16path)):</span>
-<span class="sd">    ...   mfilepath = os.path.join(f16path, f)</span>
-<span class="sd">    ...   m = o3d.io.read_triangle_mesh(mfilepath)</span>
-<span class="sd">    ...   m.compute_vertex_normals() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    ...   model.append(m)</span>
-<span class="sd">    &gt;&gt;&gt; o3d.visualization.draw_geometries(model)</span>
+<span class="sd">      &gt;&gt;&gt; bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5])</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_static.png</span>
+<span class="sd">    .. figure:: /_examples/animate/bunny_red.gif</span>
 
-<span class="sd">  </span>
-<span class="sd">  It turns out that for 3-2-1 order of rotation (see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`)</span>
-<span class="sd">  the body frame with respect to the screen frame is given by:</span>
 
-<span class="sd">  - Rotation of `180deg` about `y` (up the screen)</span>
+<span class="sd">    **Motion of a dynamic system**</span>
 
-<span class="sd">  - Rotation of `90deg` about `x` (right the screen)</span>
 
-<span class="sd">  Let&#39;s re-run with the correct initial conditions: </span>
+<span class="sd">    3. An F16 has the following Euler angles:</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">    &gt;&gt;&gt; x0 = [90 * c4d.d2r, 0, 180 * c4d.d2r] </span>
-<span class="sd">    &gt;&gt;&gt; f16.animate(f16path, angle0 = x0)</span>
+<span class="sd">      &gt;&gt;&gt; f16 = c4d.rigidbody()</span>
+<span class="sd">      &gt;&gt;&gt; dt = 0.01</span>
+<span class="sd">      &gt;&gt;&gt; for t in np.arange(0, 9, dt):</span>
+<span class="sd">      ...   if t &lt; 3:</span>
+<span class="sd">      ...     f16.psi += dt * 180 * c4d.d2r / 3</span>
+<span class="sd">      ...   elif t &lt; 6:</span>
+<span class="sd">      ...     f16.theta += dt * 180 * c4d.d2r / 3</span>
+<span class="sd">      ...   else:</span>
+<span class="sd">      ...     f16.phi -= dt * 180 * c4d.d2r / 3</span>
+<span class="sd">      ...   f16.store(t)</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_IC.gif</span>
+<span class="sd">    .. figure:: /_examples/animate/f16_eulers.png</span>
 
+<span class="sd">    The jet model is consisted of multiple files, therefore the `f16` rigidbody object</span>
+<span class="sd">    that was simulated with the above motion is provided with a path to the consisting folder.</span>
 
-<span class="sd">  5. The attitude is correct but the the model is colorless. </span>
-<span class="sd">  Let&#39;s give it some color; </span>
-<span class="sd">  We sort the colors by the jet&#39;s parts alphabetically as it </span>
-<span class="sd">  assigns the values according to the order of an alphabetical </span>
-<span class="sd">  reading of the files in the folder. </span>
-<span class="sd">  Finally convert it to a list. </span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path)</span>
 
-<span class="sd">    &gt;&gt;&gt; f16colors = list({&#39;Aileron_A_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                 , &#39;Aileron_B_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                 , &#39;Body_F16&#39;:          [0.8, 0.8, 0.8]</span>
-<span class="sd">    ...                 , &#39;Cockpit_F16&#39;:       [0.1, 0.1, 0.1]</span>
-<span class="sd">    ...                 , &#39;LE_Slat_A_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                 , &#39;LE_Slat_B_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                     , &#39;Rudder_F16&#39;:        [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                       , &#39;Stabilator_A_F16&#39;:  [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                          , &#39;Stabilator_B_F16&#39;:  [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
-<span class="sd">    ...                 }.values())</span>
-<span class="sd">    &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = f16colors)</span>
+<span class="sd">    .. figure:: /_examples/animate/f16.gif</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_color.gif</span>
 
-<span class="sd">  </span>
-<span class="sd">  6. It can also be painted with a single color for all its parts and a single color for the background: </span>
+<span class="sd">    4. It&#39;s obvious that the animated model doesn&#39;t follow the required rotation as simulated above.</span>
+<span class="sd">    This because the model initial postion isn&#39;t aligned with the screen frame.</span>
+<span class="sd">    To align the aircraft body frame which defined as:</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">    ::</span>
 
-<span class="sd">    &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0], cbackground = np.array([230, 230, 255]) / 255)</span>
+<span class="sd">      x: centerline</span>
+<span class="sd">      z: perpendicular to x, downward</span>
+<span class="sd">      y: completes the right-hand coordinate system</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_monochrome.gif</span>
+<span class="sd">    With the screen frame which defined as:</span>
 
-<span class="sd">    </span>
-<span class="sd">  7. Finally, let&#39;s use the `savedir` option using the c4dynamics&#39; gif util to generate a gif file out of the model animation</span>
+<span class="sd">    ::</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">      x: rightward</span>
+<span class="sd">      y: upward</span>
+<span class="sd">      z: outside the screen</span>
 
-<span class="sd">    &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0]</span>
-<span class="sd">    ...                         , [184, 134, 11], [0, 32, 38]</span>
-<span class="sd">    ...                             , [218, 165, 32], [218, 165, 32], [54, 69, 79]</span>
-<span class="sd">    ...                                 , [205, 149, 12], [205, 149, 12])) / 255</span>
-<span class="sd">    &gt;&gt;&gt; outfol = os.path.join(&#39;tests&#39;, &#39;_out&#39;, &#39;f16a&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)</span>
-<span class="sd">    &gt;&gt;&gt; # the storage folder &#39;outfol&#39; is the source of images for the gif function</span>
-<span class="sd">    &gt;&gt;&gt; # the &#39;duration&#39; parameter sets the required length of the animation  </span>
-<span class="sd">    &gt;&gt;&gt; gifname = &#39;f16_animation.gif&#39;</span>
-<span class="sd">    &gt;&gt;&gt; c4d.gif(outfol, gifname, duration = 1)</span>
-<span class="sd">  </span>
-<span class="sd">  Viewing the gif on a Jupyter notebook is possible by using the `Image` funtion of the `IPython` module: </span>
+<span class="sd">    We should examine a frame of the model before any rotation.</span>
+<span class="sd">    It can be achieved by using `Open3D`:</span>
 
-<span class="sd">  .. code::</span>
 
-<span class="sd">    &gt;&gt;&gt; import os </span>
-<span class="sd">    &gt;&gt;&gt; from IPython.display import Image</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  .. code::</span>
+<span class="sd">      &gt;&gt;&gt; import os</span>
+<span class="sd">      &gt;&gt;&gt; import open3d as o3d</span>
 
-<span class="sd">    &gt;&gt;&gt; gifpath = os.path.join(outfol, gifname)</span>
-<span class="sd">    &gt;&gt;&gt; Image(filename = gifpath) # doctest: +IGNORE_OUTPUT</span>
 
-<span class="sd">  .. figure:: /_examples/animate/f16_color2.gif</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  &#39;&#39;&#39;</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>
-  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-          <span class="s2">&quot;The &#39;open3d&#39; package is required for this function to work. &quot;</span>
-          <span class="s2">&quot;Please install it by running &#39;pip install open3d&#39;.&quot;</span>
-      <span class="p">)</span>
-  
-  <span class="k">try</span><span class="p">:</span> 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
-  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> 
-    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-      <span class="s2">&quot;ModuleNotFoundError: No module named &#39;tkinter&#39;.&quot;</span>
-          <span class="s2">&quot;To install on Debian-based systems: &#39;sudo apt install python3-tk&#39;&quot;</span>
-      <span class="p">)</span>
-  
+<span class="sd">      &gt;&gt;&gt; model = []</span>
+<span class="sd">      &gt;&gt;&gt; for f in sorted(os.listdir(f16path)):</span>
+<span class="sd">      ...   mfilepath = os.path.join(f16path, f)</span>
+<span class="sd">      ...   m = o3d.io.read_triangle_mesh(mfilepath)</span>
+<span class="sd">      ...   m.compute_vertex_normals() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      ...   model.append(m)</span>
+<span class="sd">      &gt;&gt;&gt; o3d.visualization.draw_geometries(model)</span>
 
-  <span class="k">if</span> <span class="ow">not</span> <span class="n">rb</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;No stored data for the given rigidbody.&quot;&quot;&quot;</span> <span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">c4warn</span><span class="p">)</span>
-    <span class="k">return</span> <span class="kc">None</span>
+<span class="sd">    .. figure:: /_examples/animate/f16_static.png</span>
 
-  <span class="c1"># </span>
-  <span class="c1"># load the model </span>
-  <span class="c1">#   get all the files</span>
-  <span class="c1">#   check type</span>
-  <span class="c1">#   read model</span>
-  <span class="c1">#   add color </span>
-  <span class="c1">##</span>
 
-  <span class="n">model</span> <span class="o">=</span> <span class="p">[]</span>
-  
+<span class="sd">    It turns out that for 3-2-1 order of rotation (see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`)</span>
+<span class="sd">    the body frame with respect to the screen frame is given by:</span>
 
-  <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">modelpath</span><span class="p">):</span>
-    <span class="n">modelpath</span><span class="p">,</span> <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">modelpath</span><span class="p">)</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
+<span class="sd">    - Rotation of `180deg` about `y` (up the screen)</span>
 
-  <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">modelpath</span><span class="p">):</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">modelpath</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span> 
-      <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">modelpath</span><span class="si">}</span><span class="s2">&#39; is empty.&quot;</span><span class="p">)</span>
+<span class="sd">    - Rotation of `90deg` about `x` (right the screen)</span>
 
-    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modelpath</span><span class="p">,</span> <span class="n">file</span><span class="p">))]</span>
+<span class="sd">    Let&#39;s re-run with the correct initial conditions:</span>
 
-  <span class="k">else</span><span class="p">:</span> 
-    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">modelpath</span><span class="si">}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
+<span class="sd">    .. code::</span>
 
-  <span class="k">if</span> <span class="n">modelcolor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># user input </span>
+<span class="sd">      &gt;&gt;&gt; x0 = [90 * c4d.d2r, 0, 180 * c4d.d2r]</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0)</span>
 
-    <span class="c1"># if not 3 colums array, raise an error: </span>
-    <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Example condition: if modelcolor is empty</span>
-      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;modelcolor must be three columns array for RGB.&quot;</span><span class="p">)</span>
+<span class="sd">    .. figure:: /_examples/animate/f16_IC.gif</span>
 
-    <span class="c1"># if one row, duplicate</span>
-    <span class="k">if</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  
-      <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span> 
 
+<span class="sd">    5. The attitude is correct but the the model is colorless.</span>
+<span class="sd">    Let&#39;s give it some color;</span>
+<span class="sd">    We sort the colors by the jet&#39;s parts alphabetically as it</span>
+<span class="sd">    assigns the values according to the order of an alphabetical</span>
+<span class="sd">    reading of the files in the folder.</span>
+<span class="sd">    Finally convert it to a list.</span>
 
+<span class="sd">    .. code::</span>
 
+<span class="sd">      &gt;&gt;&gt; f16colors = list({&#39;Aileron_A_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                 , &#39;Aileron_B_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                 , &#39;Body_F16&#39;:          [0.8, 0.8, 0.8]</span>
+<span class="sd">      ...                 , &#39;Cockpit_F16&#39;:       [0.1, 0.1, 0.1]</span>
+<span class="sd">      ...                 , &#39;LE_Slat_A_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                 , &#39;LE_Slat_B_F16&#39;:     [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                     , &#39;Rudder_F16&#39;:        [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                       , &#39;Stabilator_A_F16&#39;:  [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                          , &#39;Stabilator_B_F16&#39;:  [0.3 * 0.8, 0.3 * 0.8, 0.3 * 1]</span>
+<span class="sd">      ...                 }.values())</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = f16colors)</span>
 
+<span class="sd">    .. figure:: /_examples/animate/f16_color.gif</span>
 
-  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
 
-    <span class="n">mfilepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modelpath</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-    <span class="n">ismesh</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;stl&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">,</span> <span class="s1">&#39;ply&#39;</span><span class="p">])</span> <span class="k">else</span> <span class="kc">False</span> 
-    <span class="n">imodel</span> <span class="o">=</span> <span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="n">mfilepath</span><span class="p">)</span> <span class="k">if</span> <span class="n">ismesh</span> <span class="k">else</span> <span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_point_cloud</span><span class="p">(</span><span class="n">mfilepath</span><span class="p">)</span> 
-    <span class="k">if</span> <span class="n">modelcolor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1">#MAYBE WANTS TO SAY IS NOT NONE </span>
-      <span class="n">imodel</span><span class="o">.</span><span class="n">paint_uniform_color</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">ismesh</span><span class="p">:</span> 
-      <span class="n">imodel</span><span class="o">.</span><span class="n">compute_vertex_normals</span><span class="p">()</span>
-    
-    <span class="n">model</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imodel</span><span class="p">)</span>
+<span class="sd">    6. It can also be painted with a single color for all its parts and a single color for the background:</span>
 
-    
+<span class="sd">    .. code::</span>
 
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0], cbackground = np.array([230, 230, 255]) / 255)</span>
 
+<span class="sd">    .. figure:: /_examples/animate/f16_monochrome.gif</span>
 
-  <span class="c1"># Create a dummy tkinter window</span>
-  <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
-  <span class="c1"># Get the screen width and height</span>
-  <span class="n">screen_width</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>
-  <span class="n">screen_height</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>
-  <span class="c1"># Close the dummy window</span>
-  <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
 
-  <span class="n">vis</span> <span class="o">=</span> <span class="n">o3d</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">Visualizer</span><span class="p">()</span> <span class="c1"># type: ignore</span>
-  <span class="n">vis</span><span class="o">.</span><span class="n">create_window</span><span class="p">(</span><span class="n">window_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> 
-                      <span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-                          <span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-                              <span class="p">,</span> <span class="n">left</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-                                  <span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
-  <span class="n">opt</span> <span class="o">=</span> <span class="n">vis</span><span class="o">.</span><span class="n">get_render_option</span><span class="p">()</span>
-  <span class="n">opt</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">cbackground</span>  <span class="c1"># RGB values for black</span>
+<span class="sd">    7. Finally, let&#39;s use the `savedir` option using the c4dynamics&#39; gif util to generate a gif file out of the model animation</span>
 
-  <span class="c1">#</span>
-  <span class="c1"># prepare output folder</span>
-  <span class="c1">##</span>
-  <span class="k">if</span> <span class="n">savedir</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">savedir</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">savedir</span><span class="p">)</span>
+<span class="sd">    .. code::</span>
 
+<span class="sd">      &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0]</span>
+<span class="sd">      ...                         , [184, 134, 11], [0, 32, 38]</span>
+<span class="sd">      ...                             , [218, 165, 32], [218, 165, 32], [54, 69, 79]</span>
+<span class="sd">      ...                                 , [205, 149, 12], [205, 149, 12])) / 255</span>
+<span class="sd">      &gt;&gt;&gt; outfol = os.path.join(&#39;tests&#39;, &#39;_out&#39;, &#39;f16a&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)</span>
+<span class="sd">      &gt;&gt;&gt; # the storage folder &#39;outfol&#39; is the source of images for the gif function</span>
+<span class="sd">      &gt;&gt;&gt; # the &#39;duration&#39; parameter sets the required length of the animation</span>
+<span class="sd">      &gt;&gt;&gt; gifname = &#39;f16_animation.gif&#39;</span>
+<span class="sd">      &gt;&gt;&gt; c4d.gif(outfol, gifname, duration = 1)</span>
 
-  <span class="c1">#</span>
-  <span class="c1"># load the angular data </span>
-  <span class="c1">##</span>
+<span class="sd">    Viewing the gif on a Jupyter notebook is possible by using the `Image` funtion of the `IPython` module:</span>
 
-  <span class="n">psidata</span>   <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;psi&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-  <span class="n">thetadata</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-  <span class="n">phidata</span>   <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="sd">    .. code::</span>
 
-  <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span> 
-    <span class="n">vis</span><span class="o">.</span><span class="n">add_geometry</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="sd">      &gt;&gt;&gt; import os</span>
+<span class="sd">      &gt;&gt;&gt; from IPython.display import Image</span>
 
-  <span class="c1"># here xscreen = xplane, yscreen = -zplane, and zscreen = yplane  </span>
-  <span class="c1"># then dcm321(phi, theta, psi) =&gt; dcm231(phi, -theta, -psi)</span>
-  <span class="c1"># but now the conversion of intrinsic frame to extrinsic frame is translated as:</span>
-  <span class="c1"># -&gt; dcm132(phi, -theta, -psi)</span>
+<span class="sd">    .. code::</span>
 
-  <span class="c1"># rotate the object to its initial attitude </span>
-  <span class="n">Robj</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotx</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">roty</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotz</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="sd">      &gt;&gt;&gt; gifpath = os.path.join(outfol, gifname)</span>
+<span class="sd">      &gt;&gt;&gt; Image(filename = gifpath) # doctest: +IGNORE_OUTPUT</span>
 
+<span class="sd">    .. figure:: /_examples/animate/f16_color2.gif</span>
 
-  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phidata</span><span class="p">)):</span> 
-      
-      <span class="c1"># match the inertial axes to the screen axes </span>
-      <span class="n">rbi</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rigidbody</span><span class="p">(</span><span class="n">phi</span> <span class="o">=</span> <span class="o">-</span><span class="n">phidata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># about x screen </span>
-                              <span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">psidata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># about y screen </span>
-                                  <span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="o">-</span><span class="n">thetadata</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># about z screen </span>
-      
-      <span class="c1"># 321 intrinsic =&gt; 132 extrinsic </span>
-      <span class="n">Rin</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">roty</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotz</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">psi</span><span class="p">)</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotx</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
-      <span class="n">DR</span> <span class="o">=</span> <span class="n">Rin</span> <span class="o">@</span> <span class="n">Robj</span><span class="o">.</span><span class="n">T</span>
-      <span class="n">Robj</span> <span class="o">=</span> <span class="n">Rin</span> 
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;The &#39;open3d&#39; package is required for this function to work. &quot;</span>
+            <span class="s2">&quot;Please install it by running &#39;pip install open3d&#39;.&quot;</span>
+        <span class="p">)</span>
 
-      <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span> 
-        <span class="n">m</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">DR</span><span class="p">,</span> <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> 
-        <span class="n">vis</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-      
-      <span class="n">vis</span><span class="o">.</span><span class="n">poll_events</span><span class="p">()</span>
-      <span class="n">vis</span><span class="o">.</span><span class="n">update_renderer</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;ModuleNotFoundError: No module named &#39;tkinter&#39;.&quot;</span>
+            <span class="s2">&quot;To install on Debian-based systems: &#39;sudo apt install python3-tk&#39;&quot;</span>
+        <span class="p">)</span>
 
-      <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rb</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;No stored data for the given rigidbody.&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">c4warn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-      <span class="k">if</span> <span class="n">savedir</span><span class="p">:</span> 
-        <span class="n">vis</span><span class="o">.</span><span class="n">capture_screen_image</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savedir</span><span class="p">,</span> <span class="s1">&#39;animated&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">))</span>
+    <span class="c1">#</span>
+    <span class="c1"># load the model</span>
+    <span class="c1">#   get all the files</span>
+    <span class="c1">#   check type</span>
+    <span class="c1">#   read model</span>
+    <span class="c1">#   add color</span>
+    <span class="c1">##</span>
 
-  <span class="n">vis</span><span class="o">.</span><span class="n">destroy_window</span><span class="p">()</span></div>
+    <span class="n">model</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">modelpath</span><span class="p">):</span>
+        <span class="n">modelpath</span><span class="p">,</span> <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">modelpath</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">modelpath</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">modelpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">modelpath</span><span class="si">}</span><span class="s2">&#39; is empty.&quot;</span><span class="p">)</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modelpath</span><span class="p">,</span> <span class="n">file</span><span class="p">))]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">modelpath</span><span class="si">}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">modelcolor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># user input</span>
+
+        <span class="c1"># if not 3 colums array, raise an error:</span>
+        <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Example condition: if modelcolor is empty</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;modelcolor must be three columns array for RGB.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if one row, duplicate</span>
+        <span class="k">if</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">modelcolor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
+
+        <span class="n">mfilepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modelpath</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">ismesh</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;stl&quot;</span><span class="p">,</span> <span class="s2">&quot;obj&quot;</span><span class="p">,</span> <span class="s2">&quot;ply&quot;</span><span class="p">])</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="n">imodel</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="n">mfilepath</span><span class="p">)</span> <span class="k">if</span> <span class="n">ismesh</span> <span class="k">else</span> <span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_point_cloud</span><span class="p">(</span><span class="n">mfilepath</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">modelcolor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># MAYBE WANTS TO SAY IS NOT NONE</span>
+            <span class="n">imodel</span><span class="o">.</span><span class="n">paint_uniform_color</span><span class="p">(</span><span class="n">modelcolor</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">ismesh</span><span class="p">:</span>
+            <span class="n">imodel</span><span class="o">.</span><span class="n">compute_vertex_normals</span><span class="p">()</span>
+
+        <span class="n">model</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imodel</span><span class="p">)</span>
+
+    <span class="c1"># Create a dummy tkinter window</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+    <span class="c1"># Get the screen width and height</span>
+    <span class="n">screen_width</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>
+    <span class="n">screen_height</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>
+    <span class="c1"># Close the dummy window</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+    <span class="n">vis</span> <span class="o">=</span> <span class="n">o3d</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">Visualizer</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+    <span class="n">vis</span><span class="o">.</span><span class="n">create_window</span><span class="p">(</span>
+        <span class="n">window_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">screen_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">height</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">left</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">screen_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">top</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">screen_height</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">vis</span><span class="o">.</span><span class="n">get_render_option</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">cbackground</span>  <span class="c1"># RGB values for black</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># prepare output folder</span>
+    <span class="c1">##</span>
+    <span class="k">if</span> <span class="n">savedir</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">savedir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">savedir</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># load the angular data</span>
+    <span class="c1">##</span>
+
+    <span class="n">psidata</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s2">&quot;psi&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">thetadata</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s2">&quot;theta&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">phidata</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+        <span class="n">vis</span><span class="o">.</span><span class="n">add_geometry</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="c1"># here xscreen = xplane, yscreen = -zplane, and zscreen = yplane</span>
+    <span class="c1"># then dcm321(phi, theta, psi) =&gt; dcm231(phi, -theta, -psi)</span>
+    <span class="c1"># but now the conversion of intrinsic frame to extrinsic frame is translated as:</span>
+    <span class="c1"># -&gt; dcm132(phi, -theta, -psi)</span>
+
+    <span class="c1"># rotate the object to its initial attitude</span>
+    <span class="n">Robj</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotx</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">roty</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotz</span><span class="p">(</span><span class="n">angle0</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phidata</span><span class="p">)):</span>
+
+        <span class="c1"># match the inertial axes to the screen axes</span>
+        <span class="n">rbi</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rigidbody</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=-</span><span class="n">phidata</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">theta</span><span class="o">=</span><span class="n">psidata</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">psi</span><span class="o">=-</span><span class="n">thetadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># about x screen  # about y screen</span>
+        <span class="p">)</span>  <span class="c1"># about z screen</span>
+
+        <span class="c1"># 321 intrinsic =&gt; 132 extrinsic</span>
+        <span class="n">Rin</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">roty</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotz</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">psi</span><span class="p">)</span> <span class="o">@</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rotmat</span><span class="o">.</span><span class="n">rotx</span><span class="p">(</span><span class="n">rbi</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+        <span class="n">DR</span> <span class="o">=</span> <span class="n">Rin</span> <span class="o">@</span> <span class="n">Robj</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">Robj</span> <span class="o">=</span> <span class="n">Rin</span>
+
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">DR</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">vis</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="n">vis</span><span class="o">.</span><span class="n">poll_events</span><span class="p">()</span>
+        <span class="n">vis</span><span class="o">.</span><span class="n">update_renderer</span><span class="p">()</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savedir</span><span class="p">:</span>
+            <span class="n">vis</span><span class="o">.</span><span class="n">capture_screen_image</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savedir</span><span class="p">,</span> <span class="s2">&quot;animated&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">))</span>
+
+    <span class="n">vis</span><span class="o">.</span><span class="n">destroy_window</span><span class="p">()</span></div>
 
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>
-    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
-  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;__main__.animate&quot;</span><span class="p">])</span>
-  
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>  <span class="c1"># noqa: F401</span>
 
+        <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;__main__.animate&quot;</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -921,7 +920,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>

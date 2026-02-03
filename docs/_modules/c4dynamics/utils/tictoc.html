@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 02, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
   </head>
   
   
@@ -411,37 +411,40 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.utils.tictoc</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
 <span class="n">_tic</span> <span class="o">=</span> <span class="mf">0.0</span>
+
 
 <div class="viewcode-block" id="tic">
 <a class="viewcode-back" href="../../../api/generated/utils/c4dynamics.utils.tictoc.tic.html#c4dynamics.utils.tictoc.tic">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">tic</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts stopwatch timer.</span>
 
 <span class="sd">    Inspired by `MATLAB&#39;s` tic toc, `tic()` records the current time to start measuring elapsed time.</span>
-<span class="sd">    When used in conjunction with `toc()` serves as a stopwatch </span>
-<span class="sd">    timer to measure the time interval between two events. </span>
+<span class="sd">    When used in conjunction with `toc()` serves as a stopwatch</span>
+<span class="sd">    timer to measure the time interval between two events.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : float</span>
-<span class="sd">        The recorded start time. </span>
+<span class="sd">        The recorded start time.</span>
 
-<span class="sd">    Examples </span>
+<span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">      &gt;&gt;&gt; import numpy as np </span>
+<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">      &gt;&gt;&gt; import numpy as np</span>
 
 
-<span class="sd">    .. code:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. code::</span>
+
 <span class="sd">      &gt;&gt;&gt; N = 10000</span>
 <span class="sd">      &gt;&gt;&gt; tic()   # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; a = np.ones((1, 3))</span>
@@ -451,7 +454,7 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;numpy concat: &#39; + str(1000 * t1) + &#39; ms&#39;, &#39;r&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      numpy concat: 40.0 ms</span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; a = np.zeros((N, 3))</span>
@@ -461,7 +464,7 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;numpy predefined: &#39; + str(1000 * t2) + &#39; ms&#39;, &#39;g&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      numpy predefined: 3.0 ms</span>
 
-<span class="sd">    .. code:: </span>
+<span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; tic()# doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; a = []</span>
@@ -471,89 +474,90 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; t3 = toc()# doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;list to numpy: &#39; + str(1000 * t3) + &#39; ms&#39;, &#39;y&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      list to numpy: 0.0 ms</span>
-<span class="sd">    </span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">global</span> <span class="n">_tic</span>
     <span class="n">_tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">_tic</span></div>
 
 
+
 <div class="viewcode-block" id="toc">
 <a class="viewcode-back" href="../../../api/generated/utils/c4dynamics.utils.tictoc.toc.html#c4dynamics.utils.tictoc.toc">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">toc</span><span class="p">(</span><span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">toc</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">  Stops the stopwatch timer and reads the elapsed time.</span>
+<span class="sd">    Stops the stopwatch timer and reads the elapsed time.</span>
 
-<span class="sd">  Measures the elapsed time since the last call to `tic()` and prints the result in seconds.</span>
-
-
-<span class="sd">  Returns</span>
-<span class="sd">  -------</span>
-<span class="sd">  out : float</span>
-<span class="sd">      Elapsed time in seconds.</span>
-
-<span class="sd">  Examples </span>
-<span class="sd">  --------</span>
-
-<span class="sd">  .. code::</span>
-
-<span class="sd">    &gt;&gt;&gt; import c4dynamics as c4d </span>
-<span class="sd">    &gt;&gt;&gt; import numpy as np </span>
+<span class="sd">    Measures the elapsed time since the last call to `tic()` and prints the result in seconds.</span>
 
 
-<span class="sd">  .. code:: </span>
-<span class="sd">      </span>
-<span class="sd">    &gt;&gt;&gt; N = 10000</span>
-<span class="sd">    &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; a = np.ones((1, 3))</span>
-<span class="sd">    &gt;&gt;&gt; for i in range(N - 1):</span>
-<span class="sd">    ...     a = np.concatenate((a, np.ones((1, 3))))</span>
-<span class="sd">    &gt;&gt;&gt; t1 = toc() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; c4d.cprint(&#39;numpy concat: &#39; + str(1000 * t1) + &#39; ms&#39;, &#39;r&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    numpy concat: 31.0 ms</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : float</span>
+<span class="sd">        Elapsed time in seconds.</span>
 
-<span class="sd">  .. code:: </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; a = np.zeros((N, 3))</span>
-<span class="sd">    &gt;&gt;&gt; for i in range(N):</span>
-<span class="sd">    ...     a[i, :] = np.ones((1, 3))</span>
-<span class="sd">    &gt;&gt;&gt; t2 = toc() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; c4d.cprint(&#39;numpy predefined: &#39; + str(1000 * t2) + &#39; ms&#39;, &#39;g&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    numpy predefined: 15.0 ms</span>
+<span class="sd">    .. code::</span>
 
-<span class="sd">  .. code:: </span>
+<span class="sd">      &gt;&gt;&gt; import c4dynamics as c4d</span>
+<span class="sd">      &gt;&gt;&gt; import numpy as np</span>
 
-<span class="sd">    &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; a = []</span>
-<span class="sd">    &gt;&gt;&gt; for i in range(N):</span>
-<span class="sd">    ...     a.append([1, 1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; a = np.array(a)</span>
-<span class="sd">    &gt;&gt;&gt; t3 = toc() # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    &gt;&gt;&gt; c4d.cprint(&#39;list to numpy: &#39; + str(1000 * t3) + &#39; ms&#39;, &#39;y&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">    list to numpy: 0.0 ms</span>
 
-<span class="sd">    </span>
-<span class="sd">  &#39;&#39;&#39;</span>
+<span class="sd">    .. code::</span>
 
-  <span class="k">global</span> <span class="n">_tic</span>
-  <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">_tic</span>
-  <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;sec&#39;</span>
-  <span class="k">if</span> <span class="n">minutes</span><span class="p">:</span> 
-    <span class="n">dt</span> <span class="o">/=</span> <span class="mi">60</span>
-    <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;min&#39;</span>
-  <span class="k">if</span> <span class="n">show</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dt</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-  <span class="k">return</span> <span class="n">dt</span></div>
+<span class="sd">      &gt;&gt;&gt; N = 10000</span>
+<span class="sd">      &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; a = np.ones((1, 3))</span>
+<span class="sd">      &gt;&gt;&gt; for i in range(N - 1):</span>
+<span class="sd">      ...     a = np.concatenate((a, np.ones((1, 3))))</span>
+<span class="sd">      &gt;&gt;&gt; t1 = toc() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;numpy concat: &#39; + str(1000 * t1) + &#39; ms&#39;, &#39;r&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      numpy concat: 31.0 ms</span>
 
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; a = np.zeros((N, 3))</span>
+<span class="sd">      &gt;&gt;&gt; for i in range(N):</span>
+<span class="sd">      ...     a[i, :] = np.ones((1, 3))</span>
+<span class="sd">      &gt;&gt;&gt; t2 = toc() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;numpy predefined: &#39; + str(1000 * t2) + &#39; ms&#39;, &#39;g&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      numpy predefined: 15.0 ms</span>
+
+<span class="sd">    .. code::</span>
+
+<span class="sd">      &gt;&gt;&gt; tic() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; a = []</span>
+<span class="sd">      &gt;&gt;&gt; for i in range(N):</span>
+<span class="sd">      ...     a.append([1, 1, 1])</span>
+<span class="sd">      &gt;&gt;&gt; a = np.array(a)</span>
+<span class="sd">      &gt;&gt;&gt; t3 = toc() # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; c4d.cprint(&#39;list to numpy: &#39; + str(1000 * t3) + &#39; ms&#39;, &#39;y&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      list to numpy: 0.0 ms</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">_tic</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">_tic</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;sec&quot;</span>
+    <span class="k">if</span> <span class="n">minutes</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">/=</span> <span class="mi">60</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;min&quot;</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dt</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span></div>
 
 
 
 <span class="c1"># tic():</span>
 
 <span class="c1">#     Records the current time to start measuring elapsed time.</span>
-    
+
 <span class="c1">#     Returns:</span>
 <span class="c1">#     float: The recorded start time.</span>
 
@@ -566,31 +570,29 @@ document.write(`
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-  <span class="c1"># import doctest, contextlib, os</span>
-  <span class="c1"># from c4dynamics import IgnoreOutputChecker, cprint</span>
-  
-  <span class="c1"># # Register the custom OutputChecker</span>
-  <span class="c1"># doctest.OutputChecker = IgnoreOutputChecker</span>
+    <span class="c1"># import doctest, contextlib, os</span>
+    <span class="c1"># from c4dynamics import IgnoreOutputChecker, cprint</span>
 
-  <span class="c1"># tofile = False </span>
-  <span class="c1"># optionflags = doctest.FAIL_FAST</span>
+    <span class="c1"># # Register the custom OutputChecker</span>
+    <span class="c1"># doctest.OutputChecker = IgnoreOutputChecker</span>
 
-  <span class="c1"># if tofile: </span>
-  <span class="c1">#   with open(os.path.join(&#39;tests&#39;, &#39;_out&#39;, &#39;output.txt&#39;), &#39;w&#39;) as f:</span>
-  <span class="c1">#     with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):</span>
-  <span class="c1">#       result = doctest.testmod(optionflags = optionflags) </span>
-  <span class="c1"># else: </span>
-  <span class="c1">#   result = doctest.testmod(optionflags = optionflags)</span>
+    <span class="c1"># tofile = False</span>
+    <span class="c1"># optionflags = doctest.FAIL_FAST</span>
 
-  <span class="c1"># if result.failed == 0:</span>
-  <span class="c1">#   cprint(os.path.basename(__file__) + &quot;: all tests passed!&quot;, &#39;g&#39;)</span>
-  <span class="c1"># else:</span>
-  <span class="c1">#   print(f&quot;{result.failed}&quot;)</span>
-  <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
-  <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+    <span class="c1"># if tofile:</span>
+    <span class="c1">#   with open(os.path.join(&#39;tests&#39;, &#39;_out&#39;, &#39;output.txt&#39;), &#39;w&#39;) as f:</span>
+    <span class="c1">#     with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):</span>
+    <span class="c1">#       result = doctest.testmod(optionflags = optionflags)</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#   result = doctest.testmod(optionflags = optionflags)</span>
 
+    <span class="c1"># if result.failed == 0:</span>
+    <span class="c1">#   cprint(os.path.basename(__file__) + &quot;: all tests passed!&quot;, &#39;g&#39;)</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#   print(f&quot;{result.failed}&quot;)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">rundoctests</span>
 
-
+    <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
 </pre></div>
 
                 </article>
@@ -638,7 +640,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 02, 2026.
+  Last updated on Feb 03, 2026.
   <br/>
 </p>
   </div>
