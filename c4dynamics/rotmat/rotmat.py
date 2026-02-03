@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(".")
 # import c4dynamics as c4d
-from c4dynamics.utils.const import r2d 
+from c4dynamics.utils.const import r2d, pi
 from c4dynamics.utils.math import sin, cos, asin, atan2
 
 
@@ -327,6 +327,7 @@ def dcm321euler(dcm):
 
 if __name__ == "__main__":
 
+    import c4dynamics as c4d # noqa: F401
     from c4dynamics import rundoctests
 
     rundoctests(sys.modules[__name__])

@@ -1,5 +1,7 @@
 from matplotlib import pyplot as plt
 from matplotlib.ticker import ScalarFormatter
+import numpy as np # noqa: F401
+
 import sys
 
 sys.path.append(".")
