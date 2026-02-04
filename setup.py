@@ -29,6 +29,11 @@ setup(
     version=VERSION,
     author="c4dynamics",
     author_email="zivmeri@gmail.com",
+    project_urls={
+    "Documentation": "https://c4dynamics.github.io/c4dynamics/",
+    "Source": "https://github.com/C4dynamics/C4dynamics",
+    "Issues": "https://github.com/C4dynamics/C4dynamics/issues",
+     },
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=long_description,  # LONG_DESCRIPTION   #
