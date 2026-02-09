@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 
 from c4dynamics.states.lib.datapoint import datapoint
@@ -12,7 +12,8 @@ class rigidbody(datapoint):  #
     A rigid-body object
 
 
-    The :class:`rigidbody` extends the :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
+    The :class:`rigidbody` extends the
+    :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
     class to form an elementary rigidbody object in space, i.e.
     an object with length and attitude.
 
@@ -45,11 +46,14 @@ class rigidbody(datapoint):  #
     vz : float or int, optional
         Component of velocity along the z-axis. Default value :math:`v_z = 0`.
     phi : float or int, optional
-        Euler angle representing rotation around the x-axis (rad). Default value :math:`\\varphi = 0`.
+        Euler angle representing rotation around the x-axis (rad). Default value
+        :math:`\\varphi = 0`.
     theta : float or int, optional
-        Euler angle representing rotation around the y-axis (rad). Default value :math:`\\theta = 0`.
+        Euler angle representing rotation around the y-axis (rad). Default value
+        :math:`\\theta = 0`.
     psi : float or int, optional
-        Euler angle representing rotation around the z-axis (rad). Default value :math:`\\psi = 0`.
+        Euler angle representing rotation around the z-axis (rad). Default value
+        :math:`\\psi = 0`.
     p : float or int, optional
         Angular rate around the x-axis (roll). (rad/sec). Default value :math:`p = 0`.
     q : float or int, optional
@@ -165,8 +169,11 @@ class rigidbody(datapoint):  #
 
     .. code::
 
-      >>> f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38], [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12], [205, 149, 12])) / 255
-      >>> f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r], modelcolor = f16colors)
+      >>> f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38],
+      ...             [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12],
+      ...             [205, 149, 12])) / 255
+      >>> f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r],
+      ...             modelcolor = f16colors)
 
     .. figure:: /_examples/rigidbody/rb_intro_ap.gif
 
@@ -249,7 +256,8 @@ class rigidbody(datapoint):  #
         where here :math:`m` is the mass :math:`m = 1`,
         :math:`l` is the length from the center of mass :math:`l = 1`,
         :math:`g` is the gravity acceleration,
-        and :math:`I` is the moment of inertia about :math:`y`, :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`
+        and :math:`I` is the moment of inertia about :math:`y`,
+        :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`
 
 
         Import required packages:
@@ -387,53 +395,54 @@ class rigidbody(datapoint):  #
 
     @property
     def BR(self):
-        """ 
-    Returns a Body-from-Reference Direction Cosine Matrix (DCM). 
+        """
+    Returns a Body-from-Reference Direction Cosine Matrix (DCM).
 
 
-    Based on the current Euler angles, `BR` returns the DCM in a 3-2-1 order, 
-    i.e. first rotation about the z axis (yaw, :math:`\\psi`), then a rotation about the 
-    y axis (pitch, :math:`\\theta`), and finally a rotation about the x axis (roll, :math:`\\varphi`).
+    Based on the current Euler angles, `BR` returns the DCM in a 3-2-1 order,
+    i.e. first rotation about the z axis (yaw, :math:`\\psi`), then a rotation about the
+    y axis (pitch, :math:`\\theta`), and finally a rotation about the x axis
+    (roll, :math:`\\varphi`).
 
-    The `DCM321` matrix is calculated by the 
-    :mod:`rotmat <c4dynamics.rotmat>` module and is given by: 
+    The `DCM321` matrix is calculated by the
+    :mod:`rotmat <c4dynamics.rotmat>` module and is given by:
 
 
-    .. math:: 
-        
+    .. math::
+
       R = \\begin{bmatrix}
-            c\\theta \\cdot c\\psi 
-          & c\\theta \\cdot s\\psi 
+            c\\theta \\cdot c\\psi
+          & c\\theta \\cdot s\\psi
           & -s\\theta \\\\
-                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi 
-              & s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi 
-              & s\\varphi \\cdot c\\theta \\\\ 
-                    c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi 
-                  & c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi 
+                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi
+              & s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi
+              & s\\varphi \\cdot c\\theta \\\\
+                    c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi
+                  & c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi
                   & c\\varphi \\cdot c\\theta
-          \\end{bmatrix}  
+          \\end{bmatrix}
 
-    where 
+    where
 
     - :math:`c\\varphi \\equiv cos(\\varphi)`
     - :math:`s\\varphi \\equiv sin(\\varphi)`
     - :math:`c\\theta \\equiv cos(\\theta)`
     - :math:`s\\theta \\equiv sin(\\theta)`
     - :math:`c\\psi \\equiv cos(\\psi)`
-    - :math:`s\\psi \\equiv sin(\\psi)`    
+    - :math:`s\\psi \\equiv sin(\\psi)`
 
 
- 
-    For the background material regarding the rotational matrix operations, 
-    see :mod:`rotmat <c4dynamics.rotmat>`. 
+
+    For the background material regarding the rotational matrix operations,
+    see :mod:`rotmat <c4dynamics.rotmat>`.
 
     Returns
     -------
 
     out : numpy.ndarray
-        A 3x3 DCM matrix uses to rotate a vector 
-        to the body frame 
-        from a reference frame of coordinates. 
+        A 3x3 DCM matrix uses to rotate a vector
+        to the body frame
+        from a reference frame of coordinates.
 
 
     Example
@@ -443,8 +452,8 @@ class rigidbody(datapoint):  #
 
       >>> v_inertial = [1, 0, 0]
       >>> rb = c4d.rigidbody(psi = 45 * c4d.d2r)
-      >>> v_body = rb.BR @ v_inertial 
-      >>> v_body  # doctest: +NUMPY_FORMAT  
+      >>> v_body = rb.BR @ v_inertial
+      >>> v_body  # doctest: +NUMPY_FORMAT
       [0.707  -0.707  0.0]
 
     """
@@ -453,47 +462,47 @@ class rigidbody(datapoint):  #
 
     @property
     def RB(self):
-        """ 
-    Returns a Reference-from-Body Direction Cosine Matrix (DCM). 
+        """
+    Returns a Reference-from-Body Direction Cosine Matrix (DCM).
 
-    
-    Based on the current Euler angles, `RB` returns the 
-    transpose matrix of :attr:`BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>`, 
-    where :attr:`BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>` 
-    is the Body from Reference 
-    DCM in 3-2-1 order. 
 
-    The transpose matrix of the DCM generated by 
-    three Euler angles :math:`\\varphi` (rotation about `x`), 
-    :math:`\\theta` (about `y`), and :math:`\\psi` (about `z`) in 3-2-1 order, 
-    is given by: 
+    Based on the current Euler angles, `RB` returns the
+    transpose matrix of :attr:`BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>`,
+    where :attr:`BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>`
+    is the Body from Reference
+    DCM in 3-2-1 order.
 
-    .. math:: 
-        
+    The transpose matrix of the DCM generated by
+    three Euler angles :math:`\\varphi` (rotation about `x`),
+    :math:`\\theta` (about `y`), and :math:`\\psi` (about `z`) in 3-2-1 order,
+    is given by:
+
+    .. math::
+
         R = \\begin{bmatrix}
-              c\\theta \\cdot c\\psi 
-            & s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi 
-            & c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi \\\\ 
-                  c\\theta \\cdot s\\psi 
-                & s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi 
-                & c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi \\\\ 
-                      -s\\theta 
-                    & s\\varphi \\cdot c\\theta 
+              c\\theta \\cdot c\\psi
+            & s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi
+            & c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi \\\\
+                  c\\theta \\cdot s\\psi
+                & s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi
+                & c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi \\\\
+                      -s\\theta
+                    & s\\varphi \\cdot c\\theta
                     & c\\varphi \\cdot c\\theta
-            \\end{bmatrix}  
+            \\end{bmatrix}
 
-    where 
+    where
 
     - :math:`c\\varphi \\equiv cos(\\varphi)`
     - :math:`s\\varphi \\equiv sin(\\varphi)`
     - :math:`c\\theta \\equiv cos(\\theta)`
     - :math:`s\\theta \\equiv sin(\\theta)`
     - :math:`c\\psi \\equiv cos(\\psi)`
-    - :math:`s\\psi \\equiv sin(\\psi)`    
+    - :math:`s\\psi \\equiv sin(\\psi)`
 
- 
-    For the background material regarding the rotational matrix operations, 
-    see :mod:`rotmat <c4dynamics.rotmat>`. 
+
+    For the background material regarding the rotational matrix operations,
+    see :mod:`rotmat <c4dynamics.rotmat>`.
 
 
 
@@ -501,7 +510,7 @@ class rigidbody(datapoint):  #
     -------
 
     out : numpy.ndarray
-        A 3x3 DCM matrix uses to rotate a vector from a body frame 
+        A 3x3 DCM matrix uses to rotate a vector from a body frame
         to a reference frame of coordinates.
 
 
@@ -513,7 +522,7 @@ class rigidbody(datapoint):  #
       >>> v_body = [np.sqrt(3), 0, 1]
       >>> rb = c4d.rigidbody(theta = 30 * c4d.d2r)
       >>> v_inertial = rb.RB @ v_body
-      >>> v_inertial   # doctest: +NUMPY_FORMAT 
+      >>> v_inertial   # doctest: +NUMPY_FORMAT
       [2.0  0.0  0.0]
 
     """

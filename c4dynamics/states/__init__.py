@@ -17,10 +17,10 @@
 
 import sys
 
-sys.path.append(".")
-from c4dynamics.states.lib import datapoint as datapoint
-from c4dynamics.states.lib import pixelpoint as pixelpoint
-from c4dynamics.states.lib import rigidbody as rigidbody
+# sys.path.append(".")
+from c4dynamics.states.lib import datapoint as datapoint    # noqa: F401
+from c4dynamics.states.lib import pixelpoint as pixelpoint  # noqa: F401
+from c4dynamics.states.lib import rigidbody as rigidbody    # noqa: F401
 
 if __name__ == "__main__":
 

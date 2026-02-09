@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 from c4dynamics.states.state import state
 
 # from enum import Enum
@@ -269,7 +269,7 @@ class pixelpoint(state):
 
     .. figure:: /_examples/pixelpoint/yolov3.png
 
-    """
+    """  # noqa: E501
 
     x: float
     y: float
@@ -297,7 +297,8 @@ class pixelpoint(state):
         # on the one hand they are not part of he state and shoudlnt be provdied as variables
         # on the other they are necessary for methods like box.
         # also the filters inherit from the state class i.e. they are states
-        # nontheless they are initialized not only with the state vairables but also with parameters.
+        # nontheless they are initialized not only with the state vairables but also
+        # with parameters.
         self._frameheight = None
         self._framewidth = None
         self._class = None
@@ -436,7 +437,8 @@ class pixelpoint(state):
 
         # if self._units == 'normalized':
         #   if self._frameheight is None or self._framewidth is None:
-        #     raise ValueError('When ''pixelpoint'' units are ''normalized'', the property ''fsize'' '
+        #     raise ValueError('When ''pixelpoint'' units are ''normalized'',
+        # the property ''fsize'' '
         #                         'must be set first with the frame width and height.')
 
         #   x = int(self.x * self._framewidth)
@@ -514,7 +516,7 @@ class pixelpoint(state):
             2      |    0.550     |    0.397     |     648      |     272
             3      |    0.507     |    0.916     |     598      |     627
 
-        """
+        """  # noqa: E501
         # TODO complete with full state vector.
 
         # superx = super().X
@@ -562,7 +564,7 @@ class pixelpoint(state):
         import c4dynamics as c4d
         import pickle
         import zlib
-        import cv2
+        import cv2  # noqa: F401,F811
         import os
 
         cap = cv2.VideoCapture(vidpath)
@@ -587,7 +589,8 @@ class pixelpoint(state):
             detections[crc32] = yolo3.detect(frame)
 
         if storepath:
-            pklname = os.path.join(storepath, os.path.basename(vidpath)[:-4] + ".pkl")  # type: ignore
+            pklname = os.path.join(storepath,
+                                   os.path.basename(vidpath)[:-4] + ".pkl")  # type: ignore
             with open(pklname, "wb") as file:
                 pickle.dump(detections, file)
             print(f"detections stored at {pklname}")
@@ -595,122 +598,6 @@ class pixelpoint(state):
         cap.release()
 
         return detections
-
-    # def set_box_size(self, width, height):
-    #   # TODO document!
-    #   '''
-    #   Sets the box size (box width, box height)
-    #   without changing the center.
-
-    #   Parameters
-    #   ----------
-    #   b : tuple(width, height)
-    #     A tuple containing two integers representing width and height (in pixels).
-
-    #   Note
-    #   ----
-    #   This function sets the box width and height without
-    #   chaning the box center.
-    #   The center of the box is modified only by
-    #   direct substitution to the state variables
-    #   or by setting the state vector (:attr:`X <datapoint.X>`).
-
-    #   Examples
-    #   --------
-
-    #   .. code::
-
-    #       >>> width  = 800
-    #       >>> height = 600
-    #       >>> radius = 50
-    #       >>> img = np.zeros((height, width, 3), dtype = np.uint8)
-    #       >>> cv2.circle(img, (width // 2, height // 2), radius, (255, 0, 0), -1)
-    #       >>> fdp = c4d.pixelpoint(bbox = (0, 0, 0, 0), class_id = 'ball', framesize = (width, height))
-    #       >>> fdp.x = 0.5
-    #       >>> fdp.y = 0.5
-    #       >>> fdp.set_box_size(2 * radius + 2, 2 * radius + 2)
-    #       >>> cv2.rectangle(img, fdp.box[0], fdp.box[1], [255, 255, 255], 2)
-    #       >>> _, ax3 = plt.subplots()
-    #       >>> ax3.axis('off')
-    #       >>> ax3.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-
-    #   .. figure:: /_architecture/images/fdp_setboxsize.png
-
-    #   '''
-
-    #   # self._boxwidth  = width  / self._framewidth
-    #   # self._boxheight = height / self._frameheight
-
-    # class ppunits(Enum):
-    #   pixels = 'pixels'
-    #   normalized = 'normalized'
-
-    # @property
-    # def units(self):
-    #   '''
-    #   Gets and sets the image coordinates units.
-
-    #   Select between two modes of units:
-    #   - pixels (default): the image coordinates range between `[0 : width - 1]` horizontally and `[0 : height - 1]` vertically.
-    #   - normalized: the image coordinates range between `[0 : 1]` in both axes where `0` represents the top and the left edges and `1` the opposite.
-
-    #   Note
-    #   ----
-    #   Setting `units` as 'normalized' must be preceded by setting the frame size by the `fsize` property.
-
-    #   Parameters
-    #   ----------
-    #   units : str
-    #       Required units.
-    #       - 'pixels' (default) : image coordinates are `[0 : width - 1]` in the horizontal plane and `[0 : height - 1]` vertical plane.
-    #       - 'normalized' : coordinates are `[0 : 1]` in the horizontal plane and `[0 : 1]` vertical plane. `0` represents the top and the left edges.
-
-    #   Returns
-    #   -------
-    #   out : str
-    #       Current coordinates units.
-
-    #   Raises
-    #   ------
-    #   ValueError
-    #       - If `units` is not in 'pixels' or 'normalized', a ValueError is raised.
-    #       - If `units` is 'normalized' and the `fsize` property is not set, a ValueError is raised.
-
-    #   Example
-    #   -------
-
-    #   '''
-    #   return self._units
-
-    # @units.setter
-    # def units(self, units):
-    #   if not units in pixelpoint.ppunits:
-    #     raise ValueError(f'Invalid units. Choose from {[value for option in pixelpoint.ppunits]}')
-    #   if units == 'normalized' and self.fsize is None:
-    #     raise ValueError(f'`fsize` property must be set before `units = ''normalized''` is selected')
-
-    #   # if self._units == 'normalized' and (self._frameheight is None or self._framewidth is None):
-    #   #   raise ValueError('When pixelpoint units are ''normalized'', the property ''fsize'' '
-    #   #                         'must be set first with the frame width and height.')
-
-    #   #
-    #   # currently leaving it because it's too complicated to track after the updates
-    #   # of the state and verify it's normalized. it probably invloves overriding X which
-    #   # i dont want to do right now.
-    #   ##
-
-    #   self._units = units
-
-    # Note
-    # ----
-    # The pixelpoint has two modes to represent the state coordinates
-    # (:attr:`X <c4dynamics.states.state.state.X>`); pixels (default) and normalized,
-    # controlled by the property
-    # (:attr:`units <c4dynamics.states.lib.pixelpoint.pixelpoint.units>`).
-    # In the `pixels` mode, the coordinates are directly represented by the pixel dimensions.
-    # The `normalized` mode represents the image by normalized coordinates,
-    # ranging from `0` to `1`, where `0` represents
-    # the left or the upper edge, and `1` represents the right or the bottom edge.
 
 
 if __name__ == "__main__":
@@ -730,4 +617,5 @@ if __name__ == "__main__":
         # current_module.yolov3.nms_th.__doc__ = ""   # clears doctest examples
 
     rundoctests(sys.modules[__name__])
-    # NOTE: message about skipped tests becuase it currently says all passed actually no one was ran.
+    # NOTE: message about skipped tests becuase it currently
+    # says all passed actually no one was ran.

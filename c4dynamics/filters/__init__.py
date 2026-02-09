@@ -1,10 +1,10 @@
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 
-from c4dynamics.filters.kalman import kalman as kalman
-from c4dynamics.filters.ekf import ekf as ekf
-from c4dynamics.filters.lowpass import lowpass as lowpass
+from c4dynamics.filters.kalman import kalman as kalman  # noqa: F401
+from c4dynamics.filters.ekf import ekf as ekf  # noqa: F401
+from c4dynamics.filters.lowpass import lowpass as lowpass  # noqa: F401
 
 """
 
@@ -57,7 +57,8 @@ from c4dynamics.filters.lowpass import lowpass as lowpass
 # discretization and just present it as given for the final system.
 # or to add a remark and say that if also the covarinace matrices are given for
 # cont system then this the way to discretize it.
-# or add a note that in practice the noise of the discrete system should be know ampricialy or by data sheet.
+# or add a note that in practice the noise of the discrete system
+# should be know ampricialy or by data sheet.
 # or to add that in practice the sensors are taking measurements in discrete times.
 #
 # another problem arises:
@@ -82,32 +83,32 @@ from c4dynamics.filters.lowpass import lowpass as lowpass
 # see figures in w.doc.
 
 """
-Franklin, G.F., Powell,D.J., and Workman, M.L., Digital Control of Dynamic Systems 
-ch 9 
+Franklin, G.F., Powell,D.J., and Workman, M.L., Digital Control of Dynamic Systems
+ch 9
 9.4.2 the discrete kf:
 w(t) and v(t) have no time correlation.
 E(w*w^T)=Rw=Q
 E(v*v^T)=Rv=R
 
 9.4.4. noise matrices and discerete equivalents.
-the process uncertainty acts on the continuous portion of the system.  
+the process uncertainty acts on the continuous portion of the system.
 
 
 
 
-i have a cont system sampled with a 
-discrete samples camera. let's say the sensor errors with its algo are 
-sig_camera in both position and bounding box. 
-i want to show an example where i give the camera and the process the 
+i have a cont system sampled with a
+discrete samples camera. let's say the sensor errors with its algo are
+sig_camera in both position and bounding box.
+i want to show an example where i give the camera and the process the
 same weight and i run them in a steady state mode.
-the model in const velocity model.  
-then i say i want to overcome an error in the linearity and extend the 
-uncertainty of the process with still continuous modeling of the process. 
-** remark: how at all can kalman designers 
-introduce the uncertainty in the noise? after all kalman 
+the model in const velocity model.
+then i say i want to overcome an error in the linearity and extend the
+uncertainty of the process with still continuous modeling of the process.
+** remark: how at all can kalman designers
+introduce the uncertainty in the noise? after all kalman
 restrains that factor to be a white noise with mean 0 and
 im not sure the model uncertainty behaves in that way.
-** any way in the next example i want to show 
+** any way in the next example i want to show
 that same results could be achieved by using discrete matrices.
 """
 

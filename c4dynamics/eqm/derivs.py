@@ -2,7 +2,7 @@ from typing import Union
 import numpy as np
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 from c4dynamics.utils.math import sin, cos, tan
 from c4dynamics import datapoint, rigidbody
 

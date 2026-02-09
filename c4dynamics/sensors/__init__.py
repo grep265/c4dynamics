@@ -26,11 +26,11 @@ of electro-optic, lasers, and electro-magnetic devices.
 
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 
-from c4dynamics.sensors.radar import radar as radar
-from c4dynamics.sensors.lineofsight import lineofsight as lineofsight
-from c4dynamics.sensors.seeker import seeker as seeker
+from c4dynamics.sensors.radar import radar as radar  # noqa: F401
+from c4dynamics.sensors.lineofsight import lineofsight as lineofsight  # noqa: F401
+from c4dynamics.sensors.seeker import seeker as seeker  # noqa: F401
 
 # Background Material
 # -------------------

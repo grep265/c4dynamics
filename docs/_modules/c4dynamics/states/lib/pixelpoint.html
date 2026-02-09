@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -414,7 +414,7 @@ document.write(`
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.states.state</span><span class="w"> </span><span class="kn">import</span> <span class="n">state</span>
 
 <span class="c1"># from enum import Enum</span>
@@ -684,7 +684,7 @@ document.write(`
 
 <span class="sd">    .. figure:: /_examples/pixelpoint/yolov3.png</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
 
     <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
@@ -712,7 +712,8 @@ document.write(`
         <span class="c1"># on the one hand they are not part of he state and shoudlnt be provdied as variables</span>
         <span class="c1"># on the other they are necessary for methods like box.</span>
         <span class="c1"># also the filters inherit from the state class i.e. they are states</span>
-        <span class="c1"># nontheless they are initialized not only with the state vairables but also with parameters.</span>
+        <span class="c1"># nontheless they are initialized not only with the state vairables but also</span>
+        <span class="c1"># with parameters.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frameheight</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_framewidth</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="kc">None</span>
@@ -851,7 +852,8 @@ document.write(`
 
         <span class="c1"># if self._units == &#39;normalized&#39;:</span>
         <span class="c1">#   if self._frameheight is None or self._framewidth is None:</span>
-        <span class="c1">#     raise ValueError(&#39;When &#39;&#39;pixelpoint&#39;&#39; units are &#39;&#39;normalized&#39;&#39;, the property &#39;&#39;fsize&#39;&#39; &#39;</span>
+        <span class="c1">#     raise ValueError(&#39;When &#39;&#39;pixelpoint&#39;&#39; units are &#39;&#39;normalized&#39;&#39;,</span>
+        <span class="c1"># the property &#39;&#39;fsize&#39;&#39; &#39;</span>
         <span class="c1">#                         &#39;must be set first with the frame width and height.&#39;)</span>
 
         <span class="c1">#   x = int(self.x * self._framewidth)</span>
@@ -929,7 +931,7 @@ document.write(`
 <span class="sd">            2      |    0.550     |    0.397     |     648      |     272</span>
 <span class="sd">            3      |    0.507     |    0.916     |     598      |     627</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="c1"># TODO complete with full state vector.</span>
 
         <span class="c1"># superx = super().X</span>
@@ -977,7 +979,7 @@ document.write(`
         <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>  <span class="c1"># noqa: F401,F811</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
         <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">vidpath</span><span class="p">)</span>
@@ -1002,7 +1004,8 @@ document.write(`
             <span class="n">detections</span><span class="p">[</span><span class="n">crc32</span><span class="p">]</span> <span class="o">=</span> <span class="n">yolo3</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">storepath</span><span class="p">:</span>
-            <span class="n">pklname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">storepath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">vidpath</span><span class="p">)[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">pklname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">storepath</span><span class="p">,</span>
+                                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">vidpath</span><span class="p">)[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pklname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
                 <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;detections stored at </span><span class="si">{</span><span class="n">pklname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1011,122 +1014,6 @@ document.write(`
 
         <span class="k">return</span> <span class="n">detections</span></div>
 
-
-    <span class="c1"># def set_box_size(self, width, height):</span>
-    <span class="c1">#   # TODO document!</span>
-    <span class="c1">#   &#39;&#39;&#39;</span>
-    <span class="c1">#   Sets the box size (box width, box height)</span>
-    <span class="c1">#   without changing the center.</span>
-
-    <span class="c1">#   Parameters</span>
-    <span class="c1">#   ----------</span>
-    <span class="c1">#   b : tuple(width, height)</span>
-    <span class="c1">#     A tuple containing two integers representing width and height (in pixels).</span>
-
-    <span class="c1">#   Note</span>
-    <span class="c1">#   ----</span>
-    <span class="c1">#   This function sets the box width and height without</span>
-    <span class="c1">#   chaning the box center.</span>
-    <span class="c1">#   The center of the box is modified only by</span>
-    <span class="c1">#   direct substitution to the state variables</span>
-    <span class="c1">#   or by setting the state vector (:attr:`X &lt;datapoint.X&gt;`).</span>
-
-    <span class="c1">#   Examples</span>
-    <span class="c1">#   --------</span>
-
-    <span class="c1">#   .. code::</span>
-
-    <span class="c1">#       &gt;&gt;&gt; width  = 800</span>
-    <span class="c1">#       &gt;&gt;&gt; height = 600</span>
-    <span class="c1">#       &gt;&gt;&gt; radius = 50</span>
-    <span class="c1">#       &gt;&gt;&gt; img = np.zeros((height, width, 3), dtype = np.uint8)</span>
-    <span class="c1">#       &gt;&gt;&gt; cv2.circle(img, (width // 2, height // 2), radius, (255, 0, 0), -1)</span>
-    <span class="c1">#       &gt;&gt;&gt; fdp = c4d.pixelpoint(bbox = (0, 0, 0, 0), class_id = &#39;ball&#39;, framesize = (width, height))</span>
-    <span class="c1">#       &gt;&gt;&gt; fdp.x = 0.5</span>
-    <span class="c1">#       &gt;&gt;&gt; fdp.y = 0.5</span>
-    <span class="c1">#       &gt;&gt;&gt; fdp.set_box_size(2 * radius + 2, 2 * radius + 2)</span>
-    <span class="c1">#       &gt;&gt;&gt; cv2.rectangle(img, fdp.box[0], fdp.box[1], [255, 255, 255], 2)</span>
-    <span class="c1">#       &gt;&gt;&gt; _, ax3 = plt.subplots()</span>
-    <span class="c1">#       &gt;&gt;&gt; ax3.axis(&#39;off&#39;)</span>
-    <span class="c1">#       &gt;&gt;&gt; ax3.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))</span>
-
-    <span class="c1">#   .. figure:: /_architecture/images/fdp_setboxsize.png</span>
-
-    <span class="c1">#   &#39;&#39;&#39;</span>
-
-    <span class="c1">#   # self._boxwidth  = width  / self._framewidth</span>
-    <span class="c1">#   # self._boxheight = height / self._frameheight</span>
-
-    <span class="c1"># class ppunits(Enum):</span>
-    <span class="c1">#   pixels = &#39;pixels&#39;</span>
-    <span class="c1">#   normalized = &#39;normalized&#39;</span>
-
-    <span class="c1"># @property</span>
-    <span class="c1"># def units(self):</span>
-    <span class="c1">#   &#39;&#39;&#39;</span>
-    <span class="c1">#   Gets and sets the image coordinates units.</span>
-
-    <span class="c1">#   Select between two modes of units:</span>
-    <span class="c1">#   - pixels (default): the image coordinates range between `[0 : width - 1]` horizontally and `[0 : height - 1]` vertically.</span>
-    <span class="c1">#   - normalized: the image coordinates range between `[0 : 1]` in both axes where `0` represents the top and the left edges and `1` the opposite.</span>
-
-    <span class="c1">#   Note</span>
-    <span class="c1">#   ----</span>
-    <span class="c1">#   Setting `units` as &#39;normalized&#39; must be preceded by setting the frame size by the `fsize` property.</span>
-
-    <span class="c1">#   Parameters</span>
-    <span class="c1">#   ----------</span>
-    <span class="c1">#   units : str</span>
-    <span class="c1">#       Required units.</span>
-    <span class="c1">#       - &#39;pixels&#39; (default) : image coordinates are `[0 : width - 1]` in the horizontal plane and `[0 : height - 1]` vertical plane.</span>
-    <span class="c1">#       - &#39;normalized&#39; : coordinates are `[0 : 1]` in the horizontal plane and `[0 : 1]` vertical plane. `0` represents the top and the left edges.</span>
-
-    <span class="c1">#   Returns</span>
-    <span class="c1">#   -------</span>
-    <span class="c1">#   out : str</span>
-    <span class="c1">#       Current coordinates units.</span>
-
-    <span class="c1">#   Raises</span>
-    <span class="c1">#   ------</span>
-    <span class="c1">#   ValueError</span>
-    <span class="c1">#       - If `units` is not in &#39;pixels&#39; or &#39;normalized&#39;, a ValueError is raised.</span>
-    <span class="c1">#       - If `units` is &#39;normalized&#39; and the `fsize` property is not set, a ValueError is raised.</span>
-
-    <span class="c1">#   Example</span>
-    <span class="c1">#   -------</span>
-
-    <span class="c1">#   &#39;&#39;&#39;</span>
-    <span class="c1">#   return self._units</span>
-
-    <span class="c1"># @units.setter</span>
-    <span class="c1"># def units(self, units):</span>
-    <span class="c1">#   if not units in pixelpoint.ppunits:</span>
-    <span class="c1">#     raise ValueError(f&#39;Invalid units. Choose from {[value for option in pixelpoint.ppunits]}&#39;)</span>
-    <span class="c1">#   if units == &#39;normalized&#39; and self.fsize is None:</span>
-    <span class="c1">#     raise ValueError(f&#39;`fsize` property must be set before `units = &#39;&#39;normalized&#39;&#39;` is selected&#39;)</span>
-
-    <span class="c1">#   # if self._units == &#39;normalized&#39; and (self._frameheight is None or self._framewidth is None):</span>
-    <span class="c1">#   #   raise ValueError(&#39;When pixelpoint units are &#39;&#39;normalized&#39;&#39;, the property &#39;&#39;fsize&#39;&#39; &#39;</span>
-    <span class="c1">#   #                         &#39;must be set first with the frame width and height.&#39;)</span>
-
-    <span class="c1">#   #</span>
-    <span class="c1">#   # currently leaving it because it&#39;s too complicated to track after the updates</span>
-    <span class="c1">#   # of the state and verify it&#39;s normalized. it probably invloves overriding X which</span>
-    <span class="c1">#   # i dont want to do right now.</span>
-    <span class="c1">#   ##</span>
-
-    <span class="c1">#   self._units = units</span>
-
-    <span class="c1"># Note</span>
-    <span class="c1"># ----</span>
-    <span class="c1"># The pixelpoint has two modes to represent the state coordinates</span>
-    <span class="c1"># (:attr:`X &lt;c4dynamics.states.state.state.X&gt;`); pixels (default) and normalized,</span>
-    <span class="c1"># controlled by the property</span>
-    <span class="c1"># (:attr:`units &lt;c4dynamics.states.lib.pixelpoint.pixelpoint.units&gt;`).</span>
-    <span class="c1"># In the `pixels` mode, the coordinates are directly represented by the pixel dimensions.</span>
-    <span class="c1"># The `normalized` mode represents the image by normalized coordinates,</span>
-    <span class="c1"># ranging from `0` to `1`, where `0` represents</span>
-    <span class="c1"># the left or the upper edge, and `1` represents the right or the bottom edge.</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -1146,7 +1033,8 @@ document.write(`
         <span class="c1"># current_module.yolov3.nms_th.__doc__ = &quot;&quot;   # clears doctest examples</span>
 
     <span class="n">rundoctests</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
-    <span class="c1"># NOTE: message about skipped tests becuase it currently says all passed actually no one was ran.</span>
+    <span class="c1"># NOTE: message about skipped tests becuase it currently</span>
+    <span class="c1"># says all passed actually no one was ran.</span>
 </pre></div>
 
                 </article>
@@ -1194,7 +1082,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -411,10 +411,10 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for c4dynamics.filters.lowpass</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span></span><span class="c1"># import sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
 
@@ -422,7 +422,8 @@ document.write(`
 <a class="viewcode-back" href="../../../api/filters.lpf.html#c4dynamics.filters.lowpass.lowpass">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">lowpass</span><span class="p">(</span><span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A first-order low-pass filter for smoothing signals, supporting both discrete and continuous systems.</span>
+<span class="sd">    A first-order low-pass filter for smoothing signals,</span>
+<span class="sd">    supporting both discrete and continuous systems.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -478,7 +479,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system.&quot;</span>
+                <span class="s2">&quot;Provide either `alpha` for a discrete system or both &quot;</span>
+                <span class="s2">&quot;`dt` and `tau` for a continuous system.&quot;</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y0</span>  <span class="c1"># Initial state value</span>
@@ -593,7 +595,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

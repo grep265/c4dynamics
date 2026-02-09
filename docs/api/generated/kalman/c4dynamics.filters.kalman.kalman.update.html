@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.filters.kalman.kalman.predict" href="c4dynamics.filters.kalman.kalman.predict.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -508,7 +508,14 @@ the <a class="reference internal" href="../../filters.kalman.html#c4dynamics.fil
 (update in steady-state mode
 where the measurement covariance matrix remains
 and is provided once during filter initialization):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">kalman</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="n">P0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">steadystate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span> <span class="o">=</span> <span class="n">kalman</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+<span class="gp">... </span>      <span class="n">P0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">F</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">H</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">Q</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">R</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">steadystate</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span>
 <span class="go">[ x ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kf</span><span class="o">.</span><span class="n">X</span>   
@@ -621,7 +628,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

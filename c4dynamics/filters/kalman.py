@@ -4,7 +4,7 @@ from scipy.linalg import (
 from typing import Optional
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 import numpy as np
 import warnings
@@ -238,7 +238,7 @@ class kalman(c4d.state):
         ##
 
         if not isinstance(X, dict):
-            raise TypeError("""X must be a dictionary containig pairs of variables 
+            raise TypeError("""X must be a dictionary containig pairs of variables
                           and initial conditions, e.g.: {''x'': 0, ''y'': 0}""")
         super().__init__(**X)
 
@@ -364,7 +364,14 @@ class kalman(c4d.state):
 
         .. code::
 
-          >>> kf = kalman({'x': 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200, steadystate = True)
+          >>> kf = kalman({'x': 0},
+          ...       P0 = 0.5**2,
+          ...       F = 1,
+          ...       H = 1,
+          ...       Q = 0.05,
+          ...       R = 200,
+          ...       steadystate = True
+          ... )
           >>> print(kf)
           [ x ]
           >>> kf.X          # doctest: +NUMPY_FORMAT
@@ -431,14 +438,17 @@ class kalman(c4d.state):
         if u is not None:
             if self.G is None:
                 warnings.warn(
-                    f"""\nWarning: u={u} is introduced as control input but the input matrix G is zero!""",
+                    f"""\nWarning: u={u} is introduced as control
+                    input but the input matrix G is zero!""",
                     c4d.c4warn,
                 )
             else:
                 u = np.atleast_2d(u)
                 if len(u.ravel()) != self.G.shape[1]:
                     raise ValueError(
-                        f"""The number of elements in u must equal the number of columns of the input matrix G, {len(u.ravel())} != {self.G.shape[1]}"""
+                        f"""The number of elements in u must equal the
+                        number of columns of the input matrix G,
+                        {len(u.ravel())} != {self.G.shape[1]}"""
                     )
                 self.X += self.G @ u.ravel()
 
@@ -493,7 +503,14 @@ class kalman(c4d.state):
 
         .. code::
 
-          >>> kf = kalman({'x': 0}, P0 = 0.5**2, F = 1, H = 1, Q = 0.05, R = 200, steadystate = True)
+          >>> kf = kalman({'x': 0},
+          ...       P0 = 0.5**2,
+          ...       F = 1,
+          ...       H = 1,
+          ...       Q = 0.05,
+          ...       R = 200,
+          ...       steadystate = True
+          ... )
           >>> print(kf)
           [ x ]
           >>> kf.X   # doctest: +NUMPY_FORMAT

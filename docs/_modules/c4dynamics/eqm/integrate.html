@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -416,7 +416,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.eqm.derivs</span><span class="w"> </span><span class="kn">import</span> <span class="n">eqm3</span><span class="p">,</span> <span class="n">eqm6</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">datapoint</span><span class="p">,</span> <span class="n">rigidbody</span>
 
@@ -486,7 +486,8 @@ document.write(`
 <span class="sd">    --------</span>
 
 <span class="sd">    Runge-Kutta integration of the equations of motion on a mass in a free fall</span>
-<span class="sd">    (compare to the same example in :func:`eqm3 &lt;c4dynamics.eqm.derivs.eqm3&gt;` with Euler integration):</span>
+<span class="sd">    (compare to the same example in :func:`eqm3 &lt;c4dynamics.eqm.derivs.eqm3&gt;`</span>
+<span class="sd">    with Euler integration):</span>
 
 <span class="sd">    Import required packages</span>
 
@@ -685,9 +686,17 @@ document.write(`
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; plt.plot(*rb.data(&#39;theta&#39;, c4d.r2d), &#39;m&#39;, label = &#39;c4dynamics.int6&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; plt.plot(t, sol[:, 0] * c4d.r2d, &#39;c&#39;, label = &#39;scipy.odeint&#39;)         # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; c4d.plotdefaults(plt.gca(), &#39;Equations of Motion Integration ($\\theta$)&#39;, &#39;Time&#39;, &#39;degrees&#39;, fontsize = 12)</span>
+<span class="sd">      &gt;&gt;&gt; plt.plot(*rb.data(&#39;theta&#39;, c4d.r2d),</span>
+<span class="sd">      ...       &#39;m&#39;,</span>
+<span class="sd">      ...       label = &#39;c4dynamics.int6&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; plt.plot(t, sol[:, 0] * c4d.r2d, &#39;c&#39;, label = &#39;scipy.odeint&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; c4d.plotdefaults(plt.gca(),</span>
+<span class="sd">      ...       &#39;Equations of Motion Integration ($\\theta$)&#39;,</span>
+<span class="sd">      ...       &#39;Time&#39;,</span>
+<span class="sd">      ...       &#39;degrees&#39;,</span>
+<span class="sd">      ...       fontsize = 12</span>
+<span class="sd">      ... )</span>
 <span class="sd">      &gt;&gt;&gt; plt.legend() # doctest: +IGNORE_OUTPUT</span>
 
 
@@ -803,7 +812,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

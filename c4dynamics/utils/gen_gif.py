@@ -10,7 +10,7 @@ import os
 import warnings
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 
 
@@ -86,7 +86,8 @@ def gif(dirname, gif_name, duration=None):
       Fetched successfully
       >>> x0 = [90 * c4d.d2r, 0, 180 * c4d.d2r]
       >>> outfol = os.path.join('tests', '_out', 'f16b')
-      >>> f16.animate(f16path, savedir = outfol, angle0 = x0, modelcolor = [0, 0, 0], cbackground = [230 / 255, 230 / 255, 255 / 255])
+      >>> f16.animate(f16path, savedir = outfol, angle0 = x0, modelcolor = [0, 0, 0],
+      ...       cbackground = [230 / 255, 230 / 255, 255 / 255])
 
 
     3. Export images as gif.
@@ -107,7 +108,8 @@ def gif(dirname, gif_name, duration=None):
 
     if not imgfiles:
         warnings.warn(
-            f"""No image files in {dirfiles}. ('.png', '.jpg', '.jpeg', 'bmp', '.tiff', are supported). """,
+            f"""No image files in {dirfiles}."
+             " ('.png', '.jpg', '.jpeg', 'bmp', '.tiff', are supported). """,
             c4d.c4warn,
         )
         return None

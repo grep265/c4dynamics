@@ -4,7 +4,7 @@ import shutil
 import os
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 from c4dynamics.datasets._registry import (
     CACHE_DIR,
     image_register,
@@ -123,7 +123,8 @@ def image(image_name: str) -> str:
 
     if imagein is None:
         raise KeyError(
-            f"'{image_name}' is not an image in c4dynamics datasets. Available images are: 'planes', 'triangle'."
+            f"'{image_name}' is not an image in c4dynamics datasets."
+            " Available images are: 'planes', 'triangle'."
         )
 
     filename = image_register.fetch(imagein)
@@ -206,7 +207,8 @@ def video(video_name: str) -> str:
 
     if videoin is None:
         raise KeyError(
-            f"'{video_name}' is not a video in c4dynamics datasets. An available video is: 'aerobatics'."
+            f"'{video_name}' is not a video in c4dynamics datasets."
+            " An available video is: 'aerobatics'."
         )
 
     filename = video_register.fetch(videoin)
@@ -283,7 +285,8 @@ def nn_model(nn_name: str) -> str:
 
     if nnin is None:
         raise KeyError(
-            f"'{nn_name}' is not a neural network model in c4dynamics datasets. An available model is: 'yolov3'."
+            f"'{nn_name}' is not a neural network model in c4dynamics datasets."
+            " An available model is: 'yolov3'."
         )
 
     filename = nn_register.fetch(nnin)
@@ -384,7 +387,11 @@ def d3_model(d3_name: str) -> str:
       Fetched successfully
       >>> model = []
       >>> for f in sorted(os.listdir(f16path)):
-      ...   model.append(o3d.io.read_triangle_mesh(os.path.join(f16path, f)).compute_vertex_normals())
+      ...   model.append(
+      ...     o3d.io.read_triangle_mesh(
+      ...       os.path.join(f16path, f)
+      ...     ).compute_vertex_normals()
+      ...   )
       >>> o3d.visualization.draw_geometries(model)
 
 
@@ -397,7 +404,8 @@ def d3_model(d3_name: str) -> str:
 
     if d3in is None:
         raise KeyError(
-            f"'{d3_name}' is not a 3D model in c4dynamics datasets. Available models are: 'bunny', 'bunny_mesh', 'f16'."
+            f"'{d3_name}' is not a 3D model in c4dynamics datasets."
+            " Available models are: 'bunny', 'bunny_mesh', 'f16'."
         )
 
     # returns path

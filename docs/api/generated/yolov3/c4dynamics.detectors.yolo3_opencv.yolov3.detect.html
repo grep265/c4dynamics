@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.detectors.yolo3_opencv.yolov3.confidence_th" href="c4dynamics.detectors.yolo3_opencv.yolov3.confidence_th.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -477,16 +477,19 @@ document.write(`
 <dd><p>Detects objects in a frame using the YOLOv3 model.</p>
 <p>At each call, the detector performs the following steps:</p>
 <ol class="arabic simple">
-<li><p>Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red and Blue channels.</p></li>
+<li><p>Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red
+and Blue channels.</p></li>
 <li><p>Sets input to the YOLOv3 model and performs a forward pass to obtain detections.</p></li>
-<li><p>Extracts detected objects based on a confidence threshold, calculates bounding box coordinates, and filters results using Non-Maximum Suppression (NMS).</p></li>
+<li><p>Extracts detected objects based on a confidence threshold, calculates bounding box
+coordinates, and filters results using Non-Maximum Suppression (NMS).</p></li>
 </ol>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>frame</strong> (<em>numpy.array</em>) – An input frame for object detection.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>out</strong> (<em>list[pixelpoint]</em>) – A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">pixelpoint</span></code> objects representing detected objects,
+<dd class="field-even"><p><strong>out</strong> (<em>list[pixelpoint]</em>) – A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">pixelpoint</span></code> objects
+representing detected objects,
 each containing bounding box coordinates and class label.</p>
 </dd>
 </dl>
@@ -498,7 +501,8 @@ each containing bounding box coordinates and class label.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 </pre></div>
 </div>
-<p>Fetch ‘planes.png’ and ‘aerobatics.mp4’ using the c4dynamics’ datasets module (see <a class="reference internal" href="../../Datasets.html#module-c4dynamics.datasets" title="c4dynamics.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">c4dynamics.datasets</span></code></a>):</p>
+<p>Fetch ‘planes.png’ and ‘aerobatics.mp4’ using the c4dynamics’ datasets
+module (see <a class="reference internal" href="../../Datasets.html#module-c4dynamics.datasets" title="c4dynamics.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">c4dynamics.datasets</span></code></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">impath</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;planes&#39;</span><span class="p">)</span>
 <span class="go">Fetched successfully</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vidpath</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">video</span><span class="p">(</span><span class="s1">&#39;aerobatics&#39;</span><span class="p">)</span>
@@ -655,7 +659,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

@@ -54,7 +54,7 @@
     <link rel="prev" title="c4dynamics.states.lib.rigidbody.rigidbody.plot" href="c4dynamics.states.lib.rigidbody.rigidbody.plot.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -480,8 +480,10 @@ document.write(`
 <p>Animates the rigid body’s motion using a 3D model
 according to the 3-2-1 Euler angles histories.</p>
 <p><strong>Important Note</strong></p>
-<p>Using the <cite>animate</cite> function requires installation of <cite>Open3D</cite> which is not a prerequisite of <cite>C4dynamics</cite>.
-For the different ways to install <cite>Open3D</cite> please refer to its <a class="reference external" href="https://www.open3d.org/">official website</a>.
+<p>Using the <cite>animate</cite> function requires installation of
+<cite>Open3D</cite> which is not a prerequisite of <cite>C4dynamics</cite>.
+For the different ways to install <cite>Open3D</cite> please
+refer to its <a class="reference external" href="https://www.open3d.org/">official website</a>.
 A direct installation with pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">open3d</span>
 </pre></div>
@@ -576,7 +578,7 @@ The model consists of 69,451 triangles, with the data determined by
 </figure>
 <p>2. You can change the model’s color by setting the <cite>modelcolor</cite> parameter.
 Here is an example of a mesh version of Stanford bunny with a custom color:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bunny</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">bunnymesh_path</span><span class="p">,</span> <span class="n">cbackground</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">.5</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bunny</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">bunnymesh_path</span><span class="p">,</span> <span class="n">cbackground</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">.5</span><span class="p">])</span> 
 </pre></div>
 </div>
 <figure class="align-default">
@@ -677,31 +679,32 @@ Finally convert it to a list.</p>
 <figure class="align-default">
 <img alt="../../../_images/f16_color.gif" src="../../../_images/f16_color.gif" />
 </figure>
-<ol class="arabic simple" start="6">
-<li><p>It can also be painted with a single color for all its parts and a single color for the background:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f16</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">angle0</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cbackground</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">255</span><span class="p">])</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span>
+<p>6. It can also be painted with a single color for all its
+parts and a single color for the background:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f16</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">angle0</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span><span class="n">cbackground</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">255</span><span class="p">])</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <figure class="align-default">
 <img alt="../../../_images/f16_monochrome.gif" src="../../../_images/f16_monochrome.gif" />
 </figure>
-<ol class="arabic simple" start="7">
-<li><p>Finally, let’s use the <cite>savedir</cite> option using the c4dynamics’ gif util to generate a gif file out of the model animation</p></li>
-</ol>
+<p>7. Finally, let’s use the <cite>savedir</cite> option using the c4dynamics’ gif
+util to generate a gif file out of the model animation</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f16colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(([</span><span class="mi">255</span><span class="p">,</span> <span class="mi">215</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">215</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="gp">... </span>                        <span class="p">,</span> <span class="p">[</span><span class="mi">184</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">38</span><span class="p">]</span>
 <span class="gp">... </span>                            <span class="p">,</span> <span class="p">[</span><span class="mi">218</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span> <span class="p">[</span><span class="mi">218</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span> <span class="p">[</span><span class="mi">54</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">79</span><span class="p">]</span>
 <span class="gp">... </span>                                <span class="p">,</span> <span class="p">[</span><span class="mi">205</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="p">[</span><span class="mi">205</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">12</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">255</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">outfol</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tests&#39;</span><span class="p">,</span> <span class="s1">&#39;_out&#39;</span><span class="p">,</span> <span class="s1">&#39;f16a&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">f16</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">angle0</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">savedir</span> <span class="o">=</span> <span class="n">outfol</span><span class="p">,</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">f16colors</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f16</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">angle0</span> <span class="o">=</span> <span class="n">x0</span><span class="p">,</span> <span class="n">savedir</span> <span class="o">=</span> <span class="n">outfol</span><span class="p">,</span> <span class="n">modelcolor</span> <span class="o">=</span> <span class="n">f16colors</span><span class="p">)</span>   
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># the storage folder &#39;outfol&#39; is the source of images for the gif function</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># the &#39;duration&#39; parameter sets the required length of the animation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gifname</span> <span class="o">=</span> <span class="s1">&#39;f16_animation.gif&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c4d</span><span class="o">.</span><span class="n">gif</span><span class="p">(</span><span class="n">outfol</span><span class="p">,</span> <span class="n">gifname</span><span class="p">,</span> <span class="n">duration</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Viewing the gif on a Jupyter notebook is possible by using the <cite>Image</cite> funtion of the <cite>IPython</cite> module:</p>
+<p>Viewing the gif on a Jupyter notebook is possible by using
+the <cite>Image</cite> funtion of the <cite>IPython</cite> module:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </pre></div>
@@ -796,7 +799,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

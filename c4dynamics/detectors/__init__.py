@@ -7,16 +7,17 @@
   :header-rows: 0
 
   * - :class:`YOLOv3 <c4dynamics.detectors.yolo3_opencv.yolov3>`
-    - Realtime object detection model based on YOLO (You Only Look Once) approach with 80 pre-trained COCO classes
+    - Realtime object detection model based on YOLO (You Only Look Once)
+      approach with 80 pre-trained COCO classes
 
 
 """
 
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 
-from c4dynamics.detectors.yolo3_opencv import yolov3 as yolov3
+from c4dynamics.detectors.yolo3_opencv import yolov3 as yolov3  # # noqa: F401
 
 if __name__ == "__main__":
 

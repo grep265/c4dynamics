@@ -43,6 +43,7 @@ The fastest way to contribute and help engineers apply C4DYNAMICS in practice.
   python tests/run_doctests.py
   python tests/run_unittests.py
   ```
+  Check Test Results window and tests\_out\doctests_output.txt file for test results. Fix and re-run if needed. 
 * Submit via a clear, reviewed Pull Request.
 
 ---

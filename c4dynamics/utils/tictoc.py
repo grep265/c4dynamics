@@ -1,16 +1,15 @@
 import sys
-
-sys.path.append(".")
+# sys.path.append(".")
 import time
 
 _tic = 0.0
 
 
 def tic():
-    """
-    Starts stopwatch timer.
+    """Starts stopwatch timer.
 
-    Inspired by `MATLAB's` tic toc, `tic()` records the current time to start measuring elapsed time.
+    Inspired by `MATLAB's` tic toc, `tic()` records the current time to start
+    measuring elapsed time.
     When used in conjunction with `toc()` serves as a stopwatch
     timer to measure the time interval between two events.
 
@@ -59,7 +58,6 @@ def tic():
       >>> t3 = toc()# doctest: +IGNORE_OUTPUT
       >>> c4d.cprint('list to numpy: ' + str(1000 * t3) + ' ms', 'y') # doctest: +IGNORE_OUTPUT
       list to numpy: 0.0 ms
-
     """
 
     global _tic
@@ -68,9 +66,7 @@ def tic():
 
 
 def toc(show=True, minutes=False):
-    """
-
-    Stops the stopwatch timer and reads the elapsed time.
+    """Stops the stopwatch timer and reads the elapsed time.
 
     Measures the elapsed time since the last call to `tic()` and prints the result in seconds.
 
@@ -120,11 +116,9 @@ def toc(show=True, minutes=False):
       >>> t3 = toc() # doctest: +IGNORE_OUTPUT
       >>> c4d.cprint('list to numpy: ' + str(1000 * t3) + ' ms', 'y') # doctest: +IGNORE_OUTPUT
       list to numpy: 0.0 ms
-
-
     """
 
-    global _tic
+    # global _tic
     dt = time.time() - _tic
     units = "sec"
     if minutes:

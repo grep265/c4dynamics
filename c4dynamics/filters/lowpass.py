@@ -1,13 +1,14 @@
-import sys
+# import sys
 from typing import Optional
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 
 
 class lowpass(c4d.state):
     """
-    A first-order low-pass filter for smoothing signals, supporting both discrete and continuous systems.
+    A first-order low-pass filter for smoothing signals,
+    supporting both discrete and continuous systems.
 
     Parameters
     ----------
@@ -63,7 +64,8 @@ class lowpass(c4d.state):
             self.alpha = alpha
         else:
             raise ValueError(
-                "Provide either `alpha` for a discrete system or both `dt` and `tau` for a continuous system."
+                "Provide either `alpha` for a discrete system or both "
+                "`dt` and `tau` for a continuous system."
             )
 
         self.y = y0  # Initial state value

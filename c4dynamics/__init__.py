@@ -80,7 +80,7 @@ from . import detectors as detectors
 #
 # reinforcement learning
 ##
-from . import envs as envs
+from . import envs as envs  # noqa: F401
 
 #
 # version
@@ -94,8 +94,8 @@ __version__ = "2.3.4"  # update also in pyproject.toml & setup.py
 j = os.path.join
 
 
-""" 
-WARNINGS 
+"""
+WARNINGS
 """
 
 
@@ -116,7 +116,8 @@ def show_warning(message, category, filename, lineno, file=None, line=None):
 
         # FIXME suppressing is absolutely not working.
         message1 = str(message) + "\n"
-        message2 = "To suppress c4dynamics' warnings, run: import warnings, import c4dynamics as c4d, warnings.simplefilter('ignore', c4d.c4warn)\n"
+        message2 = "To suppress c4dynamics' warnings, run: import warnings," \
+                   "import c4dynamics as c4d, warnings.simplefilter('ignore', c4d.c4warn)\n"
 
         print(f"\n{YELLOW}{message1}{RESET}{message2} (File: {filename}, Line: {lineno})")
     else:
@@ -127,7 +128,7 @@ def show_warning(message, category, filename, lineno, file=None, line=None):
 warnings.showwarning = show_warning
 
 """
-TESTING 
+TESTING
 """
 
 
@@ -253,7 +254,7 @@ def rundoctests(module, exclude_functions=[]):
     # plt.switch_backend(pltbe)
 
 
-""" 
+"""
 ROOT FOLDER
 """
 
@@ -276,8 +277,8 @@ def c4dir(dir, addpath=""):
     return c4dir(os.path.dirname(dir), addpath)
 
 
-""" 
-KEYWORDS 
+"""
+KEYWORDS
 """
 #
 # TODO BUG FIXME HACK NOTE XXX
@@ -289,11 +290,13 @@ KEYWORDS
 # FIXME NOT SEVERE BUT A BETTER IDEA IS TO DO SO
 #       Indicates that there is a problem or bug that needs to be fixed.
 # HACK I KNOW ITS NOT BEST SOLUTION TREAT IF U HAVE SPARE TIME
-#      Suggests that a workaround or temporary solution has been implemented and should be revisited.
+#      Suggests that a workaround or temporary solution has been
+#      implemented and should be revisited.
 # NOTE MORE IMPORTANT THAN A CASUAL COMMENT
 #      Provides additional information or context about the code.
 # XXX TREAT THIS BEFORE OTHERS
-#     Used to highlight something that is problematic, needs attention, or should be addressed later.
+#     Used to highlight something that is problematic, needs attention,
+#     or should be addressed later.
 
 
 # FIXME

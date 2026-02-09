@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -413,8 +413,7 @@ document.write(`
   <h1>Source code for c4dynamics.rotmat.rotmat</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="c1"># import c4dynamics as c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.utils.const</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.utils.math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">asin</span><span class="p">,</span> <span class="n">atan2</span>
@@ -423,21 +422,21 @@ document.write(`
 <div class="viewcode-block" id="rotx">
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.rotx.html#c4dynamics.rotmat.rotmat.rotx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rotx</span><span class="p">(</span><span class="n">phi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a 3x3 Direction Cosine Matrix for</span>
 <span class="sd">    a positive rotation about the x-axis by an angle :math:`\\phi` in radians.</span>
 
-<span class="sd">    A right-hand rotation matrix about `x` is given by: </span>
+<span class="sd">    A right-hand rotation matrix about `x` is given by:</span>
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+
 <span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            1 &amp; 0 &amp; 0 \\\\ </span>
-<span class="sd">                0 &amp; cos(\\varphi) &amp; sin(\\varphi) \\\\ </span>
-<span class="sd">                    0 &amp; -sin(\\varphi) &amp; cos(\\varphi) </span>
-<span class="sd">            \\end{bmatrix} </span>
+<span class="sd">            1 &amp; 0 &amp; 0 \\\\</span>
+<span class="sd">                0 &amp; cos(\\varphi) &amp; sin(\\varphi) \\\\</span>
+<span class="sd">                    0 &amp; -sin(\\varphi) &amp; cos(\\varphi)</span>
+<span class="sd">            \\end{bmatrix}</span>
 
-<span class="sd">        </span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -449,28 +448,28 @@ document.write(`
 <span class="sd">    out : numpy.array</span>
 <span class="sd">        A 3x3 rotation matrix representing the rotation about the x-axis.</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; rotx(0)  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [[1  0  0]</span>
 <span class="sd">     [0  1  0]</span>
 <span class="sd">     [0  0  1]]</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; rotx(c4d.pi / 2)  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [[1  0  0]</span>
 <span class="sd">     [0  0  1]</span>
 <span class="sd">     [0 -1  0]]</span>
 
-<span class="sd">           </span>
+
 <span class="sd">    &gt;&gt;&gt; v1 = [0, 0, 1]</span>
 <span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; rotx(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [0  1  0]</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; rotx(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [0  0.707  0.707]</span>
@@ -483,23 +482,23 @@ document.write(`
 <div class="viewcode-block" id="roty">
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.roty.html#c4dynamics.rotmat.rotmat.roty">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">roty</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a 3x3 Direction Cosine Matrix for</span>
 <span class="sd">    a positive rotation about the y-axis by an angle :math:`\\theta` in radians.</span>
 
 
 
-<span class="sd">    A right-hand rotation matrix about `y` is given by: </span>
+<span class="sd">    A right-hand rotation matrix about `y` is given by:</span>
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+
 <span class="sd">        R = \\begin{bmatrix}</span>
 <span class="sd">            cos(\\theta) &amp; 0&amp; -sin(\\theta) \\\\</span>
-<span class="sd">                0 &amp; 1 &amp; 0 \\\\ </span>
+<span class="sd">                0 &amp; 1 &amp; 0 \\\\</span>
 <span class="sd">                    sin(\\theta) &amp; 0 &amp; cos(\\theta)</span>
-<span class="sd">            \\end{bmatrix}  </span>
+<span class="sd">            \\end{bmatrix}</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    theta : float or int</span>
@@ -512,25 +511,25 @@ document.write(`
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; roty(0)  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [[1  0  0]</span>
 <span class="sd">     [0  1  0]</span>
 <span class="sd">     [0  0  1]]</span>
-<span class="sd">           </span>
-<span class="sd">        </span>
+
+
 <span class="sd">    &gt;&gt;&gt; roty(c4d.pi / 2) # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [[0  0 -1]</span>
 <span class="sd">     [0  1  0]</span>
 <span class="sd">     [1  0  0]]</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; v1 = [0, 0, 1]</span>
 <span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; roty(phi) @ v1  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [-1  0  0]</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; roty(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [-0.707  0  0.707]</span>
@@ -543,20 +542,20 @@ document.write(`
 <div class="viewcode-block" id="rotz">
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.rotz.html#c4dynamics.rotmat.rotmat.rotz">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rotz</span><span class="p">(</span><span class="n">psi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix for </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a 3x3 Direction Cosine Matrix for</span>
 <span class="sd">    a positive rotation about the z-axis by an angle :math:`\\psi` in radians.</span>
 
-<span class="sd">    A right-hand rotation matrix about `y` is given by: </span>
+<span class="sd">    A right-hand rotation matrix about `y` is given by:</span>
 
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+
 <span class="sd">        R = \\begin{bmatrix}</span>
 <span class="sd">            cos(\\psi) &amp; sin(\\psi) &amp; 0 \\\\</span>
-<span class="sd">                -sin(\\psi) &amp; cos(\\psi) &amp; 0 \\\\ </span>
+<span class="sd">                -sin(\\psi) &amp; cos(\\psi) &amp; 0 \\\\</span>
 <span class="sd">                    0 &amp; 0 &amp; 1</span>
-<span class="sd">            \\end{bmatrix}  </span>
+<span class="sd">            \\end{bmatrix}</span>
 
 
 
@@ -572,7 +571,7 @@ document.write(`
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; rotz(0)  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [[1  0  0]</span>
 <span class="sd">     [0  1  0]</span>
@@ -584,7 +583,7 @@ document.write(`
 <span class="sd">     [-1  0  0]</span>
 <span class="sd">     [0   0  1]]</span>
 
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; v1 = [0.707, 0.707, 0]</span>
 <span class="sd">    &gt;&gt;&gt; phi = 90 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; rotz(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
@@ -593,7 +592,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; phi = 45 * c4d.d2r</span>
 <span class="sd">    &gt;&gt;&gt; rotz(phi) @ v1 # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [1  0  0]</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span></div>
 
@@ -603,72 +602,72 @@ document.write(`
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.dcm321.html#c4dynamics.rotmat.rotmat.dcm321">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dcm321</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">psi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a 3x3 Direction Cosine Matrix (DCM) for a sequence of </span>
-<span class="sd">    positive rotations around the axes in the following order: </span>
+<span class="sd">    Generate a 3x3 Direction Cosine Matrix (DCM) for a sequence of</span>
+<span class="sd">    positive rotations around the axes in the following order:</span>
 <span class="sd">    :math:`z`, then :math:`y`, then :math:`x`.</span>
 
-<span class="sd">    The final form of the matrix is given by: </span>
+<span class="sd">    The final form of the matrix is given by:</span>
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+
 <span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">              c\\theta \\cdot c\\psi </span>
-<span class="sd">            &amp; c\\theta \\cdot s\\psi </span>
+<span class="sd">              c\\theta \\cdot c\\psi</span>
+<span class="sd">            &amp; c\\theta \\cdot s\\psi</span>
 <span class="sd">            &amp; -s\\theta \\\\</span>
-<span class="sd">                  s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\ </span>
-<span class="sd">                      c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi </span>
-<span class="sd">                    &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi </span>
+<span class="sd">                  s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi</span>
+<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi</span>
+<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\</span>
+<span class="sd">                      c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi</span>
+<span class="sd">                    &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi</span>
 <span class="sd">                    &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">            \\end{bmatrix}  </span>
+<span class="sd">            \\end{bmatrix}</span>
 
-<span class="sd">    where </span>
+<span class="sd">    where</span>
 
 <span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
 <span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
 <span class="sd">    - :math:`c\\theta \\equiv cos(\\theta)`</span>
 <span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
 <span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
-<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`    </span>
+<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`</span>
 
 
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    phi : float or int </span>
-<span class="sd">        The angle in radian of rotation about `x`, default :math:`\\phi = 0`. </span>
-<span class="sd">    theta : float or int </span>
-<span class="sd">        The angle in radian of rotation about `y`, default :math:`\\theta = 0`. </span>
-<span class="sd">    psi : float or int </span>
-<span class="sd">        The angle in radian of rotation about `z`, default :math:`\\psi = 0`. </span>
+<span class="sd">    phi : float or int</span>
+<span class="sd">        The angle in radian of rotation about `x`, default :math:`\\phi = 0`.</span>
+<span class="sd">    theta : float or int</span>
+<span class="sd">        The angle in radian of rotation about `y`, default :math:`\\theta = 0`.</span>
+<span class="sd">    psi : float or int</span>
+<span class="sd">        The angle in radian of rotation about `z`, default :math:`\\psi = 0`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : numpy.array</span>
 <span class="sd">        3x3 Direction Cosine Matrix representing the combined rotation.</span>
 
-<span class="sd">        </span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    The inertial velocity vector of an aircraft expressed in an inertial earth frame is given by:</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; v = [150, 0, 0]</span>
-<span class="sd">    </span>
-<span class="sd">    The attitude of the aircraft with respect to the inertial earth frame is</span>
-<span class="sd">    given by the 3 Euler angles: </span>
 
-<span class="sd">    .. math:: </span>
+<span class="sd">    &gt;&gt;&gt; v = [150, 0, 0]</span>
+
+<span class="sd">    The attitude of the aircraft with respect to the inertial earth frame is</span>
+<span class="sd">    given by the 3 Euler angles:</span>
+
+<span class="sd">    .. math::</span>
 
 <span class="sd">        \\phi = 0</span>
-<span class="sd">        </span>
+
 <span class="sd">        \\theta = 30 \\cdot {\\pi \\over 180}</span>
-<span class="sd">        </span>
+
 <span class="sd">        \\psi = 0</span>
-<span class="sd">            </span>
+
 <span class="sd">    The velcoty expressed in body frame:</span>
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; dcm321(phi = 0, theta = 30 * c4d.d2r, psi = 0) @ v  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">    [129.9  0  75]</span>
 
@@ -680,26 +679,26 @@ document.write(`
 <div class="viewcode-block" id="dcm321euler">
 <a class="viewcode-back" href="../../../api/generated/rotmat/c4dynamics.rotmat.rotmat.dcm321euler.html#c4dynamics.rotmat.rotmat.dcm321euler">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dcm321euler</span><span class="p">(</span><span class="n">dcm</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract Euler angles (roll, pitch, yaw) from a Direction Cosine Matrix (DCM) of 3-2-1 order.</span>
 
-<span class="sd">    The form of a 3-2-1 rotation matrix:   </span>
+<span class="sd">    The form of a 3-2-1 rotation matrix:</span>
 
-<span class="sd">    .. math:: </span>
+<span class="sd">    .. math::</span>
 
 <span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">            c\\theta \\cdot c\\psi </span>
-<span class="sd">            &amp; c\\theta \\cdot s\\psi </span>
+<span class="sd">            c\\theta \\cdot c\\psi</span>
+<span class="sd">            &amp; c\\theta \\cdot s\\psi</span>
 <span class="sd">            &amp; -s\\theta \\\\</span>
-<span class="sd">                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - c\\varphi \\cdot c\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\ </span>
-<span class="sd">                    s\\varphi \\cdot s\\theta \\cdot s\\psi + s\\varphi \\cdot s\\psi </span>
-<span class="sd">                    &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi </span>
+<span class="sd">                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi</span>
+<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - c\\varphi \\cdot c\\psi</span>
+<span class="sd">                &amp; s\\varphi \\cdot c\\theta \\\\</span>
+<span class="sd">                    s\\varphi \\cdot s\\theta \\cdot s\\psi + s\\varphi \\cdot s\\psi</span>
+<span class="sd">                    &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi</span>
 <span class="sd">                    &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">            \\end{bmatrix}  </span>
+<span class="sd">            \\end{bmatrix}</span>
 
-<span class="sd">    where </span>
+<span class="sd">    where</span>
 
 <span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
 <span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
@@ -707,7 +706,7 @@ document.write(`
 <span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
 <span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
 <span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`</span>
-<span class="sd">        </span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -721,20 +720,22 @@ document.write(`
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Each set of Euler angles has a geometric singularity where </span>
+<span class="sd">    Each set of Euler angles has a geometric singularity where</span>
 <span class="sd">    two angles are not uniquely defined.</span>
-<span class="sd">    It is always the second angle which defines this singular orientation: </span>
+<span class="sd">    It is always the second angle which defines this singular orientation:</span>
 
-<span class="sd">    - Symmetric Set: 2nd angle is 0 or 180 degrees. For example the 3-1-3 orbit angles with zero inclination.</span>
-<span class="sd">    - Asymmetric Set: 2nd angle is ±90 degrees. For example, the 3-2-1 angle of an aircraft with 90 degrees pitch. </span>
+<span class="sd">    - Symmetric Set: 2nd angle is 0 or 180 degrees. For example the 3-1-3 orbit</span>
+<span class="sd">      angles with zero inclination.</span>
+<span class="sd">    - Asymmetric Set: 2nd angle is ±90 degrees. For example, the 3-2-1 angle of an</span>
+<span class="sd">      aircraft with 90 degrees pitch.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; dcm321euler(np.eye(3)) # doctest: +NUMPY_FORMAT</span>
-<span class="sd">    (0, 0, 0)    </span>
-<span class="sd">        </span>
-<span class="sd">    A rotation matrix that represents the attitude of an aircraft with respect to </span>
+<span class="sd">    (0, 0, 0)</span>
+
+<span class="sd">    A rotation matrix that represents the attitude of an aircraft with respect to</span>
 <span class="sd">    an inertial earth frame is given by:</span>
 
 <span class="sd">    &gt;&gt;&gt; BI = np.array([[ 0.866,     0, -0.5      ]</span>
@@ -806,7 +807,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

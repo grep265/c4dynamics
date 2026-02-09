@@ -3,7 +3,7 @@ import sys
 import time
 import numpy as np
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 from typing import Optional, Union, List
 import warnings
@@ -26,8 +26,10 @@ def animate(
 
     **Important Note**
 
-    Using the `animate` function requires installation of `Open3D` which is not a prerequisite of `C4dynamics`.
-    For the different ways to install `Open3D` please refer to its `official website <https://www.open3d.org/>`_.
+    Using the `animate` function requires installation of
+    `Open3D` which is not a prerequisite of `C4dynamics`.
+    For the different ways to install `Open3D` please
+    refer to its `official website <https://www.open3d.org/>`_.
     A direct installation with pip:
 
     ::
@@ -84,7 +86,8 @@ def animate(
         >>> pcd = o3d.io.read_point_cloud('model.ply') # doctest: +IGNORE_OUTPUT
         >>> o3d.io.write_point_cloud('model.pcd', pcd) # doctest: +IGNORE_OUTPUT
 
-      For more info see `Open3D documentation <https://www.open3d.org/docs/release/tutorial/geometry/file_io.html>`_
+      For more info see `Open3D documentation
+      <https://www.open3d.org/docs/release/tutorial/geometry/file_io.html>`_
     - Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing
       the model attitude with respect to the screen frame, see note below.
       The screen frame is defined as follows:
@@ -150,7 +153,7 @@ def animate(
 
     .. code::
 
-      >>> bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5])
+      >>> bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5]) # doctest: +IGNORE_OUTPUT
 
     .. figure:: /_examples/animate/bunny_red.gif
 
@@ -267,16 +270,20 @@ def animate(
     .. figure:: /_examples/animate/f16_color.gif
 
 
-    6. It can also be painted with a single color for all its parts and a single color for the background:
+    6. It can also be painted with a single color for all its
+    parts and a single color for the background:
 
     .. code::
 
-      >>> f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0], cbackground = np.array([230, 230, 255]) / 255)
+      >>> f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0],
+      ... cbackground = np.array([230, 230, 255]) / 255
+      ... )
 
     .. figure:: /_examples/animate/f16_monochrome.gif
 
 
-    7. Finally, let's use the `savedir` option using the c4dynamics' gif util to generate a gif file out of the model animation
+    7. Finally, let's use the `savedir` option using the c4dynamics' gif
+    util to generate a gif file out of the model animation
 
     .. code::
 
@@ -285,13 +292,14 @@ def animate(
       ...                             , [218, 165, 32], [218, 165, 32], [54, 69, 79]
       ...                                 , [205, 149, 12], [205, 149, 12])) / 255
       >>> outfol = os.path.join('tests', '_out', 'f16a')
-      >>> f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)
+      >>> f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)   # doctest: +IGNORE_OUTPUT
       >>> # the storage folder 'outfol' is the source of images for the gif function
       >>> # the 'duration' parameter sets the required length of the animation
       >>> gifname = 'f16_animation.gif'
       >>> c4d.gif(outfol, gifname, duration = 1)
 
-    Viewing the gif on a Jupyter notebook is possible by using the `Image` funtion of the `IPython` module:
+    Viewing the gif on a Jupyter notebook is possible by using
+    the `Image` funtion of the `IPython` module:
 
     .. code::
 
@@ -307,7 +315,7 @@ def animate(
 
     """
     try:
-        import open3d as o3d
+        import open3d as o3d  # noqa: F401, F811
     except ImportError:
         raise ImportError(
             "The 'open3d' package is required for this function to work. "

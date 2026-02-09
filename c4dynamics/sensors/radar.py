@@ -3,7 +3,7 @@ import numpy as np
 # from scipy.special import erfinv
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 from c4dynamics.sensors.seeker import seeker
 from typing import Optional
@@ -56,11 +56,13 @@ class radar(seeker):
     Keyword Arguments
     =================
     rng_noise_std : float
-        A standard deviation of the radar range. Default value for non-ideal radar: `rng_noise_std = 1m`.
+        A standard deviation of the radar range. Default value for
+        non-ideal radar: `rng_noise_std = 1m`.
     bias_std : float
         The standard deviation of the bias error, [radians]. Defaults :math:`0.3°`.
     scale_factor_std : float
-        The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.07 (= 7\\%)`.
+        The standard deviation of the scale factor error, [dimensionless].
+        Defaults :math:`0.07 (= 7\\%)`.
     noise_std : float
         The standard deviation of the radar angular noise, [radians].
         Default value for non-ideal radar: :math:`0.8°`.
@@ -348,7 +350,9 @@ class radar(seeker):
       >>> dx =  tgt.data('x')[1] - rdr_ideal.x
       >>> dy =  tgt.data('y')[1] - rdr_ideal.y
       >>> dz =  tgt.data('z')[1] - rdr_ideal.z
-      >>> Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x, X[2] - rdr_ideal.y, X[3] - rdr_ideal.z] for X in tgt.data()])
+      >>> Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x,
+      ...     X[2] - rdr_ideal.y, X[3] - rdr_ideal.z]
+      ...     for X in tgt.data()])
 
     where :attr:`rdr_ideal.BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>` is a
     Body from Reference DCM (Direction Cosine Matrix)
@@ -365,13 +369,24 @@ class radar(seeker):
       >>> # plot results
       >>> fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT
       >>> # range
-      >>> axs[0].plot(tgt.data('t'), c4d.norm(Xb, axis = 1), label = 'target')  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(tgt.data('t'), c4d.norm(Xb, axis = 1),
+      ...     label = 'target'
+      ... )  # doctest: +IGNORE_OUTPUT
       >>> axs[0].plot(*rdr_ideal.data('range'), label = 'radar')  # doctest: +IGNORE_OUTPUT
       >>> # angles
-      >>> axs[1].plot(tgt.data('t'), c4d.atan2d(Xb[:, 1], Xb[:, 0]), label = 'target azimuth')  # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d), label = 'radar azimuth')  # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(tgt.data('t'), c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)), label = 'target elevation')  # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d), label = 'radar elevation')  # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(tgt.data('t'), c4d.atan2d(Xb[:, 1], Xb[:, 0]),
+      ...     label = 'target azimuth'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d),
+      ...     label = 'radar azimuth'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(tgt.data('t'), c4d.atan2d(Xb[:, 2],
+      ...     c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)),
+      ...     label = 'target elevation'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d),
+      ...     label = 'radar elevation'
+      ... )  # doctest: +IGNORE_OUTPUT
 
     .. figure:: /_examples/radar/ideal.png
 
@@ -409,10 +424,18 @@ class radar(seeker):
       >>> axs[0].plot(*rdr_ideal.data('range'), label = 'target') # doctest: +IGNORE_OUTPUT
       >>> axs[0].plot(*rdr.data('range'), label = 'radar') # doctest: +IGNORE_OUTPUT
       >>> # angles
-      >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d), label = 'target azimuth') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr.data('az', scale = c4d.r2d), label = 'radar azimuth') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d), label = 'target elevation') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr.data('el', scale = c4d.r2d), label = 'radar elevation') # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d),
+      ...     label = 'target azimuth'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr.data('az', scale = c4d.r2d),
+      ...     label = 'radar azimuth'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d),
+      ...     label = 'target elevation'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr.data('el', scale = c4d.r2d),
+      ...     label = 'radar elevation'
+      ... ) # doctest: +IGNORE_OUTPUT
 
     `target` labels mean the true position as measured by an ideal radar.
 
@@ -450,7 +473,8 @@ class radar(seeker):
 
 
     Measure the target position with a rotating radar.
-    The radar origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion:
+    The radar origin is yawing (performed by the increment of :math:`\\psi`)
+    in the direction of the target motion:
 
 
     .. code::
@@ -474,16 +498,25 @@ class radar(seeker):
       >>> axs[0].plot(*rdr_ideal.data('range'), label = 'ideal static') # doctest: +IGNORE_OUTPUT
       >>> axs[0].plot(*rdr.data('range'),label = 'non-ideal yawing') # doctest: +IGNORE_OUTPUT
       >>> # angles
-      >>> axs[1].plot(*rdr_ideal.data('az', c4d.r2d), label = 'az: ideal static') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr.data('az', c4d.r2d), label = 'az: non-ideal yawing') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d), label = 'el: ideal static') # doctest: +IGNORE_OUTPUT
-      >>> axs[1].plot(*rdr.data('el', scale = c4d.r2d), label = 'el: non-ideal yawing') # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('az', c4d.r2d),
+      ...     label = 'az: ideal static'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr.data('az', c4d.r2d),
+      ...     label = 'az: non-ideal yawing'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr_ideal.data('el', scale = c4d.r2d),
+      ...     label = 'el: ideal static'
+      ... ) # doctest: +IGNORE_OUTPUT
+      >>> axs[1].plot(*rdr.data('el', scale = c4d.r2d),
+      ...     label = 'el: non-ideal yawing'
+      ... ) # doctest: +IGNORE_OUTPUT
 
     .. figure:: /_examples/radar/yawing.png
 
 
     - The rotation of the radar with the target direction
-      keeps the azimuth angle limited, such that non-rotating radars with limited FOV (field of view)
+      keeps the azimuth angle limited, such that non-rotating radars with limited
+      FOV (field of view)
       would have lost the target.
 
 
@@ -572,7 +605,14 @@ class radar(seeker):
         if isideal:
             self.rng_noise_std = 0.0
 
-    def measure(self, target: "c4d.state", t: float = -1, store: bool = False) -> tuple[Optional[float], Optional[float], Optional[float]]:  # type: ignore
+    def measure(
+            self,
+            target: "c4d.state",
+            t: float = -1,
+            store: bool = False
+    ) -> tuple[
+            Optional[float], Optional[float], Optional[float]
+    ]:  # type: ignore
         """
         Measures range, azimuth and elevation between the radar and a `target`.
 
@@ -591,7 +631,8 @@ class radar(seeker):
         Parameters
         ----------
         target : state
-            A Cartesian state object to measure by the radar, including at least one position coordinate (x, y, z).
+            A Cartesian state object to measure by the radar, including at
+            least one position coordinate (x, y, z).
         store : bool, optional
             A flag indicating whether to store the measured values. Defaults `False`.
         t : float, optional
@@ -616,7 +657,8 @@ class radar(seeker):
         real-time tracking of a constant velcoity target.
 
 
-        The target is represented by a :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
+        The target is represented by a
+        :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
         and is simulated using the :mod:`eqm <c4dynamics.eqm>` module,
         which integrating the point-mass equations of motion.
 
@@ -678,11 +720,17 @@ class radar(seeker):
 
           >>> _, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT
           >>> # range
-          >>> axs[0].plot(*rdr_ideal.data('range'), '.m', label = 'target')  # doctest: +IGNORE_OUTPUT
+          >>> axs[0].plot(*rdr_ideal.data('range'), '.m',
+          ...     label = 'target'
+          ... )  # doctest: +IGNORE_OUTPUT
           >>> axs[0].plot(*rdr.data('range'), '.c', label = 'radar')  # doctest: +IGNORE_OUTPUT
           >>> # angles
-          >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d), '.m', label = 'target')  # doctest: +IGNORE_OUTPUT
-          >>> axs[1].plot(*rdr.data('az', scale = c4d.r2d), '.c', label = 'radar')  # doctest: +IGNORE_OUTPUT
+          >>> axs[1].plot(*rdr_ideal.data('az', scale = c4d.r2d), '.m',
+          ...     label = 'target'
+          ... )  # doctest: +IGNORE_OUTPUT
+          >>> axs[1].plot(*rdr.data('az', scale = c4d.r2d), '.c',
+          ...     label = 'radar'
+          ... )  # doctest: +IGNORE_OUTPUT
 
         .. figure:: /_examples/radar/measure.png
 
