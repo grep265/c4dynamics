@@ -1,7 +1,6 @@
 import sys
 import numpy as np
-
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 from numpy.typing import NDArray
 from typing import Any
@@ -15,8 +14,7 @@ import warnings
 
 
 class state:
-    """
-    Custom state object.
+    """Custom state object.
 
     A state object represents a state vector and other attributes
     that form an entity of a physical (dynamic) system.
@@ -54,7 +52,10 @@ class state:
 
     .. code::
 
-      >>> s = c4d.state(x = 0, y = 0, z = 0, vx = 0, vy = 0, vz = 0, q0 = 0, q1 = 0, q2 = 0, q3 = 0, bax = 0, bay = 0, baz = 0)   # doctest: +IGNORE_OUTPUT
+      >>> s = c4d.state(x = 0, y = 0, z = 0,
+      ...     vx = 0, vy = 0, vz = 0, q0 = 0,
+      ...     q1 = 0, q2 = 0, q3 = 0, bax = 0,
+      ...     bay = 0, baz = 0)   # doctest: +IGNORE_OUTPUT
       [ x  y  z  vx  vy  vz  q0  q1  q2  q3  bax  bay  baz ]
 
     ``Objects tracker``
@@ -68,7 +69,9 @@ class state:
 
     .. code::
 
-      >>> s = c4d.state(x = 0, y = 0, z = 0, vx = 0, vy = 0, vz = 0, phi = 0, theta = 0, psi = 0, p = 0, q = 0, r = 0)   # doctest: +IGNORE_OUTPUT
+      >>> s = c4d.state(x = 0, y = 0, z = 0, vx = 0,
+      ...       vy = 0, vz = 0, phi = 0, theta = 0,
+      ...       psi = 0, p = 0, q = 0, r = 0)   # doctest: +IGNORE_OUTPUT
       [ x  y  z  vx  vy  vz  φ  θ  Ψ  p  q  r ]
 
     ``Self-driving car``
@@ -84,8 +87,6 @@ class state:
 
       >>> s = c4d.state(theta1 = 0, theta2 = 0, omega1 = 0, omega2 = 0)   # doctest: +IGNORE_OUTPUT
       [ θ1  θ2  ω1  ω2 ]
-
-
     """
 
     # TODO: define state space, i.e. define the state properties such
@@ -180,7 +181,8 @@ class state:
 
         # 2. they will not be used in this fucntions.
 
-        # 3. the user must provide his implementations for poisiton velcity etc.. like used in the dist() function that there i
+        # 3. the user must provide his implementations for poisiton velcity etc.. like used in
+        # the dist() function that there i
         #   encountered the problem.
 
         # self._dtype = np.float32
@@ -189,9 +191,11 @@ class state:
 
         self._didx = {"t": 0}
 
-        # if any of the input vars is floating point, then it casts the entire state type (no partial types array)
+        # if any of the input vars is floating point, then it casts the entire state type
+        # (no partial types array)
         # if all of them are integer, it casts the staet type.
-        # i think maybe the best way to achieve it is by generating a numpy array and check its dtype:
+        # i think maybe the best way to achieve it is by generating a numpy array
+        # and check its dtype:
         self._X = np.array(list(kwargs.values()), dtype=self._STATETYPE)
         # self._X = np.zeros(len(kwargs)) #, dtype = np.float64)
         # TODO: now the type is determined by the initial values.
@@ -203,7 +207,8 @@ class state:
         for i, (k, v) in enumerate(kwargs.items()):
             if k in self._reserved_keys:
                 raise ValueError(
-                    f"{k} is a reserved key. Keys {self._reserved_keys} cannot use as variable names."
+                    f"{k} is a reserved key. Keys {self._reserved_keys} "
+                    "cannot use as variable names."
                 )
             # setattr(self, k, v)
             setattr(self, k + "0", v)
@@ -231,7 +236,8 @@ class state:
         # but then i need to iterate all the examples and remove the print from state presentations
         param_names = ", ".join(self._prmdata.keys())
 
-        # FIXME Parameters is wrong. because currently parameters are determined only by those which stored at least once with the storeparams method.
+        # FIXME Parameters is wrong. because currently parameters are determined only
+        # by those which stored at least once with the storeparams method.
         return (
             f"<state object>\n"
             f"State Variables: {self.__str__()}\n"
@@ -257,7 +263,8 @@ class state:
 
             # if np.array(val).dtype != self._X.dtype:
             #   warnings.warn(
-            #         f"Type mismatch! Casting X to {np.array(val).dtype}. (currently: {self._X.dtype})."
+            #         f"Type mismatch! Casting X to {np.array(val).dtype}.
+            #           (currently: {self._X.dtype})."
             #     , c4d.c4warn)
             #   self._X = self._X.astype(np.array(val).dtype)
 
@@ -268,9 +275,7 @@ class state:
 
     @property
     def X(self) -> NDArray[Any]:
-        """
-        Gets and sets the state vector variables.
-
+        """Gets and sets the state vector variables.
 
         Parameters
         ----------
@@ -317,8 +322,6 @@ class state:
           >>> dp.X = [1000, 100, 0, 0, 0, -100]
           >>> dp.X   # doctest: +NUMPY_FORMAT
           [1000  100  0  0  0  -100]
-
-
         """
 
         # xout = []
@@ -365,8 +368,7 @@ class state:
 
     @property
     def X0(self):
-        """
-        Returns the initial conditions of the state vector.
+        """Returns the initial conditions of the state vector.
 
         The initial conditions are determined at the stage of constructing
         the state object.
@@ -401,8 +403,6 @@ class state:
           >>> s.x10 = s.x20 = 0
           >>> s.X0   # doctest: +NUMPY_FORMAT
           [0  0]
-
-
         """
         xout = []
 
@@ -464,7 +464,6 @@ class state:
           [1  1  1]
           >>> s.data('vx')[1]   # doctest: +NUMPY_FORMAT
           [0  0  0]
-
         """
         # NOTE: maybe useless because user can always create a new state object.
 
@@ -475,7 +474,8 @@ class state:
         for i, (k, v) in enumerate(kwargs.items()):
             if k in self._reserved_keys:
                 raise ValueError(
-                    f"{k} is a reserved key. Keys {self._reserved_keys} cannot use as variable names."
+                    f"{k} is a reserved key. Keys {self._reserved_keys} cannot use "
+                    "as variable names."
                 )
 
             setattr(self, k + "0", v)
@@ -573,8 +573,6 @@ class state:
           ...
           0.00033469
           -0.0439570
-
-
         """
         # FIXME: make that when t is not provided a counter is used instead.
 
@@ -660,7 +658,8 @@ class state:
           ...   s.store() # stores the state
           ...   s.storeparams('class_id') # store the class_id parameter
           >>> print('   x    y    w    h    class')  # doctest: +IGNORE_OUTPUT
-          >>> print(np.hstack((s.data()[:, 1:].astype(int), np.atleast_2d(s.data('class_id')[1]).T)))  # doctest: +IGNORE_OUTPUT
+          >>> print(np.hstack((s.data()[:, 1:].astype(int),
+          ...       np.atleast_2d(s.data('class_id')[1]).T)))  # doctest: +IGNORE_OUTPUT
           x   y   w   h   class
           26  26  20  35  truck
           27  27  49  45  car
@@ -700,8 +699,9 @@ class state:
           >>> #
           >>> print('x y z  | dim')  # doctest: +IGNORE_OUTPUT
           >>> print('------------')  # doctest: +IGNORE_OUTPUT
-          >>> for x, dim in zip(morphospectra.data().astype(int)[:, 1 : 4].tolist(), morphospectra.data('dim')[1].tolist()):  # doctest: +IGNORE_OUTPUT
-          ...   print(*(x + [' | '] + [dim]))
+          >>> for x, dim in zip(morphospectra.data().astype(int)[:, 1 : 4].tolist(),
+          ...   morphospectra.data('dim')[1].tolist()):  # doctest: +IGNORE_OUTPUT
+          ...       print(*(x + [' | '] + [dim]))
           x y z  | dim
           ------------
           0 1 0  |  2
@@ -714,14 +714,14 @@ class state:
           1 1 0  |  2
           1 0 1  |  3
           1 0 1  |  3
-
         """
         # TODO show example of multiple vars
         # maybe the example of the kalman variables store
         #   from the detect track exmaple.
         # TODO add test if the params is not 0 or 1 dim throw error or warning. why?
         # TODO document about the two if's down here: nonscalar param and empty param.
-        # TODO add an option to provide the values to store becuase sometimes its not realy using the state on realtime but just for storage
+        # TODO add an option to provide the values to store becuase sometimes its not realy using
+        # the state on realtime but just for storage
         from functools import reduce
 
         lparams = params if isinstance(params, list) else [params]
@@ -742,7 +742,8 @@ class state:
         """
         Returns arrays of stored time and data.
 
-        :meth:`data() <c4dynamics.states.state.state.data>` returns a tuple containing two numpy arrays:
+        :meth:`data() <c4dynamics.states.state.state.data>` returns a tuple containing two
+        numpy arrays:
         the first consists of timestamps, and the second
         contains the values of a `var` corresponding to those timestamps.
 
@@ -826,7 +827,6 @@ class state:
           >>> s.storeparams('mass', t = 0.1)
           >>> s.data('mass')
           (array([0.1]), array([25.]))
-
         """
 
         # FIXME: check if var is a state variable
@@ -907,9 +907,6 @@ class state:
           >>> s.timestate(0.5)  # doctest: +IGNORE_OUTPUT
           Warning: no history of state samples.
           None
-
-
-
         """
 
         # TODO what about throwing a warning when dt is too long?
@@ -1037,7 +1034,7 @@ class state:
 
           >>> plt.subplots(1, 1)  # doctest: +IGNORE_OUTPUT
           >>> plt.plot(np.linspace(-c4d.pi, c4d.pi, 500) * c4d.r2d, 'm')   # doctest: +IGNORE_OUTPUT
-          >>> s.plot('phi', scale = c4d.r2d, ax = plt.gca(), color = 'c')    # doctest: +IGNORE_OUTPUT
+          >>> s.plot('phi', scale = c4d.r2d, ax = plt.gca(), color = 'c')  # doctest: +IGNORE_OUTPUT
           >>> plt.gca().set_ylabel('deg')  # doctest: +IGNORE_OUTPUT
           >>> plt.legend(['θ', 'φ'])  # doctest: +IGNORE_OUTPUT
           >>> plt.show()
@@ -1045,7 +1042,8 @@ class state:
         .. figure:: /_examples/state/plot_axis.png
 
 
-        Top view + side view - options of :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
+        Top view + side view - options of
+        :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
         and :class:`rigidbody <c4dynamics.states.lib.rigidbody.rigidbody>` objects:
 
         .. code::
@@ -1061,9 +1059,6 @@ class state:
           >>> plt.show()
 
         .. figure:: /_examples/state/plot_dp_inteqm3.png
-
-
-
         """
 
         from matplotlib import pyplot as plt
@@ -1184,7 +1179,6 @@ class state:
         """
         Returns the Euclidean norm of the state vector.
 
-
         Returns
         -------
         out : float
@@ -1199,7 +1193,6 @@ class state:
           >>> s = c4d.state(x1 = 1, x2 = -1)
           >>> s.norm  # doctest: +ELLIPSIS
           1.414...
-
         """
         return np.linalg.norm(self.X)
 
@@ -1208,11 +1201,11 @@ class state:
         """
         Returns a unit vector representation of the state vector.
 
-
         Returns
         -------
         out : numpy.array
-            A normalized vector of the same direction and shape as `self.X`, where the norm of the vector is `1`.
+            A normalized vector of the same direction and shape as `self.X`, where
+            the norm of the vector is `1`.
 
 
         Examples
@@ -1223,7 +1216,6 @@ class state:
           >>> s = c4d.state(x = 1, y = 2, z = 3)
           >>> s.normalize   # doctest: +NUMPY_FORMAT
           [0.267  0.534  0.801]
-
         """
 
         return self.X / np.linalg.norm(self.X)
@@ -1334,10 +1326,9 @@ class state:
 
           >>> s = c4d.state(z = 100)
           >>> s.Velocity  # doctest: +IGNORE_OUTPUT
-          Warning: Velocity is valid when at least one velocity coordinate variable (vx, vy, vz) exists.
+          Warning: Velocity is valid when at least one velocity coordinate
+          variable (vx, vy, vz) exists.
           []
-
-
         """
 
         if self.cartesian() < 2:
@@ -1467,9 +1458,6 @@ class state:
           >>> plt.show()
 
         .. figure:: /_examples/states/state_dist.png
-
-
-
         """
 
         if not self.cartesian():
@@ -1480,7 +1468,8 @@ class state:
         else:
             if not hasattr(state2, "cartesian") or not state2.cartesian():
                 raise TypeError(
-                    "state2 must be a state object with at least one position coordinate (x, y, or z)"
+                    "state2 must be a state object with at least one position"
+                    " coordinate (x, y, or z)"
                 )
 
         dist = 0
@@ -1544,8 +1533,6 @@ class state:
           >>> s = c4d.state(x = 100, y = 0)
           >>> # s.vel_mag()
           TypeError: state must have at least one velocity coordinate (vx, vy, or vz)
-
-
         """
 
         if self.cartesian() < 2:

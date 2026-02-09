@@ -54,7 +54,7 @@
     <link rel="prev" title="State Objects" href="States.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -500,7 +500,10 @@ For example: <code class="code docutils literal notranslate"><span class="pre">s
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Strapdown</span> <span class="pre">navigation</span> <span class="pre">system</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">baz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">vx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">q1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">bay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">baz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>   
 <span class="go">[ x  y  z  vx  vy  vz  q0  q1  q2  q3  bax  bay  baz ]</span>
 </pre></div>
 </div>
@@ -510,7 +513,9 @@ For example: <code class="code docutils literal notranslate"><span class="pre">s
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Aircraft</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>   
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">vy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>   
 <span class="go">[ x  y  z  vx  vy  vz  φ  θ  Ψ  p  q  r ]</span>
 </pre></div>
 </div>
@@ -675,7 +680,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

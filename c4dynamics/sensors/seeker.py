@@ -3,7 +3,7 @@ import numpy as np
 # from scipy.special import erfinv
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 import warnings
 from typing import Optional
@@ -32,7 +32,8 @@ class seeker(c4d.rigidbody):
     Parameters
     ==========
     origin : :class:`rigidbody <c4dynamics.states.lib.rigidbody.rigidbody>`, optional
-        A `rigidbody` object whose state vector :attr:`X <c4dynamics.states.state.state.X>` determines the seeker's initial position and attitude.
+        A `rigidbody` object whose state vector :attr:`X <c4dynamics.states.state.state.X>`
+        determines the seeker's initial position and attitude.
         Defaults: a `rigidbody` object with zeros vector, `X = numpy.zeros(12)`.
     isideal : bool, optional
         A flag indicating whether the errors model is off.
@@ -44,7 +45,8 @@ class seeker(c4d.rigidbody):
     bias_std : float
         The standard deviation of the bias error, [radians]. Defaults :math:`0.1°`.
     scale_factor_std : float
-        The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.05 (= 5\\%)`.
+        The standard deviation of the scale factor error, [dimensionless].
+        Defaults :math:`0.05 (= 5\\%)`.
     noise_std : float
         The standard deviation of the seeker angular noise, [radians].
         Default value for non-ideal seeker: :math:`0.4°`.
@@ -166,7 +168,8 @@ class seeker(c4d.rigidbody):
 
     **rigidbody**
 
-    The seeker class is a subclass of :class:`rigidbody <c4dynamics.states.lib.rigidbody.rigidbody>`, i.e.
+    The seeker class is a subclass of
+    :class:`rigidbody <c4dynamics.states.lib.rigidbody.rigidbody>`, i.e.
     it suggests attributes of position and attitude and the manipulation of them.
 
     As a fundamental propety, the
@@ -273,7 +276,8 @@ class seeker(c4d.rigidbody):
       >>> dx = tgt.data('x')[1] - skr_ideal.x
       >>> dy = tgt.data('y')[1] - skr_ideal.y
       >>> dz = tgt.data('z')[1] - skr_ideal.z
-      >>> Xb = np.array([skr_ideal.BR @ [X[1] - skr_ideal.x, X[2] - skr_ideal.y, X[3] - skr_ideal.z] for X in tgt.data()])
+      >>> Xb = np.array([skr_ideal.BR @ [X[1] - skr_ideal.x, X[2] - skr_ideal.y,
+      ...       X[3] - skr_ideal.z] for X in tgt.data()])
 
     where :attr:`skr_ideal.BR <c4dynamics.states.lib.rigidbody.rigidbody.BR>` is a
     Body from Reference DCM (Direction Cosine Matrix)
@@ -289,8 +293,12 @@ class seeker(c4d.rigidbody):
       >>> el_true = c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2))
       >>> # plot results
       >>> fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT
-      >>> axs[0].plot(tgt.data('t'), az_true, label = 'target')  # doctest: +IGNORE_OUTPUT
-      >>> axs[0].plot(*skr_ideal.data('az', scale = c4d.r2d), label = 'seeker')  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(tgt.data('t'), az_true,
+      ...     label = 'target'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(*skr_ideal.data('az', scale = c4d.r2d),
+      ...     label = 'seeker'
+      ... )  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(tgt.data('t'), el_true)  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(*skr_ideal.data('el', scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT
 
@@ -322,8 +330,12 @@ class seeker(c4d.rigidbody):
     .. code::
 
       >>> fig, axs = plt.subplots(2, 1)
-      >>> axs[0].plot(*skr_ideal.data('az', scale = c4d.r2d), label = 'ideal')  # doctest: +IGNORE_OUTPUT
-      >>> axs[0].plot(*skr.data('az', scale = c4d.r2d), label = 'non-ideal')  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(*skr_ideal.data('az', scale = c4d.r2d),
+      ...       label = 'ideal'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(*skr.data('az', scale = c4d.r2d),
+      ...     label = 'non-ideal'
+      ... )  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(*skr_ideal.data('el', scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(*skr.data('el', scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT
 
@@ -357,7 +369,8 @@ class seeker(c4d.rigidbody):
 
 
     Measure the target position with a rotating seeker.
-    The seeker origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion:
+    The seeker origin is yawing (performed by the increment of :math:`\\psi`)
+    in the direction of the target motion:
 
 
     .. code::
@@ -377,8 +390,12 @@ class seeker(c4d.rigidbody):
     .. code::
 
       >>> fig, axs = plt.subplots(2, 1)
-      >>> axs[0].plot(*skr_ideal.data('az', c4d.r2d), label = 'ideal static seeker')  # doctest: +IGNORE_OUTPUT
-      >>> axs[0].plot(*skr.data('az', c4d.r2d), label = 'non-ideal yawing seeker')  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(*skr_ideal.data('az', c4d.r2d),
+      ...     label = 'ideal static seeker'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> axs[0].plot(*skr.data('az', c4d.r2d),
+      ...     label = 'non-ideal yawing seeker'
+      ... )  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(*skr_ideal.data('el', scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT
       >>> axs[1].plot(*skr.data('el', scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT
 
@@ -386,7 +403,8 @@ class seeker(c4d.rigidbody):
 
 
     - The rotation of the seeker with the target direction
-      keeps the azimuth angle limited, such that non-rotating seekers with limited FOV (field of view)
+      keeps the azimuth angle limited, such that non-rotating seekers
+      with limited FOV (field of view)
       would have lost the target.
 
 
@@ -448,20 +466,20 @@ class seeker(c4d.rigidbody):
     """
 
     _scale_factor = 1.0
-    """ float; The scale factor error of the seeker angels. 
+    """ float; The scale factor error of the seeker angels.
   It is a normally distributed random variable with
   standard deviation scale_factor_std.
-  When isideal seeker is configured scale_factor = 1. 
+  When isideal seeker is configured scale_factor = 1.
   """
 
     # scale_factor_std = 0.05
     # ''' float; A standard deviation of the scale factor error '''
 
     _bias = 0.0
-    """ float; The bias error of the seeker angels. 
+    """ float; The bias error of the seeker angels.
   It is a normally distributed random variable with
   standard deviation bias_std
-  When isideal seeker is configured bias = 0. 
+  When isideal seeker is configured bias = 0.
   """
 
     # bias_std = 0.1 * c4d.d2r
@@ -472,7 +490,8 @@ class seeker(c4d.rigidbody):
     # seeker: noise_std = 0.4° '''
 
     # dt = -1 # np.finfo(np.float64).eps
-    # ''' float; The time-constant of the operational rate of the seeker ''' # . default machine epsilon for float64
+    # ''' float; The time-constant of the operational rate of the seeker ''' # .
+    # default machine epsilon for float64
 
     _lastsample = -np.inf
     #
@@ -522,7 +541,9 @@ class seeker(c4d.rigidbody):
         if origin is not None:
             if not isinstance(origin, c4d.rigidbody):
                 raise TypeError(
-                    "origin must be a c4dynamics.rigidbody object whose state vector origin.X represents the seeker initial position and attitude initial conditions"
+                    "origin must be a c4dynamics.rigidbody object whose state vector "
+                    "origin.X represents the seeker initial position and attitude "
+                    "initial conditions"
                 )
 
             self.X = origin.X
@@ -546,7 +567,8 @@ class seeker(c4d.rigidbody):
           bias = std \\cdot randn
 
         Where `bias_std` is a parameter with default
-        value of `0.1°` for :class:`seeker <c4dynamics.sensors.seeker.seeker>` object, and `0.3°` for
+        value of `0.1°` for :class:`seeker <c4dynamics.sensors.seeker.seeker>` object,
+        and `0.3°` for
         :class:`radar <c4dynamics.sensors.radar.radar>` object.
 
 
@@ -624,7 +646,9 @@ class seeker(c4d.rigidbody):
           >>> skr = c4d.sensors.seeker(origin = pedestal, scale_factor_std = 0, noise_std = 0)
           >>> skr.bias = .5 * c4d.d2r
           >>> for x in tgt.data():
-          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT
+          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0],
+          ...       store = True
+          ...    )  # doctest: +IGNORE_OUTPUT
           ...   skr.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT
 
 
@@ -633,7 +657,9 @@ class seeker(c4d.rigidbody):
         .. code::
 
           >>> ax = plt.subplot()
-          >>> ax.plot(*skr_ideal.data('el', scale = c4d.r2d), label = 'target')  # doctest: +IGNORE_OUTPUT
+          >>> ax.plot(*skr_ideal.data('el', scale = c4d.r2d),
+          ...     label = 'target'
+          ... )  # doctest: +IGNORE_OUTPUT
           >>> ax.plot(*skr.data('el', scale = c4d.r2d), label = 'seeker')  # doctest: +IGNORE_OUTPUT
 
         .. figure:: /_examples/seeker/bias1.png
@@ -711,7 +737,8 @@ class seeker(c4d.rigidbody):
           scalefactor = std \\cdot randn
 
         Where `scale_factor_std` is a parameter with default
-        value of `0.05 (5%)` for :class:`seeker <c4dynamics.sensors.seeker.seeker>` object, and `0.07 (7%)` for
+        value of `0.05 (5%)` for :class:`seeker <c4dynamics.sensors.seeker.seeker>`
+        object, and `0.07 (7%)` for
         :class:`radar <c4dynamics.sensors.radar.radar>` object.
 
 
@@ -755,7 +782,8 @@ class seeker(c4d.rigidbody):
 
         Settings and initial conditions:
 
-        (see :class:`seeker <c4dynamics.sensors.seeker.seeker>` or :class:`radar <c4dynamics.sensors.radar.radar>`
+        (see :class:`seeker <c4dynamics.sensors.seeker.seeker>`
+        or :class:`radar <c4dynamics.sensors.radar.radar>`
         examples for more details):
 
 
@@ -795,7 +823,9 @@ class seeker(c4d.rigidbody):
           >>> skr = c4d.sensors.seeker(origin = pedestal, bias_std = 0, noise_std = 0)
           >>> skr.scale_factor = 1.2
           >>> for x in tgt.data():
-          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT
+          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0],
+          ...     store = True
+          ...   )  # doctest: +IGNORE_OUTPUT
           ...   skr.measure(c4d.create(x[1:]), t = x[0], store = True)    # doctest: +IGNORE_OUTPUT
 
 
@@ -804,8 +834,12 @@ class seeker(c4d.rigidbody):
         .. code::
 
           >>> ax = plt.subplot()
-          >>> ax.plot(*skr_ideal.data('az', scale = c4d.r2d), label = 'target')  # doctest: +IGNORE_OUTPUT
-          >>> ax.plot(*skr.data('az', scale = c4d.r2d), label = 'seeker')  # doctest: +IGNORE_OUTPUT
+          >>> ax.plot(*skr_ideal.data('az', scale = c4d.r2d),
+          ...     label = 'target'
+          ... )  # doctest: +IGNORE_OUTPUT
+          >>> ax.plot(*skr.data('az', scale = c4d.r2d),
+          ...     label = 'seeker'
+          ... )  # doctest: +IGNORE_OUTPUT
 
         .. figure:: /_examples/seeker/sf.png
 
@@ -840,7 +874,8 @@ class seeker(c4d.rigidbody):
         Parameters
         ----------
         target : state
-            A Cartesian state object to measure by the seeker, including at least one position coordinate (x, y, z).
+            A Cartesian state object to measure by the seeker, including at
+            least one position coordinate (x, y, z).
         store : bool, optional
             A flag indicating whether to store the measured values. Defaults `False`.
         t : float, optional
@@ -865,7 +900,8 @@ class seeker(c4d.rigidbody):
         real-time tracking of a constant velcoity target.
 
 
-        The target is represented by a :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
+        The target is represented by a
+        :class:`datapoint <c4dynamics.states.lib.datapoint.datapoint>`
         and is simulated using the :mod:`eqm <c4dynamics.eqm>` module,
         which integrating the point-mass equations of motion.
 
@@ -925,8 +961,10 @@ class seeker(c4d.rigidbody):
         .. code::
 
           >>> ax = plt.subplot()   # doctest: +IGNORE_OUTPUT
-          >>> ax.plot(*skr_ideal.data('az', scale = c4d.r2d), '.m', markersize = 1, label = 'target')   # doctest: +IGNORE_OUTPUT
-          >>> ax.plot(*skr.data('az', scale = c4d.r2d), '.c', markersize = 1, label = 'seeker')   # doctest: +IGNORE_OUTPUT
+          >>> ax.plot(*skr_ideal.data('az', scale = c4d.r2d), '.m', markersize = 1,
+          ...           label = 'target')   # doctest: +IGNORE_OUTPUT
+          >>> ax.plot(*skr.data('az', scale = c4d.r2d), '.c', markersize = 1,
+          ...           label = 'seeker')   # doctest: +IGNORE_OUTPUT
 
         .. figure:: /_examples/seeker/measure.png
 
@@ -955,7 +993,8 @@ class seeker(c4d.rigidbody):
         # target-seeker position in inertial coordinates
         # self.range = self.dist(target) + self.rng_noise_std * np.random.randn()
         # rand1 = np.random.rand() # to preserve matlab normal
-        # self.range = self.dist(target) + self.rng_noise_std * np.sqrt(2) * erfinv(2 * rand1 - 1)  # c4d.mrandn() #
+        # self.range = self.dist(target) + self.rng_noise_std
+        #               * np.sqrt(2) * erfinv(2 * rand1 - 1)  # c4d.mrandn() #
 
         # target-seeker position in seeker-body coordinates
         x = target.Position - self.Position

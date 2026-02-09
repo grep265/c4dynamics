@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.eqm.integrate.int3" href="c4dynamics.eqm.integrate.int3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -568,9 +568,17 @@ integrated by using <cite>scipy.odeint</cite>.</p>
 </pre></div>
 </div>
 <p>Compare to <cite>int6</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;c4dynamics.int6&#39;</span><span class="p">)</span>  
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;scipy.odeint&#39;</span><span class="p">)</span>         
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c4d</span><span class="o">.</span><span class="n">plotdefaults</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="s1">&#39;Equations of Motion Integration ($</span><span class="se">\t</span><span class="s1">heta$)&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;degrees&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">rb</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="s1">&#39;m&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;c4dynamics.int6&#39;</span>
+<span class="gp">... </span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;scipy.odeint&#39;</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4d</span><span class="o">.</span><span class="n">plotdefaults</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="s1">&#39;Equations of Motion Integration ($</span><span class="se">\t</span><span class="s1">heta$)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="s1">&#39;Time&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span> 
 </pre></div>
 </div>
@@ -675,7 +683,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -423,7 +423,7 @@ document.write(`
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">pixelpoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -611,7 +611,7 @@ document.write(`
 <span class="sd">    .. figure:: /_examples/yolov3/intro.png</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
 
     <span class="n">class_names</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;person&quot;</span><span class="p">,</span>
@@ -911,11 +911,11 @@ document.write(`
 
 <span class="sd">        At each call, the detector performs the following steps:</span>
 
-<span class="sd">        1. Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red and Blue channels.</span>
-
+<span class="sd">        1. Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red</span>
+<span class="sd">           and Blue channels.</span>
 <span class="sd">        2. Sets input to the YOLOv3 model and performs a forward pass to obtain detections.</span>
-
-<span class="sd">        3. Extracts detected objects based on a confidence threshold, calculates bounding box coordinates, and filters results using Non-Maximum Suppression (NMS).</span>
+<span class="sd">        3. Extracts detected objects based on a confidence threshold, calculates bounding box</span>
+<span class="sd">           coordinates, and filters results using Non-Maximum Suppression (NMS).</span>
 
 
 <span class="sd">        Parameters</span>
@@ -926,7 +926,8 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : list[pixelpoint]</span>
-<span class="sd">            A list of :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` objects representing detected objects,</span>
+<span class="sd">            A list of :class:`pixelpoint &lt;c4dynamics.states.pixelpoint.pixelpoint&gt;` objects</span>
+<span class="sd">            representing detected objects,</span>
 <span class="sd">            each containing bounding box coordinates and class label.</span>
 
 
@@ -945,7 +946,8 @@ document.write(`
 
 
 
-<span class="sd">        Fetch &#39;planes.png&#39; and &#39;aerobatics.mp4&#39; using the c4dynamics&#39; datasets module (see :mod:`c4dynamics.datasets`):</span>
+<span class="sd">        Fetch &#39;planes.png&#39; and &#39;aerobatics.mp4&#39; using the c4dynamics&#39; datasets</span>
+<span class="sd">        module (see :mod:`c4dynamics.datasets`):</span>
 
 <span class="sd">        .. code::</span>
 
@@ -1047,7 +1049,7 @@ document.write(`
 <span class="sd">        .. figure:: /_examples/yolov3/outformat.png</span>
 
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="c1">#</span>
         <span class="c1"># Step 1: Preprocess the Frame</span>
         <span class="c1">#   - Create a blob (binary large object) from the input frame with the</span>
@@ -1130,7 +1132,8 @@ document.write(`
                 <span class="c1"># (x, y) = (boxes[i][0], boxes[i][1])</span>
                 <span class="c1"># (w, h) = (boxes[i][2], boxes[i][3])</span>
                 <span class="c1">#               x top left, y top left,   x bottom right,           y bottom right</span>
-                <span class="c1"># box_out.append([boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]])</span>
+                <span class="c1"># box_out.append([boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2],</span>
+                <span class="c1"># boxes[i][1] + boxes[i][3]])</span>
 
                 <span class="c1"># points_out.append(pixelpoint(raw[i], self.class_names[classIDs[i]], (w, h)))</span>
                 <span class="n">pp</span> <span class="o">=</span> <span class="n">pixelpoint</span><span class="p">(</span>
@@ -1161,7 +1164,7 @@ document.write(`
     <span class="n">current_module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>  <span class="c1"># noqa: F811</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="c1"># if hasattr(current_module, &quot;yolov3&quot;):</span>
         <span class="n">current_module</span><span class="o">.</span><span class="n">yolov3</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># clears doctest examples</span>
@@ -1217,7 +1220,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

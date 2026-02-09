@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -416,7 +416,7 @@ document.write(`
 <span class="c1"># from scipy.special import erfinv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.sensors.seeker</span><span class="w"> </span><span class="kn">import</span> <span class="n">seeker</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -471,11 +471,13 @@ document.write(`
 <span class="sd">    Keyword Arguments</span>
 <span class="sd">    =================</span>
 <span class="sd">    rng_noise_std : float</span>
-<span class="sd">        A standard deviation of the radar range. Default value for non-ideal radar: `rng_noise_std = 1m`.</span>
+<span class="sd">        A standard deviation of the radar range. Default value for</span>
+<span class="sd">        non-ideal radar: `rng_noise_std = 1m`.</span>
 <span class="sd">    bias_std : float</span>
 <span class="sd">        The standard deviation of the bias error, [radians]. Defaults :math:`0.3°`.</span>
 <span class="sd">    scale_factor_std : float</span>
-<span class="sd">        The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.07 (= 7\\%)`.</span>
+<span class="sd">        The standard deviation of the scale factor error, [dimensionless].</span>
+<span class="sd">        Defaults :math:`0.07 (= 7\\%)`.</span>
 <span class="sd">    noise_std : float</span>
 <span class="sd">        The standard deviation of the radar angular noise, [radians].</span>
 <span class="sd">        Default value for non-ideal radar: :math:`0.8°`.</span>
@@ -763,7 +765,9 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; dx =  tgt.data(&#39;x&#39;)[1] - rdr_ideal.x</span>
 <span class="sd">      &gt;&gt;&gt; dy =  tgt.data(&#39;y&#39;)[1] - rdr_ideal.y</span>
 <span class="sd">      &gt;&gt;&gt; dz =  tgt.data(&#39;z&#39;)[1] - rdr_ideal.z</span>
-<span class="sd">      &gt;&gt;&gt; Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x, X[2] - rdr_ideal.y, X[3] - rdr_ideal.z] for X in tgt.data()])</span>
+<span class="sd">      &gt;&gt;&gt; Xb = np.array([rdr_ideal.BR @ [X[1] - rdr_ideal.x,</span>
+<span class="sd">      ...     X[2] - rdr_ideal.y, X[3] - rdr_ideal.z]</span>
+<span class="sd">      ...     for X in tgt.data()])</span>
 
 <span class="sd">    where :attr:`rdr_ideal.BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;` is a</span>
 <span class="sd">    Body from Reference DCM (Direction Cosine Matrix)</span>
@@ -780,13 +784,24 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; # plot results</span>
 <span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; # range</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), c4d.norm(Xb, axis = 1), label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), c4d.norm(Xb, axis = 1),</span>
+<span class="sd">      ...     label = &#39;target&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; # angles</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 1], Xb[:, 0]), label = &#39;target azimuth&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)), label = &#39;target elevation&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 1], Xb[:, 0]),</span>
+<span class="sd">      ...     label = &#39;target azimuth&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;radar azimuth&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), c4d.atan2d(Xb[:, 2],</span>
+<span class="sd">      ...     c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2)),</span>
+<span class="sd">      ...     label = &#39;target elevation&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;radar elevation&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">    .. figure:: /_examples/radar/ideal.png</span>
 
@@ -824,10 +839,18 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;target&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), label = &#39;radar&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; # angles</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;target azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;radar azimuth&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;target elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;radar elevation&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;target azimuth&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;radar azimuth&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;target elevation&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;radar elevation&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">    `target` labels mean the true position as measured by an ideal radar.</span>
 
@@ -865,7 +888,8 @@ document.write(`
 
 
 <span class="sd">    Measure the target position with a rotating radar.</span>
-<span class="sd">    The radar origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion:</span>
+<span class="sd">    The radar origin is yawing (performed by the increment of :math:`\\psi`)</span>
+<span class="sd">    in the direction of the target motion:</span>
 
 
 <span class="sd">    .. code::</span>
@@ -889,16 +913,25 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), label = &#39;ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;),label = &#39;non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; # angles</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, c4d.r2d), label = &#39;az: ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, c4d.r2d), label = &#39;az: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: ideal static&#39;) # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;el: non-ideal yawing&#39;) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;az: ideal static&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;az: non-ideal yawing&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;el: ideal static&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;el: non-ideal yawing&#39;</span>
+<span class="sd">      ... ) # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">    .. figure:: /_examples/radar/yawing.png</span>
 
 
 <span class="sd">    - The rotation of the radar with the target direction</span>
-<span class="sd">      keeps the azimuth angle limited, such that non-rotating radars with limited FOV (field of view)</span>
+<span class="sd">      keeps the azimuth angle limited, such that non-rotating radars with limited</span>
+<span class="sd">      FOV (field of view)</span>
 <span class="sd">      would have lost the target.</span>
 
 
@@ -989,7 +1022,14 @@ document.write(`
 
 <div class="viewcode-block" id="radar.measure">
 <a class="viewcode-back" href="../../../api/generated/radar/c4dynamics.sensors.radar.radar.measure.html#c4dynamics.sensors.radar.radar.measure">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="s2">&quot;c4d.state&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">target</span><span class="p">:</span> <span class="s2">&quot;c4d.state&quot;</span><span class="p">,</span>
+            <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">store</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+            <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="p">]:</span>  <span class="c1"># type: ignore</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Measures range, azimuth and elevation between the radar and a `target`.</span>
 
@@ -1008,7 +1048,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        target : state</span>
-<span class="sd">            A Cartesian state object to measure by the radar, including at least one position coordinate (x, y, z).</span>
+<span class="sd">            A Cartesian state object to measure by the radar, including at</span>
+<span class="sd">            least one position coordinate (x, y, z).</span>
 <span class="sd">        store : bool, optional</span>
 <span class="sd">            A flag indicating whether to store the measured values. Defaults `False`.</span>
 <span class="sd">        t : float, optional</span>
@@ -1033,7 +1074,8 @@ document.write(`
 <span class="sd">        real-time tracking of a constant velcoity target.</span>
 
 
-<span class="sd">        The target is represented by a :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">        The target is represented by a</span>
+<span class="sd">        :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
 <span class="sd">        and is simulated using the :mod:`eqm &lt;c4dynamics.eqm&gt;` module,</span>
 <span class="sd">        which integrating the point-mass equations of motion.</span>
 
@@ -1095,11 +1137,17 @@ document.write(`
 
 <span class="sd">          &gt;&gt;&gt; _, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; # range</span>
-<span class="sd">          &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; axs[0].plot(*rdr_ideal.data(&#39;range&#39;), &#39;.m&#39;,</span>
+<span class="sd">          ...     label = &#39;target&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; axs[0].plot(*rdr.data(&#39;range&#39;), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; # angles</span>
-<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;, label = &#39;radar&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;,</span>
+<span class="sd">          ...     label = &#39;target&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; axs[1].plot(*rdr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;,</span>
+<span class="sd">          ...     label = &#39;radar&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">        .. figure:: /_examples/radar/measure.png</span>
 
@@ -1178,7 +1226,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

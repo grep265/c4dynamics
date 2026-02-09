@@ -1,7 +1,6 @@
 import numpy as np
 import sys
-
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 from c4dynamics.states.state import state
 import warnings
@@ -151,12 +150,15 @@ class datapoint(state):
     #     the datapoint object is the most basic element in the translational dynamics domain.
     #     --
     #     TBD:
-    # - there should be one abstrcact class \ inerface of a 'bodyw type which defines eqm(), store() etc.
+    # - there should be one abstrcact class \ inerface of a 'bodyw type which defines eqm(),
+    # store() etc.
     #     and datapoint and rigidbody impement it. the body also includes the drawing functions
     # - all these nice things storage, plot etc. have to be move out of here.
     # - add an option in the constructor to select the variables required for storage.
-    # - make a dictionary containing the variable name and the variable index in the data storage to save and to extract for plotting.
-    # - add total position, velocity, acceleration variables (path angles optional) and update them for each update in the cartesian components.
+    # - make a dictionary containing the variable name and the variable index in the
+    # data storage to save and to extract for plotting.
+    # - add total position, velocity, acceleration variables (path angles optional) and update
+    # them for each update in the cartesian components.
 
     #   #
     #   # position
@@ -192,7 +194,8 @@ class datapoint(state):
     _mass = 1
 
     def __init__(self, x=0, y=0, z=0, vx=0, vy=0, vz=0):
-        # TODO: document the state type being float by default. (required after chaning vars to 0.0 and the mechanism of generating the state vector array. )
+        # TODO: document the state type being float by default. (required after chaning vars to
+        # 0.0 and the mechanism of generating the state vector array. )
 
         dpargs = {}
         dpargs.setdefault("x", x)

@@ -11,8 +11,8 @@ image_register = pooch.create(
         "triangle.png": "d2da7a29c269b05ab77ec77044ce36d3866d207cea0032af5ab7e8fc8e7f0580",
     },
     urls={
-        "planes.png": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/images/planes.png?raw=true",
-        "triangle.png": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/images/triangle.png?raw=true",
+        "planes.png": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/images/planes.png?raw=true",             # noqa: E501
+        "triangle.png": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/images/triangle.png?raw=true",         # noqa: E501
     },
 )
 
@@ -24,8 +24,8 @@ video_register = pooch.create(
         "drifting_car.mp4": "c490de3c27ade26915b20a8130c9dd58d6a45c7152ea92cd059d31c4a5c370ec",
     },
     urls={
-        "aerobatics.mp4": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/videos/aerobatics.mp4?raw=true",
-        "drifting_car.mp4": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/videos/drifting_car.mp4?raw=true",
+        "aerobatics.mp4": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/videos/aerobatics.mp4?raw=true",         # noqa: E501
+        "drifting_car.mp4": "https://github.com/C4dynamics/C4dynamics/blob/main/datasets/videos/drifting_car.mp4?raw=true",     # noqa: E501
     },
 )
 
@@ -38,7 +38,7 @@ nn_register = pooch.create(
     },
     urls={
         # 'yolov3.weights': 'https://pjreddie.com/media/files/yolov3.weights'
-        "yolov3.weights": "https://huggingface.co/spaces/Epitech/Scarecrow/resolve/main/yolov3.weights"
+        "yolov3.weights": "https://huggingface.co/spaces/Epitech/Scarecrow/resolve/main/yolov3.weights"         # noqa: E501
     },
     retry_if_failed=1,
 )
@@ -58,15 +58,15 @@ d3_f16_register = pooch.create(
         "Stabilator_B_F16.stl": "0c1192f5244f073086233466845350b735f6e9fce04a44a77fa93799754e6aec",
     },
     urls={
-        "Aileron_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Aileron_A_F16.stl?raw=true",
-        "Aileron_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Aileron_B_F16.stl?raw=true",
-        "Body_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Body_F16.stl?raw=true",
-        "Cockpit_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Cockpit_F16.stl?raw=true",
-        "LE_Slat_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/LE_Slat_A_F16.stl?raw=true",
-        "LE_Slat_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/LE_Slat_B_F16.stl?raw=true",
-        "Rudder_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Rudder_F16.stl?raw=true",
-        "Stabilator_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Stabilator_A_F16.stl?raw=true",
-        "Stabilator_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Stabilator_B_F16.stl?raw=true",
+        "Aileron_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Aileron_A_F16.stl?raw=true",           # noqa: E501
+        "Aileron_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Aileron_B_F16.stl?raw=true",           # noqa: E501
+        "Body_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Body_F16.stl?raw=true",                     # noqa: E501
+        "Cockpit_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Cockpit_F16.stl?raw=true",               # noqa: E501
+        "LE_Slat_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/LE_Slat_A_F16.stl?raw=true",           # noqa: E501
+        "LE_Slat_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/LE_Slat_B_F16.stl?raw=true",           # noqa: E501
+        "Rudder_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Rudder_F16.stl?raw=true",                 # noqa: E501
+        "Stabilator_A_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Stabilator_A_F16.stl?raw=true",     # noqa: E501
+        "Stabilator_B_F16.stl": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/f16/Stabilator_B_F16.stl?raw=true",     # noqa: E501
     },
 )
 
@@ -78,7 +78,7 @@ d3_register = pooch.create(
         "bunny_mesh.ply": "b1acc63bece78444aa2e15bdcc72371a201279b98c6f5d4b74c993d02f0566fe",
     },
     urls={
-        "bunny.pcd": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/bunny.pcd?raw=true",
-        "bunny_mesh.ply": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/bunny_mesh.ply?raw=true",
+        "bunny.pcd": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/bunny.pcd?raw=true",               # noqa: E501
+        "bunny_mesh.ply": r"https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/bunny_mesh.ply?raw=true",     # noqa: E501
     },
 )

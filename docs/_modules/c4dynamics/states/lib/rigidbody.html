@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -414,7 +414,7 @@ document.write(`
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics.states.lib.datapoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">datapoint</span>
@@ -427,7 +427,8 @@ document.write(`
 <span class="sd">    A rigid-body object</span>
 
 
-<span class="sd">    The :class:`rigidbody` extends the :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">    The :class:`rigidbody` extends the</span>
+<span class="sd">    :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
 <span class="sd">    class to form an elementary rigidbody object in space, i.e.</span>
 <span class="sd">    an object with length and attitude.</span>
 
@@ -460,11 +461,14 @@ document.write(`
 <span class="sd">    vz : float or int, optional</span>
 <span class="sd">        Component of velocity along the z-axis. Default value :math:`v_z = 0`.</span>
 <span class="sd">    phi : float or int, optional</span>
-<span class="sd">        Euler angle representing rotation around the x-axis (rad). Default value :math:`\\varphi = 0`.</span>
+<span class="sd">        Euler angle representing rotation around the x-axis (rad). Default value</span>
+<span class="sd">        :math:`\\varphi = 0`.</span>
 <span class="sd">    theta : float or int, optional</span>
-<span class="sd">        Euler angle representing rotation around the y-axis (rad). Default value :math:`\\theta = 0`.</span>
+<span class="sd">        Euler angle representing rotation around the y-axis (rad). Default value</span>
+<span class="sd">        :math:`\\theta = 0`.</span>
 <span class="sd">    psi : float or int, optional</span>
-<span class="sd">        Euler angle representing rotation around the z-axis (rad). Default value :math:`\\psi = 0`.</span>
+<span class="sd">        Euler angle representing rotation around the z-axis (rad). Default value</span>
+<span class="sd">        :math:`\\psi = 0`.</span>
 <span class="sd">    p : float or int, optional</span>
 <span class="sd">        Angular rate around the x-axis (roll). (rad/sec). Default value :math:`p = 0`.</span>
 <span class="sd">    q : float or int, optional</span>
@@ -580,8 +584,11 @@ document.write(`
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38], [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12], [205, 149, 12])) / 255</span>
-<span class="sd">      &gt;&gt;&gt; f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r], modelcolor = f16colors)</span>
+<span class="sd">      &gt;&gt;&gt; f16colors = np.vstack(([255, 215, 0], [255, 215, 0], [184, 134, 11], [0, 32, 38],</span>
+<span class="sd">      ...             [218, 165, 32], [218, 165, 32], [54, 69, 79], [205, 149, 12],</span>
+<span class="sd">      ...             [205, 149, 12])) / 255</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(modelpath, angle0 = [90 * c4d.d2r, 0, 180 * c4d.d2r],</span>
+<span class="sd">      ...             modelcolor = f16colors)</span>
 
 <span class="sd">    .. figure:: /_examples/rigidbody/rb_intro_ap.gif</span>
 
@@ -664,7 +671,8 @@ document.write(`
 <span class="sd">        where here :math:`m` is the mass :math:`m = 1`,</span>
 <span class="sd">        :math:`l` is the length from the center of mass :math:`l = 1`,</span>
 <span class="sd">        :math:`g` is the gravity acceleration,</span>
-<span class="sd">        and :math:`I` is the moment of inertia about :math:`y`, :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`</span>
+<span class="sd">        and :math:`I` is the moment of inertia about :math:`y`,</span>
+<span class="sd">        :math:`I_{yy1} = 0.5, I_{yy2} = 0.05`</span>
 
 
 <span class="sd">        Import required packages:</span>
@@ -802,53 +810,54 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">BR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Returns a Body-from-Reference Direction Cosine Matrix (DCM). </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a Body-from-Reference Direction Cosine Matrix (DCM).</span>
 
 
-<span class="sd">    Based on the current Euler angles, `BR` returns the DCM in a 3-2-1 order, </span>
-<span class="sd">    i.e. first rotation about the z axis (yaw, :math:`\\psi`), then a rotation about the </span>
-<span class="sd">    y axis (pitch, :math:`\\theta`), and finally a rotation about the x axis (roll, :math:`\\varphi`).</span>
+<span class="sd">    Based on the current Euler angles, `BR` returns the DCM in a 3-2-1 order,</span>
+<span class="sd">    i.e. first rotation about the z axis (yaw, :math:`\\psi`), then a rotation about the</span>
+<span class="sd">    y axis (pitch, :math:`\\theta`), and finally a rotation about the x axis</span>
+<span class="sd">    (roll, :math:`\\varphi`).</span>
 
-<span class="sd">    The `DCM321` matrix is calculated by the </span>
-<span class="sd">    :mod:`rotmat &lt;c4dynamics.rotmat&gt;` module and is given by: </span>
+<span class="sd">    The `DCM321` matrix is calculated by the</span>
+<span class="sd">    :mod:`rotmat &lt;c4dynamics.rotmat&gt;` module and is given by:</span>
 
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    .. math::</span>
+
 <span class="sd">      R = \\begin{bmatrix}</span>
-<span class="sd">            c\\theta \\cdot c\\psi </span>
-<span class="sd">          &amp; c\\theta \\cdot s\\psi </span>
+<span class="sd">            c\\theta \\cdot c\\psi</span>
+<span class="sd">          &amp; c\\theta \\cdot s\\psi</span>
 <span class="sd">          &amp; -s\\theta \\\\</span>
-<span class="sd">                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">              &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi </span>
-<span class="sd">              &amp; s\\varphi \\cdot c\\theta \\\\ </span>
-<span class="sd">                    c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi </span>
-<span class="sd">                  &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi </span>
+<span class="sd">                s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi</span>
+<span class="sd">              &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi</span>
+<span class="sd">              &amp; s\\varphi \\cdot c\\theta \\\\</span>
+<span class="sd">                    c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi</span>
+<span class="sd">                  &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi</span>
 <span class="sd">                  &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">          \\end{bmatrix}  </span>
+<span class="sd">          \\end{bmatrix}</span>
 
-<span class="sd">    where </span>
+<span class="sd">    where</span>
 
 <span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
 <span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
 <span class="sd">    - :math:`c\\theta \\equiv cos(\\theta)`</span>
 <span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
 <span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
-<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`    </span>
+<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`</span>
 
 
-<span class="sd"> </span>
-<span class="sd">    For the background material regarding the rotational matrix operations, </span>
-<span class="sd">    see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`. </span>
+
+<span class="sd">    For the background material regarding the rotational matrix operations,</span>
+<span class="sd">    see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 
 <span class="sd">    out : numpy.ndarray</span>
-<span class="sd">        A 3x3 DCM matrix uses to rotate a vector </span>
-<span class="sd">        to the body frame </span>
-<span class="sd">        from a reference frame of coordinates. </span>
+<span class="sd">        A 3x3 DCM matrix uses to rotate a vector</span>
+<span class="sd">        to the body frame</span>
+<span class="sd">        from a reference frame of coordinates.</span>
 
 
 <span class="sd">    Example</span>
@@ -858,8 +867,8 @@ document.write(`
 
 <span class="sd">      &gt;&gt;&gt; v_inertial = [1, 0, 0]</span>
 <span class="sd">      &gt;&gt;&gt; rb = c4d.rigidbody(psi = 45 * c4d.d2r)</span>
-<span class="sd">      &gt;&gt;&gt; v_body = rb.BR @ v_inertial </span>
-<span class="sd">      &gt;&gt;&gt; v_body  # doctest: +NUMPY_FORMAT  </span>
+<span class="sd">      &gt;&gt;&gt; v_body = rb.BR @ v_inertial</span>
+<span class="sd">      &gt;&gt;&gt; v_body  # doctest: +NUMPY_FORMAT</span>
 <span class="sd">      [0.707  -0.707  0.0]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -868,47 +877,47 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">RB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Returns a Reference-from-Body Direction Cosine Matrix (DCM). </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a Reference-from-Body Direction Cosine Matrix (DCM).</span>
 
-<span class="sd">    </span>
-<span class="sd">    Based on the current Euler angles, `RB` returns the </span>
-<span class="sd">    transpose matrix of :attr:`BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;`, </span>
-<span class="sd">    where :attr:`BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;` </span>
-<span class="sd">    is the Body from Reference </span>
-<span class="sd">    DCM in 3-2-1 order. </span>
 
-<span class="sd">    The transpose matrix of the DCM generated by </span>
-<span class="sd">    three Euler angles :math:`\\varphi` (rotation about `x`), </span>
-<span class="sd">    :math:`\\theta` (about `y`), and :math:`\\psi` (about `z`) in 3-2-1 order, </span>
-<span class="sd">    is given by: </span>
+<span class="sd">    Based on the current Euler angles, `RB` returns the</span>
+<span class="sd">    transpose matrix of :attr:`BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;`,</span>
+<span class="sd">    where :attr:`BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;`</span>
+<span class="sd">    is the Body from Reference</span>
+<span class="sd">    DCM in 3-2-1 order.</span>
 
-<span class="sd">    .. math:: </span>
-<span class="sd">        </span>
+<span class="sd">    The transpose matrix of the DCM generated by</span>
+<span class="sd">    three Euler angles :math:`\\varphi` (rotation about `x`),</span>
+<span class="sd">    :math:`\\theta` (about `y`), and :math:`\\psi` (about `z`) in 3-2-1 order,</span>
+<span class="sd">    is given by:</span>
+
+<span class="sd">    .. math::</span>
+
 <span class="sd">        R = \\begin{bmatrix}</span>
-<span class="sd">              c\\theta \\cdot c\\psi </span>
-<span class="sd">            &amp; s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi </span>
-<span class="sd">            &amp; c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi \\\\ </span>
-<span class="sd">                  c\\theta \\cdot s\\psi </span>
-<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi </span>
-<span class="sd">                &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi \\\\ </span>
-<span class="sd">                      -s\\theta </span>
-<span class="sd">                    &amp; s\\varphi \\cdot c\\theta </span>
+<span class="sd">              c\\theta \\cdot c\\psi</span>
+<span class="sd">            &amp; s\\varphi \\cdot s\\theta \\cdot c\\psi - c\\varphi \\cdot s\\psi</span>
+<span class="sd">            &amp; c\\varphi \\cdot s\\theta \\cdot c\\psi + s\\varphi \\cdot s\\psi \\\\</span>
+<span class="sd">                  c\\theta \\cdot s\\psi</span>
+<span class="sd">                &amp; s\\varphi \\cdot s\\theta \\cdot s\\psi + c\\varphi \\cdot c\\psi</span>
+<span class="sd">                &amp; c\\varphi \\cdot s\\theta \\cdot s\\psi - s\\varphi \\cdot c\\psi \\\\</span>
+<span class="sd">                      -s\\theta</span>
+<span class="sd">                    &amp; s\\varphi \\cdot c\\theta</span>
 <span class="sd">                    &amp; c\\varphi \\cdot c\\theta</span>
-<span class="sd">            \\end{bmatrix}  </span>
+<span class="sd">            \\end{bmatrix}</span>
 
-<span class="sd">    where </span>
+<span class="sd">    where</span>
 
 <span class="sd">    - :math:`c\\varphi \\equiv cos(\\varphi)`</span>
 <span class="sd">    - :math:`s\\varphi \\equiv sin(\\varphi)`</span>
 <span class="sd">    - :math:`c\\theta \\equiv cos(\\theta)`</span>
 <span class="sd">    - :math:`s\\theta \\equiv sin(\\theta)`</span>
 <span class="sd">    - :math:`c\\psi \\equiv cos(\\psi)`</span>
-<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`    </span>
+<span class="sd">    - :math:`s\\psi \\equiv sin(\\psi)`</span>
 
-<span class="sd"> </span>
-<span class="sd">    For the background material regarding the rotational matrix operations, </span>
-<span class="sd">    see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`. </span>
+
+<span class="sd">    For the background material regarding the rotational matrix operations,</span>
+<span class="sd">    see :mod:`rotmat &lt;c4dynamics.rotmat&gt;`.</span>
 
 
 
@@ -916,7 +925,7 @@ document.write(`
 <span class="sd">    -------</span>
 
 <span class="sd">    out : numpy.ndarray</span>
-<span class="sd">        A 3x3 DCM matrix uses to rotate a vector from a body frame </span>
+<span class="sd">        A 3x3 DCM matrix uses to rotate a vector from a body frame</span>
 <span class="sd">        to a reference frame of coordinates.</span>
 
 
@@ -928,7 +937,7 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; v_body = [np.sqrt(3), 0, 1]</span>
 <span class="sd">      &gt;&gt;&gt; rb = c4d.rigidbody(theta = 30 * c4d.d2r)</span>
 <span class="sd">      &gt;&gt;&gt; v_inertial = rb.RB @ v_body</span>
-<span class="sd">      &gt;&gt;&gt; v_inertial   # doctest: +NUMPY_FORMAT </span>
+<span class="sd">      &gt;&gt;&gt; v_inertial   # doctest: +NUMPY_FORMAT</span>
 <span class="sd">      [2.0  0.0  0.0]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1107,7 +1116,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

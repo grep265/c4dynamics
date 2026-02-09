@@ -10,7 +10,7 @@ except ImportError:
 
 import numpy as np
 
-sys.path.append(".")
+# sys.path.append(".")
 from c4dynamics import c4d
 from c4dynamics import pixelpoint
 from typing import Optional
@@ -196,7 +196,7 @@ class yolov3:
     .. figure:: /_examples/yolov3/intro.png
 
 
-    """
+    """  # noqa: E501
 
     class_names = (
         "person",
@@ -494,11 +494,11 @@ class yolov3:
 
         At each call, the detector performs the following steps:
 
-        1. Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red and Blue channels.
-
+        1. Preprocesses the frame by creating a blob, normalizing pixel values, and swapping Red
+           and Blue channels.
         2. Sets input to the YOLOv3 model and performs a forward pass to obtain detections.
-
-        3. Extracts detected objects based on a confidence threshold, calculates bounding box coordinates, and filters results using Non-Maximum Suppression (NMS).
+        3. Extracts detected objects based on a confidence threshold, calculates bounding box
+           coordinates, and filters results using Non-Maximum Suppression (NMS).
 
 
         Parameters
@@ -509,7 +509,8 @@ class yolov3:
         Returns
         -------
         out : list[pixelpoint]
-            A list of :class:`pixelpoint <c4dynamics.states.pixelpoint.pixelpoint>` objects representing detected objects,
+            A list of :class:`pixelpoint <c4dynamics.states.pixelpoint.pixelpoint>` objects
+            representing detected objects,
             each containing bounding box coordinates and class label.
 
 
@@ -528,7 +529,8 @@ class yolov3:
 
 
 
-        Fetch 'planes.png' and 'aerobatics.mp4' using the c4dynamics' datasets module (see :mod:`c4dynamics.datasets`):
+        Fetch 'planes.png' and 'aerobatics.mp4' using the c4dynamics' datasets
+        module (see :mod:`c4dynamics.datasets`):
 
         .. code::
 
@@ -630,7 +632,7 @@ class yolov3:
         .. figure:: /_examples/yolov3/outformat.png
 
 
-        """
+        """  # noqa: E501
         #
         # Step 1: Preprocess the Frame
         #   - Create a blob (binary large object) from the input frame with the
@@ -713,7 +715,8 @@ class yolov3:
                 # (x, y) = (boxes[i][0], boxes[i][1])
                 # (w, h) = (boxes[i][2], boxes[i][3])
                 #               x top left, y top left,   x bottom right,           y bottom right
-                # box_out.append([boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2], boxes[i][1] + boxes[i][3]])
+                # box_out.append([boxes[i][0], boxes[i][1], boxes[i][0] + boxes[i][2],
+                # boxes[i][1] + boxes[i][3]])
 
                 # points_out.append(pixelpoint(raw[i], self.class_names[classIDs[i]], (w, h)))
                 pp = pixelpoint(
@@ -742,7 +745,7 @@ if __name__ == "__main__":
     current_module = sys.modules[__name__]
 
     try:
-        import cv2
+        import cv2  # noqa: F811
     except ImportError:
         # if hasattr(current_module, "yolov3"):
         current_module.yolov3.__doc__ = ""  # clears doctest examples

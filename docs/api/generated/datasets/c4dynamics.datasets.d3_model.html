@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.datasets.nn_model" href="c4dynamics.datasets.nn_model.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -549,7 +549,11 @@ to the folder including 10 files.</p>
 <span class="go">Fetched successfully</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">f16path</span><span class="p">)):</span>
-<span class="gp">... </span>  <span class="n">model</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span><span class="o">.</span><span class="n">compute_vertex_normals</span><span class="p">())</span>
+<span class="gp">... </span>  <span class="n">model</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">o3d</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span>
+<span class="gp">... </span>      <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f16path</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span><span class="o">.</span><span class="n">compute_vertex_normals</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">o3d</span><span class="o">.</span><span class="n">visualization</span><span class="o">.</span><span class="n">draw_geometries</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -639,7 +643,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

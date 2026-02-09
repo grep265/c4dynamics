@@ -1,23 +1,23 @@
 import numpy as np
 
 __doc__ = """
-Globals and conversion constants. 
+Globals and conversion constants.
 
 
-C4dynamics includes several constants as global quantities 
-and conversion units.  
+C4dynamics includes several constants as global quantities
+and conversion units.
 All c4dynamics constants reside directly in the c4dynamics namespace.
-For example, if c4dynamics is imported as c4d, then the value of pi is given by c4d.pi. 
+For example, if c4dynamics is imported as c4d, then the value of pi is given by c4d.pi.
 
 
 
 Global Constants
 ----------------
 
-.. data:: pi 
+.. data:: pi
 
   The ratio of a circle's circumference to its diameter.
-  C4dynamics' pi is a simple assignment of numpy.pi: 
+  C4dynamics' pi is a simple assignment of numpy.pi:
 
   ``pi = 3.1415926535897932384626433...``
 
@@ -28,7 +28,7 @@ Global Constants
 
 .. data:: g_ms2
 
-  Gravity of earth in meter per square second. 
+  Gravity of earth in meter per square second.
 
   ``g = 9.80665``
 
@@ -39,7 +39,7 @@ Global Constants
 
 .. data:: g_fts2
 
-  Gravity of earth in foot per square second. 
+  Gravity of earth in foot per square second.
 
   ``g = 32.1740``
 

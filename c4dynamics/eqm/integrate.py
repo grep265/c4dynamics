@@ -3,7 +3,7 @@ from numpy.typing import NDArray
 import numpy as np
 import sys
 
-sys.path.append(".")
+# sys.path.append(".")
 from c4dynamics.eqm.derivs import eqm3, eqm6
 from c4dynamics import datapoint, rigidbody
 
@@ -71,7 +71,8 @@ def int3(
     --------
 
     Runge-Kutta integration of the equations of motion on a mass in a free fall
-    (compare to the same example in :func:`eqm3 <c4dynamics.eqm.derivs.eqm3>` with Euler integration):
+    (compare to the same example in :func:`eqm3 <c4dynamics.eqm.derivs.eqm3>`
+    with Euler integration):
 
     Import required packages
 
@@ -267,9 +268,17 @@ def int6(
 
     .. code::
 
-      >>> plt.plot(*rb.data('theta', c4d.r2d), 'm', label = 'c4dynamics.int6')  # doctest: +IGNORE_OUTPUT
-      >>> plt.plot(t, sol[:, 0] * c4d.r2d, 'c', label = 'scipy.odeint')         # doctest: +IGNORE_OUTPUT
-      >>> c4d.plotdefaults(plt.gca(), 'Equations of Motion Integration ($\\theta$)', 'Time', 'degrees', fontsize = 12)
+      >>> plt.plot(*rb.data('theta', c4d.r2d),
+      ...       'm',
+      ...       label = 'c4dynamics.int6'
+      ... )  # doctest: +IGNORE_OUTPUT
+      >>> plt.plot(t, sol[:, 0] * c4d.r2d, 'c', label = 'scipy.odeint') # doctest: +IGNORE_OUTPUT
+      >>> c4d.plotdefaults(plt.gca(),
+      ...       'Equations of Motion Integration ($\\theta$)',
+      ...       'Time',
+      ...       'degrees',
+      ...       fontsize = 12
+      ... )
       >>> plt.legend() # doctest: +IGNORE_OUTPUT
 
 

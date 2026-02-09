@@ -21,7 +21,8 @@ print(VERSION)
 print("did u remember to upgrade the version number??")
 
 DESCRIPTION = "Python framework for state-space modeling."
-LONG_DESCRIPTION = "Tsipor (bird) Dynamics (c4dynamics) is The Python framework for state-space modeling and algorithm development."
+LONG_DESCRIPTION = "Tsipor (bird) Dynamics (c4dynamics) is The Python framework for state-space" \
+                        " modeling and algorithm development."
 
 
 setup(
@@ -62,7 +63,8 @@ setup(
             "sphinx_design>=0.6.1",
         ],
     },
-    python_requires=">=3.8,<3.13",  # update also in run-tests.yml, readme.md, pyproject.yaml, setup_guide.ipynb
+    python_requires=">=3.8,<3.13",  # update also in run-tests.yml, readme.md,
+    # pyproject.yaml, setup_guide.ipynb
 )
 
 

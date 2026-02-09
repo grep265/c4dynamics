@@ -54,7 +54,7 @@
     <link rel="prev" title="c4dynamics.states.state.state.store" href="c4dynamics.states.state.state.store.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -537,7 +537,8 @@ as input and output.</p>
 <span class="gp">... </span>  <span class="n">s</span><span class="o">.</span><span class="n">store</span><span class="p">()</span> <span class="c1"># stores the state</span>
 <span class="gp">... </span>  <span class="n">s</span><span class="o">.</span><span class="n">storeparams</span><span class="p">(</span><span class="s1">&#39;class_id&#39;</span><span class="p">)</span> <span class="c1"># store the class_id parameter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   x    y    w    h    class&#39;</span><span class="p">)</span>  
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">()[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;class_id&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">()[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+<span class="gp">... </span>      <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;class_id&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>  
 <span class="go">x   y   w   h   class</span>
 <span class="go">26  26  20  35  truck</span>
 <span class="go">27  27  49  45  car</span>
@@ -574,8 +575,9 @@ the dimension parameter <cite>dim</cite> with respect to the position coordinate
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;x y z  | dim&#39;</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------&#39;</span><span class="p">)</span>  
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">morphospectra</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[:,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">morphospectra</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;dim&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>  
-<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39; | &#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">dim</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">morphospectra</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[:,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+<span class="gp">... </span>  <span class="n">morphospectra</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;dim&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>  
+<span class="gp">... </span>      <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39; | &#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">dim</span><span class="p">]))</span>
 <span class="go">x y z  | dim</span>
 <span class="go">------------</span>
 <span class="go">0 1 0  |  2</span>
@@ -673,7 +675,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

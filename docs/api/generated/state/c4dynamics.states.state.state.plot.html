@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.states.state.state.timestate" href="c4dynamics.states.state.state.timestate.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -558,7 +558,7 @@ such as <cite>color</cite>, <cite>linestyle</cite>, <cite>marker</cite>, etc.</p
 <p><strong>Given axis:</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">c4d</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>   
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>    
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;θ&#39;</span><span class="p">,</span> <span class="s1">&#39;φ&#39;</span><span class="p">])</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -567,7 +567,8 @@ such as <cite>color</cite>, <cite>linestyle</cite>, <cite>marker</cite>, etc.</p
 <figure class="align-default">
 <img alt="../../../_images/plot_axis.png" src="../../../_images/plot_axis.png" />
 </figure>
-<p>Top view + side view - options of <a class="reference internal" href="../../states.lib.datapoint.html#c4dynamics.states.lib.datapoint.datapoint" title="c4dynamics.states.lib.datapoint.datapoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">datapoint</span></code></a>
+<p>Top view + side view - options of
+<a class="reference internal" href="../../states.lib.datapoint.html#c4dynamics.states.lib.datapoint.datapoint" title="c4dynamics.states.lib.datapoint.datapoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">datapoint</span></code></a>
 and <a class="reference internal" href="../../states.lib.rigidbody.html#c4dynamics.states.lib.rigidbody.rigidbody" title="c4dynamics.states.lib.rigidbody.rigidbody"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigidbody</span></code></a> objects:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">floating_balloon</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">datapoint</span><span class="p">(</span><span class="n">vx</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">c4d</span><span class="o">.</span><span class="n">k2ms</span><span class="p">)</span>
@@ -666,7 +667,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

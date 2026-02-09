@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -416,7 +416,7 @@ document.write(`
 <span class="c1"># from scipy.special import erfinv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -447,7 +447,8 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ==========</span>
 <span class="sd">    origin : :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, optional</span>
-<span class="sd">        A `rigidbody` object whose state vector :attr:`X &lt;c4dynamics.states.state.state.X&gt;` determines the seeker&#39;s initial position and attitude.</span>
+<span class="sd">        A `rigidbody` object whose state vector :attr:`X &lt;c4dynamics.states.state.state.X&gt;`</span>
+<span class="sd">        determines the seeker&#39;s initial position and attitude.</span>
 <span class="sd">        Defaults: a `rigidbody` object with zeros vector, `X = numpy.zeros(12)`.</span>
 <span class="sd">    isideal : bool, optional</span>
 <span class="sd">        A flag indicating whether the errors model is off.</span>
@@ -459,7 +460,8 @@ document.write(`
 <span class="sd">    bias_std : float</span>
 <span class="sd">        The standard deviation of the bias error, [radians]. Defaults :math:`0.1°`.</span>
 <span class="sd">    scale_factor_std : float</span>
-<span class="sd">        The standard deviation of the scale factor error, [dimensionless]. Defaults :math:`0.05 (= 5\\%)`.</span>
+<span class="sd">        The standard deviation of the scale factor error, [dimensionless].</span>
+<span class="sd">        Defaults :math:`0.05 (= 5\\%)`.</span>
 <span class="sd">    noise_std : float</span>
 <span class="sd">        The standard deviation of the seeker angular noise, [radians].</span>
 <span class="sd">        Default value for non-ideal seeker: :math:`0.4°`.</span>
@@ -581,7 +583,8 @@ document.write(`
 
 <span class="sd">    **rigidbody**</span>
 
-<span class="sd">    The seeker class is a subclass of :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, i.e.</span>
+<span class="sd">    The seeker class is a subclass of</span>
+<span class="sd">    :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;`, i.e.</span>
 <span class="sd">    it suggests attributes of position and attitude and the manipulation of them.</span>
 
 <span class="sd">    As a fundamental propety, the</span>
@@ -688,7 +691,8 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; dx = tgt.data(&#39;x&#39;)[1] - skr_ideal.x</span>
 <span class="sd">      &gt;&gt;&gt; dy = tgt.data(&#39;y&#39;)[1] - skr_ideal.y</span>
 <span class="sd">      &gt;&gt;&gt; dz = tgt.data(&#39;z&#39;)[1] - skr_ideal.z</span>
-<span class="sd">      &gt;&gt;&gt; Xb = np.array([skr_ideal.BR @ [X[1] - skr_ideal.x, X[2] - skr_ideal.y, X[3] - skr_ideal.z] for X in tgt.data()])</span>
+<span class="sd">      &gt;&gt;&gt; Xb = np.array([skr_ideal.BR @ [X[1] - skr_ideal.x, X[2] - skr_ideal.y,</span>
+<span class="sd">      ...       X[3] - skr_ideal.z] for X in tgt.data()])</span>
 
 <span class="sd">    where :attr:`skr_ideal.BR &lt;c4dynamics.states.lib.rigidbody.rigidbody.BR&gt;` is a</span>
 <span class="sd">    Body from Reference DCM (Direction Cosine Matrix)</span>
@@ -704,8 +708,12 @@ document.write(`
 <span class="sd">      &gt;&gt;&gt; el_true = c4d.atan2d(Xb[:, 2], c4d.sqrt(Xb[:, 0]**2 + Xb[:, 1]**2))</span>
 <span class="sd">      &gt;&gt;&gt; # plot results</span>
 <span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), az_true, label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;seeker&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(tgt.data(&#39;t&#39;), az_true,</span>
+<span class="sd">      ...     label = &#39;target&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;seeker&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(tgt.data(&#39;t&#39;), el_true)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(*skr_ideal.data(&#39;el&#39;, scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT</span>
 
@@ -737,8 +745,12 @@ document.write(`
 <span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;ideal&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;non-ideal&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...       label = &#39;ideal&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;non-ideal&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(*skr_ideal.data(&#39;el&#39;, scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(*skr.data(&#39;el&#39;, scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT</span>
 
@@ -772,7 +784,8 @@ document.write(`
 
 
 <span class="sd">    Measure the target position with a rotating seeker.</span>
-<span class="sd">    The seeker origin is yawing (performed by the increment of :math:`\\psi`) in the direction of the target motion:</span>
+<span class="sd">    The seeker origin is yawing (performed by the increment of :math:`\\psi`)</span>
+<span class="sd">    in the direction of the target motion:</span>
 
 
 <span class="sd">    .. code::</span>
@@ -792,8 +805,12 @@ document.write(`
 <span class="sd">    .. code::</span>
 
 <span class="sd">      &gt;&gt;&gt; fig, axs = plt.subplots(2, 1)</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, c4d.r2d), label = &#39;ideal static seeker&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr.data(&#39;az&#39;, c4d.r2d), label = &#39;non-ideal yawing seeker&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr_ideal.data(&#39;az&#39;, c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;ideal static seeker&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; axs[0].plot(*skr.data(&#39;az&#39;, c4d.r2d),</span>
+<span class="sd">      ...     label = &#39;non-ideal yawing seeker&#39;</span>
+<span class="sd">      ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(*skr_ideal.data(&#39;el&#39;, scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; axs[1].plot(*skr.data(&#39;el&#39;, scale = c4d.r2d))  # doctest: +IGNORE_OUTPUT</span>
 
@@ -801,7 +818,8 @@ document.write(`
 
 
 <span class="sd">    - The rotation of the seeker with the target direction</span>
-<span class="sd">      keeps the azimuth angle limited, such that non-rotating seekers with limited FOV (field of view)</span>
+<span class="sd">      keeps the azimuth angle limited, such that non-rotating seekers</span>
+<span class="sd">      with limited FOV (field of view)</span>
 <span class="sd">      would have lost the target.</span>
 
 
@@ -863,20 +881,20 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_scale_factor</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; float; The scale factor error of the seeker angels. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; float; The scale factor error of the seeker angels.</span>
 <span class="sd">  It is a normally distributed random variable with</span>
 <span class="sd">  standard deviation scale_factor_std.</span>
-<span class="sd">  When isideal seeker is configured scale_factor = 1. </span>
+<span class="sd">  When isideal seeker is configured scale_factor = 1.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
 
     <span class="c1"># scale_factor_std = 0.05</span>
     <span class="c1"># &#39;&#39;&#39; float; A standard deviation of the scale factor error &#39;&#39;&#39;</span>
 
     <span class="n">_bias</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; float; The bias error of the seeker angels. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; float; The bias error of the seeker angels.</span>
 <span class="sd">  It is a normally distributed random variable with</span>
 <span class="sd">  standard deviation bias_std</span>
-<span class="sd">  When isideal seeker is configured bias = 0. </span>
+<span class="sd">  When isideal seeker is configured bias = 0.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
 
     <span class="c1"># bias_std = 0.1 * c4d.d2r</span>
@@ -887,7 +905,8 @@ document.write(`
     <span class="c1"># seeker: noise_std = 0.4° &#39;&#39;&#39;</span>
 
     <span class="c1"># dt = -1 # np.finfo(np.float64).eps</span>
-    <span class="c1"># &#39;&#39;&#39; float; The time-constant of the operational rate of the seeker &#39;&#39;&#39; # . default machine epsilon for float64</span>
+    <span class="c1"># &#39;&#39;&#39; float; The time-constant of the operational rate of the seeker &#39;&#39;&#39; # .</span>
+    <span class="c1"># default machine epsilon for float64</span>
 
     <span class="n">_lastsample</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
     <span class="c1">#</span>
@@ -937,7 +956,9 @@ document.write(`
         <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">c4d</span><span class="o">.</span><span class="n">rigidbody</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="s2">&quot;origin must be a c4dynamics.rigidbody object whose state vector origin.X represents the seeker initial position and attitude initial conditions&quot;</span>
+                    <span class="s2">&quot;origin must be a c4dynamics.rigidbody object whose state vector &quot;</span>
+                    <span class="s2">&quot;origin.X represents the seeker initial position and attitude &quot;</span>
+                    <span class="s2">&quot;initial conditions&quot;</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">X</span>
@@ -961,7 +982,8 @@ document.write(`
 <span class="sd">          bias = std \\cdot randn</span>
 
 <span class="sd">        Where `bias_std` is a parameter with default</span>
-<span class="sd">        value of `0.1°` for :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` object, and `0.3°` for</span>
+<span class="sd">        value of `0.1°` for :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` object,</span>
+<span class="sd">        and `0.3°` for</span>
 <span class="sd">        :class:`radar &lt;c4dynamics.sensors.radar.radar&gt;` object.</span>
 
 
@@ -1039,7 +1061,9 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; skr = c4d.sensors.seeker(origin = pedestal, scale_factor_std = 0, noise_std = 0)</span>
 <span class="sd">          &gt;&gt;&gt; skr.bias = .5 * c4d.d2r</span>
 <span class="sd">          &gt;&gt;&gt; for x in tgt.data():</span>
-<span class="sd">          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0],</span>
+<span class="sd">          ...       store = True</span>
+<span class="sd">          ...    )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          ...   skr.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
 
 
@@ -1048,7 +1072,9 @@ document.write(`
 <span class="sd">        .. code::</span>
 
 <span class="sd">          &gt;&gt;&gt; ax = plt.subplot()</span>
-<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;el&#39;, scale = c4d.r2d),</span>
+<span class="sd">          ...     label = &#39;target&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; ax.plot(*skr.data(&#39;el&#39;, scale = c4d.r2d), label = &#39;seeker&#39;)  # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">        .. figure:: /_examples/seeker/bias1.png</span>
@@ -1126,7 +1152,8 @@ document.write(`
 <span class="sd">          scalefactor = std \\cdot randn</span>
 
 <span class="sd">        Where `scale_factor_std` is a parameter with default</span>
-<span class="sd">        value of `0.05 (5%)` for :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` object, and `0.07 (7%)` for</span>
+<span class="sd">        value of `0.05 (5%)` for :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;`</span>
+<span class="sd">        object, and `0.07 (7%)` for</span>
 <span class="sd">        :class:`radar &lt;c4dynamics.sensors.radar.radar&gt;` object.</span>
 
 
@@ -1170,7 +1197,8 @@ document.write(`
 
 <span class="sd">        Settings and initial conditions:</span>
 
-<span class="sd">        (see :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;` or :class:`radar &lt;c4dynamics.sensors.radar.radar&gt;`</span>
+<span class="sd">        (see :class:`seeker &lt;c4dynamics.sensors.seeker.seeker&gt;`</span>
+<span class="sd">        or :class:`radar &lt;c4dynamics.sensors.radar.radar&gt;`</span>
 <span class="sd">        examples for more details):</span>
 
 
@@ -1210,7 +1238,9 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; skr = c4d.sensors.seeker(origin = pedestal, bias_std = 0, noise_std = 0)</span>
 <span class="sd">          &gt;&gt;&gt; skr.scale_factor = 1.2</span>
 <span class="sd">          &gt;&gt;&gt; for x in tgt.data():</span>
-<span class="sd">          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0], store = True)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...   skr_ideal.measure(c4d.create(x[1:]), t = x[0],</span>
+<span class="sd">          ...     store = True</span>
+<span class="sd">          ...   )  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          ...   skr.measure(c4d.create(x[1:]), t = x[0], store = True)    # doctest: +IGNORE_OUTPUT</span>
 
 
@@ -1219,8 +1249,12 @@ document.write(`
 <span class="sd">        .. code::</span>
 
 <span class="sd">          &gt;&gt;&gt; ax = plt.subplot()</span>
-<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;target&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; ax.plot(*skr.data(&#39;az&#39;, scale = c4d.r2d), label = &#39;seeker&#39;)  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">          ...     label = &#39;target&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; ax.plot(*skr.data(&#39;az&#39;, scale = c4d.r2d),</span>
+<span class="sd">          ...     label = &#39;seeker&#39;</span>
+<span class="sd">          ... )  # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">        .. figure:: /_examples/seeker/sf.png</span>
 
@@ -1257,7 +1291,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        target : state</span>
-<span class="sd">            A Cartesian state object to measure by the seeker, including at least one position coordinate (x, y, z).</span>
+<span class="sd">            A Cartesian state object to measure by the seeker, including at</span>
+<span class="sd">            least one position coordinate (x, y, z).</span>
 <span class="sd">        store : bool, optional</span>
 <span class="sd">            A flag indicating whether to store the measured values. Defaults `False`.</span>
 <span class="sd">        t : float, optional</span>
@@ -1282,7 +1317,8 @@ document.write(`
 <span class="sd">        real-time tracking of a constant velcoity target.</span>
 
 
-<span class="sd">        The target is represented by a :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">        The target is represented by a</span>
+<span class="sd">        :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
 <span class="sd">        and is simulated using the :mod:`eqm &lt;c4dynamics.eqm&gt;` module,</span>
 <span class="sd">        which integrating the point-mass equations of motion.</span>
 
@@ -1342,8 +1378,10 @@ document.write(`
 <span class="sd">        .. code::</span>
 
 <span class="sd">          &gt;&gt;&gt; ax = plt.subplot()   # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;, markersize = 1, label = &#39;target&#39;)   # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; ax.plot(*skr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;, markersize = 1, label = &#39;seeker&#39;)   # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; ax.plot(*skr_ideal.data(&#39;az&#39;, scale = c4d.r2d), &#39;.m&#39;, markersize = 1,</span>
+<span class="sd">          ...           label = &#39;target&#39;)   # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; ax.plot(*skr.data(&#39;az&#39;, scale = c4d.r2d), &#39;.c&#39;, markersize = 1,</span>
+<span class="sd">          ...           label = &#39;seeker&#39;)   # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">        .. figure:: /_examples/seeker/measure.png</span>
 
@@ -1372,7 +1410,8 @@ document.write(`
         <span class="c1"># target-seeker position in inertial coordinates</span>
         <span class="c1"># self.range = self.dist(target) + self.rng_noise_std * np.random.randn()</span>
         <span class="c1"># rand1 = np.random.rand() # to preserve matlab normal</span>
-        <span class="c1"># self.range = self.dist(target) + self.rng_noise_std * np.sqrt(2) * erfinv(2 * rand1 - 1)  # c4d.mrandn() #</span>
+        <span class="c1"># self.range = self.dist(target) + self.rng_noise_std</span>
+        <span class="c1">#               * np.sqrt(2) * erfinv(2 * rand1 - 1)  # c4d.mrandn() #</span>
 
         <span class="c1"># target-seeker position in seeker-body coordinates</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">Position</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Position</span>
@@ -1459,7 +1498,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

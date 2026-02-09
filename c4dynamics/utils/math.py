@@ -1,20 +1,19 @@
 import numpy as np
 from scipy.special import erfinv
 import sys
-
-sys.path.append(".")
+# sys.path.append(".")
 import c4dynamics as c4d
 
-__doc__ = """ 
+__doc__ = """
 Math functions aliasing.
 
 
-For convenience, C4dynamics aliases some of 
-NumPy's trigonometric functions 
+For convenience, C4dynamics aliases some of
+NumPy's trigonometric functions
 with slight variations in some of them.
 
 All c4dynamics math functions reside directly in the c4dynamics namespace.
-For example, if c4dynamics is imported as c4d, then the sin() function is given by c4d.sin(). 
+For example, if c4dynamics is imported as c4d, then the sin() function is given by c4d.sin().
 
 
 
@@ -23,12 +22,12 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
     import numpy as np
     import c4dynamics as c4d
 
-    
-.. data:: sin 
+
+.. data:: sin
 
     ``c4d.sin = np.sin``
 
-.. data:: sind 
+.. data:: sind
 
     ``c4d.sind = lambda n: np.sin(n * c4d.d2r)``
 
@@ -36,7 +35,7 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
 
     ``c4d.cos = np.cos``
 
-.. data:: cosd 
+.. data:: cosd
 
     ``c4d.cosd = lambda n: np.cos(n * c4d.d2r)``
 
@@ -44,7 +43,7 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
 
     ``c4d.tan = np.tan``
 
-.. data:: tand 
+.. data:: tand
 
     ``c4d.tand = lambda n: np.tan(n * c4d.d2r)``
 
@@ -53,7 +52,7 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
 
     ``c4d.asin = np.arcsin``
 
-.. data:: asind 
+.. data:: asind
 
     ``c4d.asind = lambda n: np.arcsin(n) * c4d.r2d``
 
@@ -61,7 +60,7 @@ For example, if c4dynamics is imported as c4d, then the sin() function is given 
 
     ``c4d.acos = np.arccos``
 
-.. data:: acosd 
+.. data:: acosd
 
     ``c4d.acosd = lambda n: np.arccos(n) * c4d.r2d``
 
@@ -150,7 +149,8 @@ norm = np.linalg.norm
 
 # mrandn preserves matlab normal distributed numbers generation
 # XXX it doesnt preserve anything. just a suggested implementation to make in both sides.
-# no more it also doesnt generate normal distribution. see also the test test_mrandn currently disabled.
+# no more it also doesnt generate normal distribution. see also the test test_mrandn
+# currently disabled.
 # mrandn = lambda n=1: np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)
 def mrandn(n=1):
     return np.sqrt(2) * erfinv(2 * np.random.rand(n) - 1)

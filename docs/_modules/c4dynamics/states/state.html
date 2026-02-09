@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -413,8 +413,7 @@ document.write(`
   <h1>Source code for c4dynamics.states.state</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
@@ -430,8 +429,7 @@ document.write(`
 <div class="viewcode-block" id="state">
 <a class="viewcode-back" href="../../../api/states.state.html#c4dynamics.states.state.state">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">state</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Custom state object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom state object.</span>
 
 <span class="sd">    A state object represents a state vector and other attributes</span>
 <span class="sd">    that form an entity of a physical (dynamic) system.</span>
@@ -469,7 +467,10 @@ document.write(`
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; s = c4d.state(x = 0, y = 0, z = 0, vx = 0, vy = 0, vz = 0, q0 = 0, q1 = 0, q2 = 0, q3 = 0, bax = 0, bay = 0, baz = 0)   # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; s = c4d.state(x = 0, y = 0, z = 0,</span>
+<span class="sd">      ...     vx = 0, vy = 0, vz = 0, q0 = 0,</span>
+<span class="sd">      ...     q1 = 0, q2 = 0, q3 = 0, bax = 0,</span>
+<span class="sd">      ...     bay = 0, baz = 0)   # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      [ x  y  z  vx  vy  vz  q0  q1  q2  q3  bax  bay  baz ]</span>
 
 <span class="sd">    ``Objects tracker``</span>
@@ -483,7 +484,9 @@ document.write(`
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; s = c4d.state(x = 0, y = 0, z = 0, vx = 0, vy = 0, vz = 0, phi = 0, theta = 0, psi = 0, p = 0, q = 0, r = 0)   # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">      &gt;&gt;&gt; s = c4d.state(x = 0, y = 0, z = 0, vx = 0,</span>
+<span class="sd">      ...       vy = 0, vz = 0, phi = 0, theta = 0,</span>
+<span class="sd">      ...       psi = 0, p = 0, q = 0, r = 0)   # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      [ x  y  z  vx  vy  vz  φ  θ  Ψ  p  q  r ]</span>
 
 <span class="sd">    ``Self-driving car``</span>
@@ -499,8 +502,6 @@ document.write(`
 
 <span class="sd">      &gt;&gt;&gt; s = c4d.state(theta1 = 0, theta2 = 0, omega1 = 0, omega2 = 0)   # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      [ θ1  θ2  ω1  ω2 ]</span>
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># TODO: define state space, i.e. define the state properties such</span>
@@ -595,7 +596,8 @@ document.write(`
 
         <span class="c1"># 2. they will not be used in this fucntions.</span>
 
-        <span class="c1"># 3. the user must provide his implementations for poisiton velcity etc.. like used in the dist() function that there i</span>
+        <span class="c1"># 3. the user must provide his implementations for poisiton velcity etc.. like used in</span>
+        <span class="c1"># the dist() function that there i</span>
         <span class="c1">#   encountered the problem.</span>
 
         <span class="c1"># self._dtype = np.float32</span>
@@ -604,9 +606,11 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_didx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 
-        <span class="c1"># if any of the input vars is floating point, then it casts the entire state type (no partial types array)</span>
+        <span class="c1"># if any of the input vars is floating point, then it casts the entire state type</span>
+        <span class="c1"># (no partial types array)</span>
         <span class="c1"># if all of them are integer, it casts the staet type.</span>
-        <span class="c1"># i think maybe the best way to achieve it is by generating a numpy array and check its dtype:</span>
+        <span class="c1"># i think maybe the best way to achieve it is by generating a numpy array</span>
+        <span class="c1"># and check its dtype:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_STATETYPE</span><span class="p">)</span>
         <span class="c1"># self._X = np.zeros(len(kwargs)) #, dtype = np.float64)</span>
         <span class="c1"># TODO: now the type is determined by the initial values.</span>
@@ -618,7 +622,8 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> is a reserved key. Keys </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="si">}</span><span class="s2"> cannot use as variable names.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> is a reserved key. Keys </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="s2">&quot;cannot use as variable names.&quot;</span>
                 <span class="p">)</span>
             <span class="c1"># setattr(self, k, v)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -646,7 +651,8 @@ document.write(`
         <span class="c1"># but then i need to iterate all the examples and remove the print from state presentations</span>
         <span class="n">param_names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prmdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-        <span class="c1"># FIXME Parameters is wrong. because currently parameters are determined only by those which stored at least once with the storeparams method.</span>
+        <span class="c1"># FIXME Parameters is wrong. because currently parameters are determined only</span>
+        <span class="c1"># by those which stored at least once with the storeparams method.</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&lt;state object&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;State Variables: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -672,7 +678,8 @@ document.write(`
 
             <span class="c1"># if np.array(val).dtype != self._X.dtype:</span>
             <span class="c1">#   warnings.warn(</span>
-            <span class="c1">#         f&quot;Type mismatch! Casting X to {np.array(val).dtype}. (currently: {self._X.dtype}).&quot;</span>
+            <span class="c1">#         f&quot;Type mismatch! Casting X to {np.array(val).dtype}.</span>
+            <span class="c1">#           (currently: {self._X.dtype}).&quot;</span>
             <span class="c1">#     , c4d.c4warn)</span>
             <span class="c1">#   self._X = self._X.astype(np.array(val).dtype)</span>
 
@@ -683,9 +690,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">X</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets and sets the state vector variables.</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets and sets the state vector variables.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -732,8 +737,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; dp.X = [1000, 100, 0, 0, 0, -100]</span>
 <span class="sd">          &gt;&gt;&gt; dp.X   # doctest: +NUMPY_FORMAT</span>
 <span class="sd">          [1000  100  0  0  0  -100]</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># xout = []</span>
@@ -780,8 +783,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">X0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the initial conditions of the state vector.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the initial conditions of the state vector.</span>
 
 <span class="sd">        The initial conditions are determined at the stage of constructing</span>
 <span class="sd">        the state object.</span>
@@ -816,8 +818,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s.x10 = s.x20 = 0</span>
 <span class="sd">          &gt;&gt;&gt; s.X0   # doctest: +NUMPY_FORMAT</span>
 <span class="sd">          [0  0]</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xout</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -832,8 +832,7 @@ document.write(`
 <div class="viewcode-block" id="state.addvars">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.addvars.html#c4dynamics.states.state.state.addvars">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">addvars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add state variables.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add state variables.</span>
 
 <span class="sd">        Adding variables to the state outside the :class:`state &lt;c4dynamics.states.state.state&gt;`</span>
 <span class="sd">        constructor is possible by using :meth:`addvars() &lt;c4dynamics.states.state.state.addvars&gt;`.</span>
@@ -881,7 +880,6 @@ document.write(`
 <span class="sd">          [1  1  1]</span>
 <span class="sd">          &gt;&gt;&gt; s.data(&#39;vx&#39;)[1]   # doctest: +NUMPY_FORMAT</span>
 <span class="sd">          [0  0  0]</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># NOTE: maybe useless because user can always create a new state object.</span>
 
@@ -892,7 +890,8 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> is a reserved key. Keys </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="si">}</span><span class="s2"> cannot use as variable names.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> is a reserved key. Keys </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reserved_keys</span><span class="si">}</span><span class="s2"> cannot use &quot;</span>
+                    <span class="s2">&quot;as variable names.&quot;</span>
                 <span class="p">)</span>
 
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -913,8 +912,7 @@ document.write(`
 <div class="viewcode-block" id="state.store">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.store.html#c4dynamics.states.state.state.store">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Stores the current state.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores the current state.</span>
 
 <span class="sd">        The current state is defined by the vector of variables</span>
 <span class="sd">        as given by :attr:`state.X &lt;c4dynamics.states.state.state.X&gt;`.</span>
@@ -993,8 +991,6 @@ document.write(`
 <span class="sd">          ...</span>
 <span class="sd">          0.00033469</span>
 <span class="sd">          -0.0439570</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># FIXME: make that when t is not provided a counter is used instead.</span>
 
@@ -1004,8 +1000,7 @@ document.write(`
 <div class="viewcode-block" id="state.storeparams">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.storeparams.html#c4dynamics.states.state.state.storeparams">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">storeparams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">t</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Stores parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores parameters.</span>
 
 <span class="sd">        Parameters are data attributes which are not part of the state vector.</span>
 <span class="sd">        :meth:`storeparams() &lt;c4dynamics.states.state.state.storeparams&gt;` is</span>
@@ -1083,7 +1078,8 @@ document.write(`
 <span class="sd">          ...   s.store() # stores the state</span>
 <span class="sd">          ...   s.storeparams(&#39;class_id&#39;) # store the class_id parameter</span>
 <span class="sd">          &gt;&gt;&gt; print(&#39;   x    y    w    h    class&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; print(np.hstack((s.data()[:, 1:].astype(int), np.atleast_2d(s.data(&#39;class_id&#39;)[1]).T)))  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; print(np.hstack((s.data()[:, 1:].astype(int),</span>
+<span class="sd">          ...       np.atleast_2d(s.data(&#39;class_id&#39;)[1]).T)))  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          x   y   w   h   class</span>
 <span class="sd">          26  26  20  35  truck</span>
 <span class="sd">          27  27  49  45  car</span>
@@ -1123,8 +1119,9 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; #</span>
 <span class="sd">          &gt;&gt;&gt; print(&#39;x y z  | dim&#39;)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; print(&#39;------------&#39;)  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; for x, dim in zip(morphospectra.data().astype(int)[:, 1 : 4].tolist(), morphospectra.data(&#39;dim&#39;)[1].tolist()):  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          ...   print(*(x + [&#39; | &#39;] + [dim]))</span>
+<span class="sd">          &gt;&gt;&gt; for x, dim in zip(morphospectra.data().astype(int)[:, 1 : 4].tolist(),</span>
+<span class="sd">          ...   morphospectra.data(&#39;dim&#39;)[1].tolist()):  # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          ...       print(*(x + [&#39; | &#39;] + [dim]))</span>
 <span class="sd">          x y z  | dim</span>
 <span class="sd">          ------------</span>
 <span class="sd">          0 1 0  |  2</span>
@@ -1137,14 +1134,14 @@ document.write(`
 <span class="sd">          1 1 0  |  2</span>
 <span class="sd">          1 0 1  |  3</span>
 <span class="sd">          1 0 1  |  3</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO show example of multiple vars</span>
         <span class="c1"># maybe the example of the kalman variables store</span>
         <span class="c1">#   from the detect track exmaple.</span>
         <span class="c1"># TODO add test if the params is not 0 or 1 dim throw error or warning. why?</span>
         <span class="c1"># TODO document about the two if&#39;s down here: nonscalar param and empty param.</span>
-        <span class="c1"># TODO add an option to provide the values to store becuase sometimes its not realy using the state on realtime but just for storage</span>
+        <span class="c1"># TODO add an option to provide the values to store becuase sometimes its not realy using</span>
+        <span class="c1"># the state on realtime but just for storage</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
 
         <span class="n">lparams</span> <span class="o">=</span> <span class="n">params</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">params</span><span class="p">]</span>
@@ -1165,10 +1162,10 @@ document.write(`
 <div class="viewcode-block" id="state.data">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.data.html#c4dynamics.states.state.state.data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns arrays of stored time and data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns arrays of stored time and data.</span>
 
-<span class="sd">        :meth:`data() &lt;c4dynamics.states.state.state.data&gt;` returns a tuple containing two numpy arrays:</span>
+<span class="sd">        :meth:`data() &lt;c4dynamics.states.state.state.data&gt;` returns a tuple containing two</span>
+<span class="sd">        numpy arrays:</span>
 <span class="sd">        the first consists of timestamps, and the second</span>
 <span class="sd">        contains the values of a `var` corresponding to those timestamps.</span>
 
@@ -1252,7 +1249,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s.storeparams(&#39;mass&#39;, t = 0.1)</span>
 <span class="sd">          &gt;&gt;&gt; s.data(&#39;mass&#39;)</span>
 <span class="sd">          (array([0.1]), array([25.]))</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># FIXME: check if var is a state variable</span>
@@ -1295,8 +1291,7 @@ document.write(`
 <div class="viewcode-block" id="state.timestate">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.timestate.html#c4dynamics.states.state.state.timestate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">timestate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the state as stored at time `t`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the state as stored at time `t`.</span>
 
 <span class="sd">        The method searches the closest time</span>
 <span class="sd">        to time `t` in the sampled histories and</span>
@@ -1336,9 +1331,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s.timestate(0.5)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          Warning: no history of state samples.</span>
 <span class="sd">          None</span>
-
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># TODO what about throwing a warning when dt is too long?</span>
@@ -1356,8 +1348,7 @@ document.write(`
 <div class="viewcode-block" id="state.plot">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.plot.html#c4dynamics.states.state.state.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">darkmode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draws plots of variable evolution over time.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draws plots of variable evolution over time.</span>
 
 <span class="sd">        This method plots the evolution of a state variable over time.</span>
 <span class="sd">        The resulting plot can be saved to a directory if specified.</span>
@@ -1469,7 +1460,7 @@ document.write(`
 
 <span class="sd">          &gt;&gt;&gt; plt.subplots(1, 1)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; plt.plot(np.linspace(-c4d.pi, c4d.pi, 500) * c4d.r2d, &#39;m&#39;)   # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          &gt;&gt;&gt; s.plot(&#39;phi&#39;, scale = c4d.r2d, ax = plt.gca(), color = &#39;c&#39;)    # doctest: +IGNORE_OUTPUT</span>
+<span class="sd">          &gt;&gt;&gt; s.plot(&#39;phi&#39;, scale = c4d.r2d, ax = plt.gca(), color = &#39;c&#39;)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; plt.gca().set_ylabel(&#39;deg&#39;)  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; plt.legend([&#39;θ&#39;, &#39;φ&#39;])  # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">          &gt;&gt;&gt; plt.show()</span>
@@ -1477,7 +1468,8 @@ document.write(`
 <span class="sd">        .. figure:: /_examples/state/plot_axis.png</span>
 
 
-<span class="sd">        Top view + side view - options of :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
+<span class="sd">        Top view + side view - options of</span>
+<span class="sd">        :class:`datapoint &lt;c4dynamics.states.lib.datapoint.datapoint&gt;`</span>
 <span class="sd">        and :class:`rigidbody &lt;c4dynamics.states.lib.rigidbody.rigidbody&gt;` objects:</span>
 
 <span class="sd">        .. code::</span>
@@ -1493,9 +1485,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">        .. figure:: /_examples/state/plot_dp_inteqm3.png</span>
-
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -1614,9 +1603,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the Euclidean norm of the state vector.</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the Euclidean norm of the state vector.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1632,20 +1619,18 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s = c4d.state(x1 = 1, x2 = -1)</span>
 <span class="sd">          &gt;&gt;&gt; s.norm  # doctest: +ELLIPSIS</span>
 <span class="sd">          1.414...</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a unit vector representation of the state vector.</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a unit vector representation of the state vector.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : numpy.array</span>
-<span class="sd">            A normalized vector of the same direction and shape as `self.X`, where the norm of the vector is `1`.</span>
+<span class="sd">            A normalized vector of the same direction and shape as `self.X`, where</span>
+<span class="sd">            the norm of the vector is `1`.</span>
 
 
 <span class="sd">        Examples</span>
@@ -1656,7 +1641,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s = c4d.state(x = 1, y = 2, z = 3)</span>
 <span class="sd">          &gt;&gt;&gt; s.normalize   # doctest: +NUMPY_FORMAT</span>
 <span class="sd">          [0.267  0.534  0.801]</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
@@ -1665,8 +1649,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a vector of position coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a vector of position coordinates.</span>
 
 <span class="sd">        If the state doesn&#39;t include any position coordinate (x, y, z),</span>
 <span class="sd">        an empty array is returned.</span>
@@ -1729,8 +1712,7 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a vector of velocity coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a vector of velocity coordinates.</span>
 
 <span class="sd">        If the state doesn&#39;t include any velocity coordinate (vx, vy, vz),</span>
 <span class="sd">        an empty array is returned.</span>
@@ -1767,10 +1749,9 @@ document.write(`
 
 <span class="sd">          &gt;&gt;&gt; s = c4d.state(z = 100)</span>
 <span class="sd">          &gt;&gt;&gt; s.Velocity  # doctest: +IGNORE_OUTPUT</span>
-<span class="sd">          Warning: Velocity is valid when at least one velocity coordinate variable (vx, vy, vz) exists.</span>
+<span class="sd">          Warning: Velocity is valid when at least one velocity coordinate</span>
+<span class="sd">          variable (vx, vy, vz) exists.</span>
 <span class="sd">          []</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -1788,8 +1769,7 @@ document.write(`
 <div class="viewcode-block" id="state.dist">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.dist.html#c4dynamics.states.state.state.dist">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Euclidean distance.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Euclidean distance.</span>
 
 <span class="sd">        Calculates the Euclidean distance between the self state object and</span>
 <span class="sd">        a second object `state2`. If `state2` is not provided, then the self</span>
@@ -1902,9 +1882,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; plt.show()</span>
 
 <span class="sd">        .. figure:: /_examples/states/state_dist.png</span>
-
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">():</span>
@@ -1915,7 +1892,8 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">state2</span><span class="p">,</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">state2</span><span class="o">.</span><span class="n">cartesian</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="s2">&quot;state2 must be a state object with at least one position coordinate (x, y, or z)&quot;</span>
+                    <span class="s2">&quot;state2 must be a state object with at least one position&quot;</span>
+                    <span class="s2">&quot; coordinate (x, y, or z)&quot;</span>
                 <span class="p">)</span>
 
         <span class="n">dist</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1928,8 +1906,7 @@ document.write(`
 <div class="viewcode-block" id="state.vel_mag">
 <a class="viewcode-back" href="../../../api/generated/state/c4dynamics.states.state.state.vel_mag.html#c4dynamics.states.state.state.vel_mag">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">vel_mag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Velocity Magnitude.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Velocity Magnitude.</span>
 
 <span class="sd">        Calculates the magnitude of the object velocity :</span>
 
@@ -1982,8 +1959,6 @@ document.write(`
 <span class="sd">          &gt;&gt;&gt; s = c4d.state(x = 100, y = 0)</span>
 <span class="sd">          &gt;&gt;&gt; # s.vel_mag()</span>
 <span class="sd">          TypeError: state must have at least one velocity coordinate (vx, vy, or vz)</span>
-
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cartesian</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -2055,7 +2030,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

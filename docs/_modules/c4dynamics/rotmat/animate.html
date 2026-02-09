@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -416,7 +416,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1"># sys.path.append(&quot;.&quot;)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -441,8 +441,10 @@ document.write(`
 
 <span class="sd">    **Important Note**</span>
 
-<span class="sd">    Using the `animate` function requires installation of `Open3D` which is not a prerequisite of `C4dynamics`.</span>
-<span class="sd">    For the different ways to install `Open3D` please refer to its `official website &lt;https://www.open3d.org/&gt;`_.</span>
+<span class="sd">    Using the `animate` function requires installation of</span>
+<span class="sd">    `Open3D` which is not a prerequisite of `C4dynamics`.</span>
+<span class="sd">    For the different ways to install `Open3D` please</span>
+<span class="sd">    refer to its `official website &lt;https://www.open3d.org/&gt;`_.</span>
 <span class="sd">    A direct installation with pip:</span>
 
 <span class="sd">    ::</span>
@@ -499,7 +501,8 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; pcd = o3d.io.read_point_cloud(&#39;model.ply&#39;) # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">        &gt;&gt;&gt; o3d.io.write_point_cloud(&#39;model.pcd&#39;, pcd) # doctest: +IGNORE_OUTPUT</span>
 
-<span class="sd">      For more info see `Open3D documentation &lt;https://www.open3d.org/docs/release/tutorial/geometry/file_io.html&gt;`_</span>
+<span class="sd">      For more info see `Open3D documentation</span>
+<span class="sd">      &lt;https://www.open3d.org/docs/release/tutorial/geometry/file_io.html&gt;`_</span>
 <span class="sd">    - Initial Euler angles :math:`[\\varphi, \\theta, \\psi]`, in radians, representing</span>
 <span class="sd">      the model attitude with respect to the screen frame, see note below.</span>
 <span class="sd">      The screen frame is defined as follows:</span>
@@ -565,7 +568,7 @@ document.write(`
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5])</span>
+<span class="sd">      &gt;&gt;&gt; bunny.animate(bunnymesh_path, cbackground = [0, 0, 0], modelcolor = [1, 0, .5]) # doctest: +IGNORE_OUTPUT</span>
 
 <span class="sd">    .. figure:: /_examples/animate/bunny_red.gif</span>
 
@@ -682,16 +685,20 @@ document.write(`
 <span class="sd">    .. figure:: /_examples/animate/f16_color.gif</span>
 
 
-<span class="sd">    6. It can also be painted with a single color for all its parts and a single color for the background:</span>
+<span class="sd">    6. It can also be painted with a single color for all its</span>
+<span class="sd">    parts and a single color for the background:</span>
 
 <span class="sd">    .. code::</span>
 
-<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0], cbackground = np.array([230, 230, 255]) / 255)</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, modelcolor = [0, 0, 0],</span>
+<span class="sd">      ... cbackground = np.array([230, 230, 255]) / 255</span>
+<span class="sd">      ... )</span>
 
 <span class="sd">    .. figure:: /_examples/animate/f16_monochrome.gif</span>
 
 
-<span class="sd">    7. Finally, let&#39;s use the `savedir` option using the c4dynamics&#39; gif util to generate a gif file out of the model animation</span>
+<span class="sd">    7. Finally, let&#39;s use the `savedir` option using the c4dynamics&#39; gif</span>
+<span class="sd">    util to generate a gif file out of the model animation</span>
 
 <span class="sd">    .. code::</span>
 
@@ -700,13 +707,14 @@ document.write(`
 <span class="sd">      ...                             , [218, 165, 32], [218, 165, 32], [54, 69, 79]</span>
 <span class="sd">      ...                                 , [205, 149, 12], [205, 149, 12])) / 255</span>
 <span class="sd">      &gt;&gt;&gt; outfol = os.path.join(&#39;tests&#39;, &#39;_out&#39;, &#39;f16a&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)</span>
+<span class="sd">      &gt;&gt;&gt; f16.animate(f16path, angle0 = x0, savedir = outfol, modelcolor = f16colors)   # doctest: +IGNORE_OUTPUT</span>
 <span class="sd">      &gt;&gt;&gt; # the storage folder &#39;outfol&#39; is the source of images for the gif function</span>
 <span class="sd">      &gt;&gt;&gt; # the &#39;duration&#39; parameter sets the required length of the animation</span>
 <span class="sd">      &gt;&gt;&gt; gifname = &#39;f16_animation.gif&#39;</span>
 <span class="sd">      &gt;&gt;&gt; c4d.gif(outfol, gifname, duration = 1)</span>
 
-<span class="sd">    Viewing the gif on a Jupyter notebook is possible by using the `Image` funtion of the `IPython` module:</span>
+<span class="sd">    Viewing the gif on a Jupyter notebook is possible by using</span>
+<span class="sd">    the `Image` funtion of the `IPython` module:</span>
 
 <span class="sd">    .. code::</span>
 
@@ -722,7 +730,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">open3d</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">o3d</span>  <span class="c1"># noqa: F401, F811</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
             <span class="s2">&quot;The &#39;open3d&#39; package is required for this function to work. &quot;</span>
@@ -920,7 +928,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>

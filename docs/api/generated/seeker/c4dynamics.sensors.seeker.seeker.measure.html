@@ -52,7 +52,7 @@
     <link rel="prev" title="c4dynamics.sensors.seeker.seeker.scale_factor" href="c4dynamics.sensors.seeker.seeker.scale_factor.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
   </head>
   
   
@@ -486,7 +486,8 @@ azimuth and elevation along with a timestamp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<a class="reference internal" href="../../states.state.html#c4dynamics.states.state.state" title="c4dynamics.states.state.state"><em>state</em></a>) – A Cartesian state object to measure by the seeker, including at least one position coordinate (x, y, z).</p></li>
+<li><p><strong>target</strong> (<a class="reference internal" href="../../states.state.html#c4dynamics.states.state.state" title="c4dynamics.states.state.state"><em>state</em></a>) – A Cartesian state object to measure by the seeker, including at
+least one position coordinate (x, y, z).</p></li>
 <li><p><strong>store</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag indicating whether to store the measured values. Defaults <cite>False</cite>.</p></li>
 <li><p><strong>t</strong> (<em>float</em><em>, </em><em>optional</em>) – Timestamp [seconds]. Defaults -1.</p></li>
 </ul>
@@ -501,7 +502,8 @@ azimuth and elevation along with a timestamp
 <p class="rubric">Example</p>
 <p><cite>measure</cite> in a program simulating
 real-time tracking of a constant velcoity target.</p>
-<p>The target is represented by a <a class="reference internal" href="../../states.lib.datapoint.html#c4dynamics.states.lib.datapoint.datapoint" title="c4dynamics.states.lib.datapoint.datapoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">datapoint</span></code></a>
+<p>The target is represented by a
+<a class="reference internal" href="../../states.lib.datapoint.html#c4dynamics.states.lib.datapoint.datapoint" title="c4dynamics.states.lib.datapoint.datapoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">datapoint</span></code></a>
 and is simulated using the <a class="reference internal" href="../../eqm.html#module-c4dynamics.eqm" title="c4dynamics.eqm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eqm</span></code></a> module,
 which integrating the point-mass equations of motion.</p>
 <p>An ideal seeker uses as reference to the true position of the target.</p>
@@ -543,8 +545,10 @@ the errors model (<cite>c4d.r2d</cite> converts radians to degrees):</p>
 <p>Then we excpect a constant bias of -0.02° and a ‘compression’ or ‘squeeze’ of <cite>5%</cite> with
 respect to the target (as represented by the ideal seeker):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>   
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">skr_ideal</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span> <span class="s1">&#39;.m&#39;</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>   
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">skr</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span> <span class="s1">&#39;.c&#39;</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;seeker&#39;</span><span class="p">)</span>   
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">skr_ideal</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span> <span class="s1">&#39;.m&#39;</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>   
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">skr</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">r2d</span><span class="p">),</span> <span class="s1">&#39;.c&#39;</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;seeker&#39;</span><span class="p">)</span>   
 </pre></div>
 </div>
 <figure class="align-default">
@@ -639,7 +643,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 03, 2026.
+  Last updated on Feb 09, 2026.
   <br/>
 </p>
   </div>
