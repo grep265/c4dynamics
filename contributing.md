@@ -1,57 +1,119 @@
-# Quickstart for Contributors 🚀
+# Contributing to C4DYNAMICS
 
-Welcome! Whether it’s your first contribution or you’re an experienced engineer, this guide will get you started with **C4DYNAMICS**.
+Thank you for contributing. This guide explains environment requirements, repository structure, and contribution expectations.
 
-⭐ If you haven’t already, star the repo to show support and follow updates.
+---
+
+## Supported Environment
+
+* **Python:** 3.8 ≤ Python < 3.13
+* **OS:** Linux, macOS, Windows
+* **GPU:** Not required
+
+### Optional Dependencies
+
+Some modules (e.g. vision-related functionality) require additional heavy dependencies such as OpenCV.
+
+If you do not use those modules, they are not required.
+
+> Note: Python 3.12 may fail due to upstream OpenCV wheel availability.
+
+---
+
+## Installation (Development Setup)
+
+Clone the repository and install development dependencies:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+For additional setup details, see the setup notebook:
+`c4dynamics_setup.ipynb`
+
+Documentation:
+[https://c4dynamics.github.io/c4dynamics/](https://c4dynamics.github.io/c4dynamics/)
+
+---
+
+## Repository Structure
+
+```text
+c4dynamics/
+├── c4dynamics/
+│   ├── states/      # Core objects (the state, datapoint, rigidbody, pixelpoint)
+│   ├── modules/     # Functional modules (sensors, control, estimation, vision)
+│   └── utils/       # Shared utilities
+├── docs/            # Concepts, demonstrations, API reference
+└── tests/           # Unit tests and doctests
+```
+
+Core logic must live inside the package.
+Notebooks are for demonstrations only.
+
+---
+
+## Contribution Types
 
 We accept contributions in two main areas:
 
-1. **Use Case Notebooks** – Practical examples demonstrating framework usage.
-2. **New Features / Feature Modifications** – Extensions or improvements to the framework itself.
+1. **Use Case Notebooks**
+   Practical demonstrations of modeling, control, estimation, or simulation workflows.
+
+2. **New Features / Improvements**
+   Extensions or modifications to the framework core.
 
 ---
 
-### 1️⃣ Use Case Notebooks
+## Contribution Workflow
 
-The fastest way to contribute and help engineers apply C4DYNAMICS in practice.
+1. Open an issue for significant changes.
+2. Fork the repository.
+3. Create a feature branch.
+4. Implement and test locally.
+5. Submit a Pull Request.
 
-**Steps:**
-
-1. Fork the repository on GitHub.
-2. Set up your environment.
-3. Design your model or algorithm simulation.
-4. Build using **state objects** and extend with modules from the scientific library.
-5. Write your program in a Jupyter notebook:
-
-   * Keep it simple yet functional
-   * Add comments and documentation
-   * Test thoroughly
-6. Visualize outputs using C4DYNAMICS tools.
-7. Submit: Add your notebook to the Use Cases section with explanations and docstrings.
+Reviews typically take a few days.
+If blocked, tag the maintainer in the PR.
 
 ---
 
-### 2️⃣ New Features or Modifying Existing Ones
+## Testing
 
-* Open an issue to discuss your idea first.
-* Work in a separate feature branch once approved.
-* Follow Python conventions (PEP8-adjacent) and defensive coding practices.
-* Document thoroughly with docstrings and inline comments.
-* Add tests and run them locally:
+All contributions must pass tests.
 
-  ```bash
-  python tests/run_doctests.py
-  python tests/run_unittests.py
-  ```
-  Check Test Results window and tests\_out\doctests_output.txt file for test results. Fix and re-run if needed. 
-* Submit via a clear, reviewed Pull Request.
+Run locally:
+
+```bash
+python tests/run_doctests.py
+python tests/run_unittests.py
+```
+
+Fix failures before submitting a PR.
 
 ---
 
-### ✅ Tips for First-Time Contributors
+## Pull Request Quality Bar
 
-* Start small to get familiar with the framework.
-* Don’t worry about perfection—improvements are collaborative.
-* Check existing notebooks for formatting and documentation standards.
+A PR is expected to:
 
-**Ready to start contributing?** 👉 **Fork the repo & Begin**
+* Pass all tests
+* Follow PEP8-style formatting
+* Include docstrings for public APIs
+* Include tests for new functionality
+* Avoid breaking backward compatibility unless discussed
+
+Clear, focused PRs are preferred over large, mixed changes.
+
+---
+
+## Guidance for Notebook Contributions
+
+* Keep examples focused and reproducible
+* Add explanatory comments
+* Avoid embedding core logic inside notebooks
+* Use framework primitives (state objects, modules) properly
+
+---
+
+If you’re unsure whether something belongs in core or in a notebook, open an issue first.
