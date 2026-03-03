@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=92471e56"></script>
+    <script src="../_static/documentation_options.js?v=3ecf1c2d"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="Proportional Navigation Guidance - 6 Degrees of Freedom Simulation" href="dof6sim.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 03, 2026"/>
   </head>
   
   
@@ -503,8 +503,9 @@ document.write(`
                 <article class="bd-article">
                   
   <ul class="simple">
+<li><p><a class="reference external" href="https://colab.research.google.com/github/c4dynamics/c4dynamics/blob/main/docs/source/programs/ballistic_coefficient.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> ← Click to open in Google Colab</p></li>
 <li><p>To download this notebook, click the download icon in the toolbar above and select the .ipynb format.</p></li>
-<li><p>For any questions or comments, please open an issue on the <a class="reference external" href="https://github.com/C4dynamics/C4dynamics/issues">c4dynamics issues page</a>.</p></li>
+<li><p>For any questions or comments, please open an issue on the <a class="reference external" href="https://github.com/c4dynamics/c4dynamics/issues">c4dynamics issues page</a>.</p></li>
 </ul>
 <section id="Ballistic-Coefficient-Estimation---Extended-Kalman-Filter">
 <h1>Ballistic Coefficient Estimation - Extended Kalman Filter<a class="headerlink" href="#Ballistic-Coefficient-Estimation---Extended-Kalman-Filter" title="Link to this heading">#</a></h1>
@@ -532,7 +533,19 @@ document.write(`
 <section id="Setup">
 <h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if Google Colab is running:</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">IN_COLAB</span> <span class="o">=</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
+<span class="k">if</span> <span class="n">IN_COLAB</span><span class="p">:</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>c4dynamics
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
@@ -542,7 +555,7 @@ document.write(`
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="p">,</span> <span class="n">tf</span> <span class="o">=</span> <span class="mf">.01</span><span class="p">,</span> <span class="mi">30</span>
@@ -599,7 +612,7 @@ v_z \\
 </ul>
 <p>In the form of <code class="docutils literal notranslate"><span class="pre">ODE</span></code> function, these equations are given in the ballistic function:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ballistics</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
@@ -667,7 +680,7 @@ v_z \\
 </ul>
 <p>Each subplot calls <code class="docutils literal notranslate"><span class="pre">plotdefaults()</span></code> from c4dynamics <a class="reference external" href="https://c4dynamics.github.io/c4dynamics/api/generated/utils/c4dynamics.utils.plottools.plotdefaults.html">utils</a> to set default properties for an axis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -763,7 +776,7 @@ v_z \\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_ballistic_coefficient_30_0.png" src="../_images/programs_ballistic_coefficient_30_0.png" />
+<img alt="../_images/programs_ballistic_coefficient_31_0.png" src="../_images/programs_ballistic_coefficient_31_0.png" />
 </div>
 </div>
 <p>The magenta lines represent the true target properties while the cyan dots stand for the radar samples (the radar measures only the position). The ideal nature of the system is manifested by the exact location of the samples on the true position.</p>
@@ -777,7 +790,7 @@ v_z \\
 <section id="id1">
 <h3>Setup &amp; Initial Conditions<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
@@ -815,12 +828,12 @@ v_z \\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_ballistic_coefficient_39_0.png" src="../_images/programs_ballistic_coefficient_39_0.png" />
+<img alt="../_images/programs_ballistic_coefficient_40_0.png" src="../_images/programs_ballistic_coefficient_40_0.png" />
 </div>
 </div>
 <p>To observe the effect of the radar’s realistic parameters, we need to focus on a small range of the altitude axis:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">gridspec_kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">.15</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">.95</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">.80</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">.15</span><span class="p">})</span>
@@ -842,7 +855,7 @@ v_z \\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_ballistic_coefficient_41_0.png" src="../_images/programs_ballistic_coefficient_41_0.png" />
+<img alt="../_images/programs_ballistic_coefficient_42_0.png" src="../_images/programs_ballistic_coefficient_42_0.png" />
 </div>
 </div>
 <div class="line-block">
@@ -871,7 +884,7 @@ v_z \\
 <h3>Initial Conditions<a class="headerlink" href="#Initial-Conditions" title="Link to this heading">#</a></h3>
 <p>Since the initial conditions are not precisely known, let us define the following errors:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zerr</span> <span class="o">=</span> <span class="mi">25</span>       <span class="c1"># initial error in position</span>
@@ -920,7 +933,7 @@ v_z \\
 </div>
 <p>The measurement noise is characterized by <span class="math notranslate nohighlight">\(\nu = \sqrt{500}\)</span>:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">dt</span>
@@ -938,7 +951,7 @@ v_z \\
 <div class="line">Finally, it requires the constant system matrices, which in this case include all matrices except the process matrix.</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tgt</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">vz</span> <span class="o">=</span> <span class="o">-</span><span class="mi">6000</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
@@ -973,7 +986,7 @@ v_z \\
 <p>Note that although the process is linearized, the nonlinear equations are still passed to the <code class="docutils literal notranslate"><span class="pre">predict()</span></code> function to integrate the derivatives using their exact expressions.</p>
 <p>All the steps described earlier appear in the following main loop with a comment line entitling every section:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tspan</span><span class="p">:</span>
@@ -1013,7 +1026,7 @@ v_z \\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_ballistic_coefficient_69_0.png" src="../_images/programs_ballistic_coefficient_69_0.png" />
+<img alt="../_images/programs_ballistic_coefficient_70_0.png" src="../_images/programs_ballistic_coefficient_70_0.png" />
 </div>
 </div>
 <p>The position and velocity estimates are straightforward. The velocity estimation starts with an error of <span class="math notranslate nohighlight">\(−150 ft/s\)</span>, as defined, and quickly converges to the true target velocity. The ballistic coefficient estimation begins with a relatively large error but converges to the true value after an initial overshoot.</p>
@@ -1039,7 +1052,7 @@ v_z \\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_ballistic_coefficient_71_0.png" src="../_images/programs_ballistic_coefficient_71_0.png" />
+<img alt="../_images/programs_ballistic_coefficient_72_0.png" src="../_images/programs_ballistic_coefficient_72_0.png" />
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Figure</span> <span class="pre">7</span></code> compares the actual error (the difference between the true target value — magenta — and the estimated target value — yellow) with the theoretical predictions of the covariance matrix (white).</p>
@@ -1182,7 +1195,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 09, 2026.
+  Last updated on Mar 03, 2026.
   <br/>
 </p>
   </div>

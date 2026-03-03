@@ -14,7 +14,7 @@ import numpy as np
 from c4dynamics import c4d
 from c4dynamics import pixelpoint
 from typing import Optional
-import importlib.resources as files # resources
+from importlib.resources import files
 
 MODEL_SIZE = (416, 416, 3)
 

@@ -152,7 +152,7 @@ def yolov3():
     # Z:\Dropbox\c4dynamics\c4dynamics\detectors
     # print(os.getcwd())
 
-    import importlib.resources as files # resources
+    from importlib.resources import files
 
     # with resources.path("c4dynamics.detectors", "yolov3.cfg") as cfgpath:
     cfgpath = files("c4dynamics.detectors") / "yolov3.cfg"

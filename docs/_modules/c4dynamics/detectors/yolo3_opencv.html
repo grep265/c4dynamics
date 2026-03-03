@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=92471e56"></script>
+    <script src="../../../_static/documentation_options.js?v=3ecf1c2d"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -49,7 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 03, 2026"/>
   </head>
   
   
@@ -427,7 +427,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">c4d</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="kn">import</span> <span class="n">pixelpoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">resources</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
 
 <span class="n">MODEL_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">416</span><span class="p">,</span> <span class="mi">416</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
@@ -711,8 +711,9 @@ document.write(`
                 <span class="sa">f</span><span class="s2">&quot;The file &#39;yolov3.weights&#39; does not &quot;</span> <span class="sa">f</span><span class="s2">&quot;exist in: &#39;</span><span class="si">{</span><span class="n">weights_path</span><span class="si">}</span><span class="s2">&#39;. </span><span class="si">{</span><span class="n">errormsg</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;c4dynamics.detectors&quot;</span><span class="p">,</span> <span class="s2">&quot;yolov3.cfg&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfgpath</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromDarknet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cfgpath</span><span class="p">),</span> <span class="n">weights_path</span><span class="p">)</span>
+        <span class="c1"># with resources.path(&quot;c4dynamics.detectors&quot;, &quot;yolov3.cfg&quot;) as cfgpath:</span>
+        <span class="n">cfgpath</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="s2">&quot;c4dynamics.detectors&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;yolov3.cfg&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromDarknet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cfgpath</span><span class="p">),</span> <span class="n">weights_path</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">setPreferableBackend</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">DNN_BACKEND_OPENCV</span><span class="p">)</span>
         <span class="n">ln</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">getLayerNames</span><span class="p">()</span>
@@ -1220,7 +1221,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 09, 2026.
+  Last updated on Mar 03, 2026.
   <br/>
 </p>
   </div>
