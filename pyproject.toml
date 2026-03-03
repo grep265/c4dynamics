@@ -39,6 +39,10 @@ classifiers = [
 include = ["c4dynamics*"]
 
 
+[tool.setuptools.package-data]
+"c4dynamics.detectors" = ["*.cfg"]
+
+
 [project.optional-dependencies]
 vision = [
     "imageio>=2.37.0",
@@ -54,6 +58,7 @@ dev = [
     "sphinx-book-theme>=1.1.4",
     "sphinx_design>=0.6.1",
 ]
+
 
 [tool.ruff]
 line-length = 100
