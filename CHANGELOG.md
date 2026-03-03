@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 - update package setup to support conda installation.
 
 
+## [2.3.5] - 2026-02-04
+### Changed
+ruff&black code style updated to fully comply with PEP-8.
+
+
 ## [2.3.4] - 2026-02-02
 ### Changed
 - separate dependencies to 3 sets: basic, vision, dev.
