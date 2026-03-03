@@ -152,11 +152,12 @@ def yolov3():
     # Z:\Dropbox\c4dynamics\c4dynamics\detectors
     # print(os.getcwd())
 
-    import importlib.resources as resources
+    from importlib.resources import files
 
-    with resources.path("c4dynamics.detectors", "yolov3.cfg") as cfgpath:
-        impath = c4d.datasets.nn_model("yolov3")
-        net = cv2.dnn.readNet(impath, str(cfgpath))
+    # with resources.path("c4dynamics.detectors", "yolov3.cfg") as cfgpath:
+    cfgpath = files("c4dynamics.detectors") / "yolov3.cfg"
+    impath = c4d.datasets.nn_model("yolov3")
+    net = cv2.dnn.readNet(impath, str(cfgpath))
 
     # print("Layers:", layer_names)
     # Optionally, inspect the weights of specific layers

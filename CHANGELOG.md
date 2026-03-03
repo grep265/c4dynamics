@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
-- mountain_car.py: predefined environment for the RL mountain car problem 
+- mountain_car.py: predefined environment for the RL mountain car problem
+
+
+## [2.3.6] - 2026-03-03
+### Changed
+- add all use-case notebooks support for google colab.
+
+
+## [2.3.5] - 2026-02-25
+### Changed
+- update package setup to support conda installation.
 
 
 ## [2.3.5] - 2026-02-04
@@ -13,14 +23,14 @@ ruff&black code style updated to fully comply with PEP-8.
 
 ## [2.3.4] - 2026-02-02
 ### Changed
-- separate dependencies to 3 sets: basic, vision, dev.   
-- fix a bug of a single numpy item assignment into the state vector.  
+- separate dependencies to 3 sets: basic, vision, dev.
+- fix a bug of a single numpy item assignment into the state vector.
 
 
 ## [2.3.3] - 2026-01-17
 ### Changed
 - fix bug in addvars(): adjust state vector legnth with new vars.
-- change P() -> dist() and V() -> vel_mag() to enable these names for user variables.  
+- change P() -> dist() and V() -> vel_mag() to enable these names for user variables.
 
 
 ## [2.3.2] - 2025-12-02
@@ -56,10 +66,10 @@ ruff&black code style updated to fully comply with PEP-8.
 	- Migration: Ensure assigned arrays match the state's dtype or use the
 		provided setter helper. Example migration patterns:
 		```py
-	
+
 		# Problematic (old behavior may have silently failed)
 		s = c4d.state(x = 0, y = 0, z = 0)
-		state.X = np.array([1, 2, 3], dtype = np.float64) 
+		state.X = np.array([1, 2, 3], dtype = np.float64)
 
 		# Recommended (explicit dtype match)
 		s = c4d.state(x = 0., y = 0., z = 0.) 	# initialize explicitly as float

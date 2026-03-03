@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=92471e56"></script>
+    <script src="../_static/documentation_options.js?v=3ecf1c2d"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -55,7 +55,7 @@
     <link rel="prev" title="Interactive Guide to State Space and State Objects Modeling" href="../tutorials/introduction_guide.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 09, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 03, 2026"/>
   </head>
   
   
@@ -504,8 +504,9 @@ document.write(`
                 <article class="bd-article">
                   
   <ul class="simple">
+<li><p><a class="reference external" href="https://colab.research.google.com/github/c4dynamics/c4dynamics/blob/main/docs/source/programs/dof6sim.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> ← Click to open in Google Colab</p></li>
 <li><p>To download this notebook, click the download icon in the toolbar above and select the .ipynb format.</p></li>
-<li><p>For any questions or comments, please open an issue on the <a class="reference external" href="https://github.com/C4dynamics/C4dynamics/issues">c4dynamics issues page</a>.</p></li>
+<li><p>For any questions or comments, please open an issue on the <a class="reference external" href="https://github.com/c4dynamics/c4dynamics/issues">c4dynamics issues page</a>.</p></li>
 </ul>
 <section id="Proportional-Navigation-Guidance---6-Degrees-of-Freedom-Simulation">
 <h1>Proportional Navigation Guidance - 6 Degrees of Freedom Simulation<a class="headerlink" href="#Proportional-Navigation-Guidance---6-Degrees-of-Freedom-Simulation" title="Link to this heading">#</a></h1>
@@ -593,24 +594,79 @@ document.write(`
 <section id="Import-packages">
 <h3>Import packages<a class="headerlink" href="#Import-packages" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if Google Colab is running:</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">IN_COLAB</span> <span class="o">=</span> <span class="s2">&quot;google.colab&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
+<span class="k">if</span> <span class="n">IN_COLAB</span><span class="p">:</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>c4dynamics
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 </pre></div>
 </div>
 </div>
 <div class="line-block">
 <div class="line">__</div>
 <div class="line">Load the controller, engine, and aerodynamics models, developed specifically for this example. These modules can be downloaded <a class="reference external" href="https://raw.githubusercontent.com/C4dynamics/C4dynamics/main/docs/source/programs/dof6_modules.py">here</a>.</div>
-<div class="line">Download the file and place it in the same directory as this notebook or in any folder included in your Python path:</div>
+<div class="line">Download the file and place it in the same directory as this notebook or in any folder included in your Python path. You can use the following snippet to download the file based on your operation system:</div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dof6_modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">control_system</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">aerodynamics</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if dof6_modules.py already exists</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;dof6_modules.py&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dof6_modules.py not found. Downloading...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;linux&#39;</span><span class="p">):</span>
+        <span class="c1"># Linux (Colab) uses wget</span>
+        <span class="o">!</span>wget<span class="w"> </span>https://raw.githubusercontent.com/C4dynamics/C4dynamics/main/docs/source/programs/dof6_modules.py
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span><span class="p">:</span>
+        <span class="c1"># macOS might use curl</span>
+        <span class="o">!</span>curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/C4dynamics/C4dynamics/main/docs/source/programs/dof6_modules.py
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;win32&#39;</span><span class="p">:</span>
+        <span class="c1"># Windows might use PowerShell&#39;s Invoke-WebRequest</span>
+        <span class="o">!</span>powershell<span class="w"> </span>-Command<span class="w"> </span><span class="s2">&quot;Invoke-WebRequest -Uri https://raw.githubusercontent.com/C4dynamics/C4dynamics/main/docs/source/programs/dof6_modules.py -OutFile dof6_modules.py&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported OS: </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">. Please download dof6_modules.py manually.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dof6_modules.py already exists. Skipping download.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dof6_modules.py already exists. Skipping download.
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>powershell<span class="w"> </span>-Command<span class="w"> </span><span class="s2">&quot;Invoke-WebRequest -Uri https://raw.githubusercontent.com/C4dynamics/C4dynamics/main/docs/source/programs/dof6_modules.py -OutFile dof6_modules_new.py&quot;</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Import the modules regardless of whether they were downloaded or already existed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dof6_modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">control_system</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">aerodynamics</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dof6_modules</span><span class="w"> </span><span class="kn">import</span> <span class="n">control_system</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">aerodynamics</span>
 </pre></div>
 </div>
 </div>
@@ -618,7 +674,7 @@ document.write(`
 <section id="Times-setup">
 <h3>Times setup<a class="headerlink" href="#Times-setup" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span>  <span class="o">=</span> <span class="mi">0</span>
@@ -662,7 +718,7 @@ document.write(`
 <p>As <span class="math notranslate nohighlight">\(i_{yy}\)</span> and <span class="math notranslate nohighlight">\(i_{zz}\)</span> are equal here it’s enough to save just one of them. However, the initial position and initial attitude of any object (datapoint, rigidbody) are always saved on instantiation.</p>
 <p>The dimensions here are SI (i.e. seconds, meters, kilograms).</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m0</span>      <span class="o">=</span> <span class="mi">85</span>        <span class="c1"># initial mass, kg</span>
@@ -683,7 +739,7 @@ document.write(`
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missile</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="n">m0</span>
@@ -711,7 +767,7 @@ document.write(`
 <h3>Initial conditions<a class="headerlink" href="#Initial-conditions" title="Link to this heading">#</a></h3>
 <p>The initial missile direction is calculated by employing a simple algorithm in which the missile is pointed <span class="math notranslate nohighlight">\(30°\)</span> below the line-of-sight to the target at the instant of launch. The missile angular rates at launch are assumed to be negligible.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rTM</span>           <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">Position</span> <span class="o">-</span> <span class="n">missile</span><span class="o">.</span><span class="n">Position</span>
@@ -865,7 +921,7 @@ document.write(`
 </ul>
 <p>Comments are introduced inline.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">tf</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">vc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1029,7 +1085,7 @@ document.write(`
 <li><p>Time at closest range The time of the closest approach is approximated by calculating the time it takes the target to travel along the relative flight path from the point of closest approach to the final target position and then subtracting this calculated time from the time of the last computation.</p></li>
 </ol>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vTM</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">Velocity</span> <span class="o">-</span> <span class="n">missile</span><span class="o">.</span><span class="n">Velocity</span> <span class="c1"># missile-target relative velocity</span>
@@ -1068,7 +1124,7 @@ miss: 0.00339, flight time: 7.8
 <section id="Configure-pyplot">
 <h3>Configure pyplot<a class="headerlink" href="#Configure-pyplot" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -1115,7 +1171,7 @@ miss: 0.00339, flight time: 7.8
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_dof6sim_44_0.png" src="../_images/programs_dof6sim_44_0.png" />
+<img alt="../_images/programs_dof6sim_47_0.png" src="../_images/programs_dof6sim_47_0.png" />
 </div>
 </div>
 <div class="line-block">
@@ -1144,7 +1200,7 @@ miss: 0.00339, flight time: 7.8
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_dof6sim_47_0.png" src="../_images/programs_dof6sim_47_0.png" />
+<img alt="../_images/programs_dof6sim_50_0.png" src="../_images/programs_dof6sim_50_0.png" />
 </div>
 </div>
 <div class="line-block">
@@ -1155,7 +1211,7 @@ miss: 0.00339, flight time: 7.8
 <section id="Line-of-sight-rates">
 <h3>Line-of-sight rates<a class="headerlink" href="#Line-of-sight-rates" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># omega los</span>
@@ -1173,7 +1229,7 @@ miss: 0.00339, flight time: 7.8
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_dof6sim_50_0.png" src="../_images/programs_dof6sim_50_0.png" />
+<img alt="../_images/programs_dof6sim_53_0.png" src="../_images/programs_dof6sim_53_0.png" />
 </div>
 </div>
 <div class="line-block">
@@ -1311,7 +1367,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 09, 2026.
+  Last updated on Mar 03, 2026.
   <br/>
 </p>
   </div>

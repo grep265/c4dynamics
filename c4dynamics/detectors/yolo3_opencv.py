@@ -14,7 +14,7 @@ import numpy as np
 from c4dynamics import c4d
 from c4dynamics import pixelpoint
 from typing import Optional
-import importlib.resources as resources
+from importlib.resources import files
 
 MODEL_SIZE = (416, 416, 3)
 
@@ -296,8 +296,9 @@ class yolov3:
                 f"The file 'yolov3.weights' does not " f"exist in: '{weights_path}'. {errormsg}"
             )
 
-        with resources.path("c4dynamics.detectors", "yolov3.cfg") as cfgpath:
-            self.net = cv2.dnn.readNetFromDarknet(str(cfgpath), weights_path)
+        # with resources.path("c4dynamics.detectors", "yolov3.cfg") as cfgpath:
+        cfgpath = files("c4dynamics.detectors") / "yolov3.cfg"
+        self.net = cv2.dnn.readNetFromDarknet(str(cfgpath), weights_path)
 
         self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
         ln = self.net.getLayerNames()
