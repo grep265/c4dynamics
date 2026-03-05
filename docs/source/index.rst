@@ -4,13 +4,13 @@
    contain the root `toctree` directive.
 
 
-.. title:: Home 
+.. title:: Home
 
 .. raw:: html
 
   <div class = "text-center">
-  <img  src = "_static/c4dlogo.svg" 
-    class = "mx-auto my-4 dark-light" 
+  <img  src = "_static/c4dlogo.svg"
+    class = "mx-auto my-4 dark-light"
     style = "width: 200%; max-width: 200px;">
   <h1 class="display-1">C4DYNAMICS</h1>
   <p class="fs-4"><strong>(Tsipor Dynamics)</strong></p>
@@ -40,21 +40,21 @@
 `Source Repository <https://github.com/C4dynamics/C4dynamics>`_
 
 
-**c4dynamics** is designed to 
-simplify the development of algorithms for dynamic systems, 
-using state space representations. 
-It offers engineers and researchers a systematic approach to model, 
-simulate, and control systems in fields like ``robotics``, 
+**c4dynamics** is designed to
+simplify the development of algorithms for dynamic systems,
+using state space representations.
+It offers engineers and researchers a systematic approach to model,
+simulate, and control systems in fields like ``robotics``,
 ``aerospace``, and ``navigation``.
 
-The framework introduces ``state objects``, which are foundational 
-data structures that encapsulate state vectors and provide 
-the tools for managing data, simulating system behavior, 
-and analyzing results. 
+The framework introduces ``state objects``, which are foundational
+data structures that encapsulate state vectors and provide
+the tools for managing data, simulating system behavior,
+and analyzing results.
 
-With integrated modules for sensors, 
-detectors, and filters, 
-c4dynamics accelerates algorithm development 
+With integrated modules for sensors,
+detectors, and filters,
+c4dynamics accelerates algorithm development
 while maintaining flexibility and scalability.
 
 
@@ -63,34 +63,34 @@ while maintaining flexibility and scalability.
 .. raw:: html
 
   <h2>Quickstart</h2>
-   
+
 
 .. code-block:: bash
 
-  pip install c4dynamics     
+  pip install c4dynamics
 
-Copy and run the following snippet in a Python script or a Jupyter notebook:  
+Copy and run the following snippet in a Python script or a Jupyter notebook:
 
-.. code:: 
+.. code::
 
-  >>> import c4dynamics as c4d   
+  >>> import c4dynamics as c4d
 
-.. code:: 
+.. code::
 
-  >>> s = c4d.state(y = 1, vy = 0.5)   # define object of two variables in the state space (y, vy) with initial conditions. 
-  >>> s.store(t = 0)                   # store the state  
-  >>> F = [[1, 1],                     # transition matrix 
-  ...      [0, 1]]              
-  >>> s.X += F @ s.X                   # propogate the state through transition matrix  
-  >>> s.store(t = 1)                   # store the new state 
+  >>> s = c4d.state(y = 1, vy = 0.5)   # define object of two variables in the state space (y, vy) with initial conditions.
+  >>> s.store(t = 0)                   # store the state
+  >>> F = [[1, 1],                     # transition matrix
+  ...      [0, 1]]
+  >>> s.X += F @ s.X                   # propogate the state through transition matrix
+  >>> s.store(t = 1)                   # store the new state
 
-.. code:: 
+.. code::
 
-  >>> print(s)  
+  >>> print(s)
   [ y  vy ]
-  >>> s.X 
+  >>> s.X
   [2.5  1]
-  >>> s.data('y')                      # extract stored data for the state varable 'y'. other option: s.plot('y')    
+  >>> s.data('y')                      # extract stored data for the state varable 'y'. other option: s.plot('y')
   ([0,  1], [1,  2.5])
 
 
@@ -100,26 +100,26 @@ Copy and run the following snippet in a Python script or a Jupyter notebook:
 
   <h2>State Objects</h2>
 
-At the core of c4dynamics are **state objects** — 
-data structures that encapsulate the variables 
-defining a system's state. 
-State objects offer a clear interface for 
-getting and setting the state vector and 
+At the core of c4dynamics are **state objects** —
+data structures that encapsulate the variables
+defining a system's state.
+State objects offer a clear interface for
+getting and setting the state vector and
 performing state space transformations.
 
-For instance, with a state of two variables :math:`y` and :math:`v_y`, 
+For instance, with a state of two variables :math:`y` and :math:`v_y`,
 a state object `s` can be defined as follows:
 
-.. code:: 
+.. code::
 
   >>> s = c4d.state(y = 1, vy = 0.5)
   >>> print(s)
   [ y  vy ]
 
-The state vector `X` represents the current snapshot of 
+The state vector `X` represents the current snapshot of
 the system's state variables:
 
-.. code:: 
+.. code::
 
   >>> print(s.X)
   [1  0.5]
@@ -128,11 +128,11 @@ the system's state variables:
 
 Use Cases for State Objects:
 
-- **Researchers and Developers**: Working on dynamic systems in control theory, 
+- **Researchers and Developers**: Working on dynamic systems in control theory,
   robotics, guidance, etc.
-- **Educators and Learners**: Exploring and experimenting 
+- **Educators and Learners**: Exploring and experimenting
   with state-based modeling, Kalman filtering, and sensor fusion.
-- **Engineers**: Implementing practical applications in navigation, 
+- **Engineers**: Implementing practical applications in navigation,
   estimation, and control systems.
 
 
@@ -143,12 +143,12 @@ For more details refer to :mod:`states <c4dynamics.states>`.
 
   <h2>Workflow</h2>
 
-The following flowchart outlining a 
+The following flowchart outlining a
 typical workflow with c4dynamics:
 
 
 
-.. figure:: /_architecture/workflow.drawio.high.png 
+.. figure:: /_architecture/workflow.drawio.high.png
 
   **Typical workflow with c4dynamics**
 
@@ -158,19 +158,19 @@ typical workflow with c4dynamics:
 .. raw:: html
 
   <h2>Modules</h2>
- 
 
-- **State Data Structures**: 
-  Custom and predefined state objects 
-  facilitate efficient 
-  data management and mathematical operations. 
-- **Sensors**: 
+
+- **State Data Structures**:
+  Custom and predefined state objects
+  facilitate efficient
+  data management and mathematical operations.
+- **Sensors**:
   Simulate sensor models to provide realistic inputs.
-- **Detectors**: 
+- **Detectors**:
   API and data structure designed for reading inputs from objects detection models.
-- **Filters**: 
+- **Filters**:
   Kalman filters for real-time tracking and prediction.
-- **Utilities**: 
+- **Utilities**:
   Additional tools for system development and analysis.
 
 
@@ -179,10 +179,10 @@ typical workflow with c4dynamics:
 .. raw:: html
 
   <h2>Documentation Sections</h2>
- 
+
 The documentation is organized as follows:
 
-- **Installation**: Simple instructions for setting up c4dynamics. 
+- **Installation**: Simple instructions for setting up c4dynamics.
 
 - **Getting Started**: An overview of the core concepts and features of c4dynamics, with beginner-friendly examples to help you get started quickly.
 
@@ -212,13 +212,13 @@ The documentation is organized as follows:
   Kinematics <concepts/kinematics>
   Rigid Body Transformations <concepts/transformations>
   Sensors <concepts/sensors>
-  Filters <concepts/filters> 
+  Filters <concepts/filters>
   Reinforcement Learning Enviroenment <concepts/rl_env>
 
 
 .. toctree::
   :maxdepth: 0
-  :caption: Toturials 
+  :caption: Toturials
   :hidden:
 
   tutorials/setup_guide.ipynb
@@ -233,11 +233,20 @@ The documentation is organized as follows:
   programs/dof6sim.ipynb
   programs/ballistic_coefficient.ipynb
   programs/car_tracker.ipynb
+  programs/mpc_steering.ipynb
+
 
 .. toctree::
+  :hidden:
   :maxdepth: 2
   :caption: API
-  :hidden:
 
-  Reference <api/index> 
-
+  Introduction <api/introduction>
+  State Objects <api/States>
+  Sensors <api/Sensors>
+  Detectors <api/Detectors>
+  Filters <api/Filters>
+  Kinematics <api/eqm>
+  Rotations <api/rotmat>
+  Utils <api/Utils>
+  Datasets <api/Datasets>
