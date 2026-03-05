@@ -555,12 +555,12 @@ document.write(`
 <section id="Vehicle-Steering---Model-Predictive-Control">
 <h1>Vehicle Steering - Model Predictive Control<a class="headerlink" href="#Vehicle-Steering---Model-Predictive-Control" title="Link to this heading">#</a></h1>
 <p>The notebook implements a Model Predictive Controller (<span class="math notranslate nohighlight">\(MPC\)</span>) for vehicle steering. Using a simplified model to track a straight reference line, it solves a constrained finite-horizon quadratic program at each time step with <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimze</span></code>, while simulating the closed-loop vehicle dynamics using <a class="reference external" href="https://github.com/c4dynamics/c4dynamics">c4dynamics</a>.</p>
-<section id="Author">
-<h2>Author<a class="headerlink" href="#Author" title="Link to this heading">#</a></h2>
-<p>This notebook was developed by Gilmar Tuta (<a class="reference external" href="https://github.com/grep265">&#64;grep265</a>) as part of the c4dynamics project, under the guidance of the <em>c4dynamics maintainers</em>.</p>
 <div style="text-align: center;"><p><img alt="alt text" src="../_images/lane_diagram.png" /></p>
 <figcaption><p>Figure 1: Lane diagram: The steering command controls the vehicle in the lateral direction (<span class="math notranslate nohighlight">\(y\)</span>). The <span class="math notranslate nohighlight">\(MPC\)</span> algorithm optimizes the cost over a finite horizon in the forward (preview) direction.</p>
-</figcaption></div></section>
+</figcaption></div><section id="Author">
+<h2>Author<a class="headerlink" href="#Author" title="Link to this heading">#</a></h2>
+<p>This notebook was developed by Gilmar Tuta (<a class="reference external" href="https://github.com/grep265">&#64;grep265</a>) as part of the c4dynamics project, under the guidance of the <em>c4dynamics maintainers</em>.</p>
+</section>
 <section id="1.-System-Model">
 <h2>1. System Model<a class="headerlink" href="#1.-System-Model" title="Link to this heading">#</a></h2>
 <div class="line-block">
@@ -894,7 +894,8 @@ smoother control actions and improved tracking performance, especially in constr
 <h2>3. Simulation<a class="headerlink" href="#3.-Simulation" title="Link to this heading">#</a></h2>
 <p>The simulation workflow is illustrated below:</p>
 <div style="text-align: center;"><p><img alt="alt text" src="../_images/MPC_diagram.png" /></p>
-</div><p>At each time step:</p>
+<figcaption><p>Figure 2: Simulation loop.</p>
+</figcaption></div><p>At each time step:</p>
 <ol class="arabic simple">
 <li><p>Store state and parameters</p></li>
 <li><p>Measure current state and solve <span class="math notranslate nohighlight">\(MPC\)</span> for optimal steering input</p></li>
@@ -966,7 +967,7 @@ smoother control actions and improved tracking performance, especially in constr
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/programs_mpc_steering_41_0.png" src="../_images/programs_mpc_steering_41_0.png" />
+<img alt="../_images/programs_mpc_steering_43_0.png" src="../_images/programs_mpc_steering_43_0.png" />
 </div>
 </div>
 <div class="line-block">
@@ -1301,17 +1302,15 @@ V \cdot dt \\
 </section>
 <section id="9.-Example">
 <h2>9. Example<a class="headerlink" href="#9.-Example" title="Link to this heading">#</a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">c4dynamics</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">c4d</span>
 
-<span class="c1"># -----------------------------</span>
 <span class="c1"># Parameters</span>
-<span class="c1"># -----------------------------</span>
 <span class="n">V</span> <span class="o">=</span> <span class="mf">10.0</span>          <span class="c1"># [m/s]</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>         <span class="c1"># [s]</span>
 <span class="n">T</span>  <span class="o">=</span> <span class="mf">5.0</span>          <span class="c1"># [s]</span>
@@ -1329,8 +1328,14 @@ V \cdot dt \\
 
 <span class="c1"># Linearized model</span>
 <span class="n">lin_sys</span> <span class="o">=</span> <span class="n">c4d</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">psi</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
   <span class="n">t</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">dt</span>
   <span class="n">nln_sys</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
   <span class="n">ref_sys</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
@@ -1347,9 +1352,14 @@ V \cdot dt \\
   <span class="c1"># linear system</span>
   <span class="n">lin_sys</span><span class="o">.</span><span class="n">X</span> <span class="o">+=</span> <span class="p">[</span><span class="n">V</span> <span class="o">*</span> <span class="n">lin_sys</span><span class="o">.</span><span class="n">psi</span> <span class="o">*</span> <span class="n">dt</span><span class="p">,</span>
                 <span class="n">u</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span><span class="p">]</span>
-
-
-<span class="c1"># Reconstruct full state</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Reconstruct full state</span>
 <span class="n">x_rec</span> <span class="o">=</span> <span class="n">ref_sys</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">y_rec</span> <span class="o">=</span> <span class="n">ref_sys</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">lin_sys</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -1366,13 +1376,6 @@ V \cdot dt \\
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <br/></pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/programs_mpc_steering_57_0.png" src="../_images/programs_mpc_steering_57_0.png" />
 </div>
 </div>
 </section>
