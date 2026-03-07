@@ -55,7 +55,7 @@
     <link rel="prev" title="Car Tracker – Objects Detection and Kalman Filter" href="car_tracker.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 05, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 07, 2026"/>
   </head>
   
   
@@ -1120,8 +1120,12 @@ V \cdot \sin\psi_r \\
 <div class="math notranslate nohighlight">
 \[\dot{X} = f(X, u)\]</div>
 <p>A first-order Taylor expansion about <span class="math notranslate nohighlight">\((X_r, u_r)\)</span> yields (higher order terms are neglected):</p>
-<p>$$</p>
-<p>$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+\dot{X} = \dot{X}_r + \delta \dot{X} \approx f(X_r, u_r)
++ \left.\frac{\partial f}{\partial X}\right|_{r} \cdot \Delta X
++ \left.\frac{\partial f}{\partial u}\right|_{r} \cdot \Delta u
+\end{aligned}\]</div>
 <p>Since</p>
 <div class="math notranslate nohighlight">
 \[\dot{X}_r = f(X_r, u_r)\]</div>
@@ -1144,8 +1148,18 @@ V \cdot \sin\psi_r \\
 <div class="math notranslate nohighlight">
 \[A = \left.\frac{\partial f}{\partial X}\right|_{X_r, u_r}\]</div>
 <p>Partial derivatives:</p>
-<p>$$</p>
-<p>$$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\frac{\partial \dot{x}} {\partial x}      = 0, &amp;
+\frac{\partial \dot{x}} {\partial y}      = 0, &amp;
+\frac{\partial \dot{x}} {\partial \psi} = -V \cdot \sin\psi_r \\
+\frac{\partial \dot{y}} {\partial x}      = 0, &amp;
+\frac{\partial \dot{y}} {\partial y}      = 0, &amp;
+\frac{\partial \dot{y}} {\partial \psi} = V \cdot \cos\psi_r \\
+\frac{\partial \dot{\psi}} {\partial x} = 0, &amp;
+\frac{\partial \dot{\psi}} {\partial y} = 0, &amp;
+\frac{\partial \dot{\psi}} {\partial \psi} = 0
+\end{aligned}\end{split}\]</div>
 <p>Thus</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}A =
@@ -1261,7 +1275,8 @@ y_r(t) = 0          \\
 <h2>8. Discrete-Time Linear Model<a class="headerlink" href="#8.-Discrete-Time-Linear-Model" title="Link to this heading">#</a></h2>
 <p>Let’s discretize the reference model and linearized model using forward Euler discretization with time-step (<span class="math notranslate nohighlight">\(dt\)</span>):</p>
 <div class="math notranslate nohighlight">
-\[\Delta X_{k+1} = (I + A \cdot dt) \cdot \Delta X_k + B \cdot dt \cdot \Delta u_k = F \cdot \Delta X_k + G \cdot \Delta u_k =\]</div>
+\[\begin{split}\Delta X_{k+1} = (I + A \cdot dt) \cdot \Delta X_k + B \cdot dt \cdot \Delta u_k  \\
+= F \cdot \Delta X_k + G \cdot \Delta u_k\end{split}\]</div>
 <section id="Discrete-Time-Linearized-Model">
 <h3>Discrete-Time Linearized Model<a class="headerlink" href="#Discrete-Time-Linearized-Model" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
@@ -1514,7 +1529,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 05, 2026.
+  Last updated on Mar 07, 2026.
   <br/>
 </p>
   </div>
