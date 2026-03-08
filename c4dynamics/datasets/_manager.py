@@ -67,7 +67,7 @@ def image(image_name: str) -> str:
 
 
     The images can be found at
-    https://github.com/C4dynamics/C4dynamics/blob/main/datasets/images/
+    https://github.com/c4dynamics/c4dynamics/blob/main/datasets/images/
 
 
     Parameters
@@ -154,7 +154,7 @@ def video(video_name: str) -> str:
 
 
     The videos can be found at
-    https://github.com/C4dynamics/C4dynamics/blob/main/datasets/videos/
+    https://github.com/c4dynamics/c4dynamics/blob/main/datasets/videos/
 
     \\* Used by kind permission of `Abed Ismail <https://www.pexels.com/@abed-ismail>`_
 
@@ -321,7 +321,7 @@ def d3_model(d3_name: str) -> str:
 
 
     The models can be found at
-    https://github.com/C4dynamics/C4dynamics/blob/main/datasets/d3_models/
+    https://github.com/c4dynamics/c4dynamics/blob/main/datasets/d3_models/
 
 
 
