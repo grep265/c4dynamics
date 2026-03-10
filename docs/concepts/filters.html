@@ -54,7 +54,7 @@
     <link rel="prev" title="Sensors" href="sensors.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Mar 08, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
   </head>
   
   
@@ -546,10 +546,10 @@ encapsulating all the variables necessary to describe its future behavior given 
 represented by the class <a class="reference internal" href="../api/states.state.html#c4dynamics.states.state.state" title="c4dynamics.states.state.state"><code class="xref py py-class docutils literal notranslate"><span class="pre">state</span></code></a>)
 and a snapshot of its values is provided by
 the property <a class="reference internal" href="../api/generated/state/c4dynamics.states.state.state.X.html#c4dynamics.states.state.state.X" title="c4dynamics.states.state.state.X"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state.X</span></code></a>).</p>
-<p>When the coefficients of the state variables in the equations are constant, the
+<p>When the coefficients of the system of linear differential (or difference) equations are constant, the
 state model represents a linear system (LTI, linear time invariant).
 If the coefficients are
-time dependent, the system is considered linear time varying.
+time-varying, the system is considered linear time varying.
 In <cite>c4dynamics</cite>, all other systems are considered nonlinear.</p>
 </section>
 <section id="nonlinear-systems">
@@ -570,10 +570,10 @@ an approach is the extended Kalman filter.</p>
 <li><p><span class="math notranslate nohighlight">\(x\)</span> is the system state vector</p></li>
 <li><p><span class="math notranslate nohighlight">\(t\)</span> is a time variable</p></li>
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is the system input signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(y\)</span> is the system output vector (the measure)</p></li>
 <li><p><span class="math notranslate nohighlight">\(h(\cdot)\)</span> is an arbitrary vector-valued function representing the measurement equations</p></li>
-<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the (Gaussian) measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(x_0\)</span> is a vector of initial conditions</p></li>
 </ul>
 <p>The noise processes <span class="math notranslate nohighlight">\(\omega(t)\)</span> and <span class="math notranslate nohighlight">\(\nu(t)\)</span> are white, zero-mean, uncorrelated,
@@ -582,8 +582,8 @@ and have known covariance matrices <span class="math notranslate nohighlight">\(
 \[ \begin{align}\begin{aligned}\omega(t) \sim (0, Q_c)\\\nu(t) \sim (0, R_c)\\E[\omega(t) \cdot \omega^T(t)] = Q_c \cdot \delta(t)\\E[\nu(t) \cdot \nu^T(t)] = R_c \cdot \delta(t)\\E[\nu(t) \cdot \omega^T(t)] = 0\end{aligned}\end{align} \]</div>
 <p>Where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the (Gaussian) measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(Q_c\)</span> is the process covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(R_c\)</span> is the measurement covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sim\)</span> is the distribution operator. <span class="math notranslate nohighlight">\(\sim (\mu, \sigma)\)</span> means a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span></p></li>
@@ -596,7 +596,7 @@ and have known covariance matrices <span class="math notranslate nohighlight">\(
 <h3>Linearization<a class="headerlink" href="#linearization" title="Link to this heading">#</a></h3>
 <p>A linear Kalman filter has a significant advantage in terms of simplicity and
 computing resources, but much more importantly, the <a class="reference internal" href="#state-covariance">State Covariance</a>
-in a linear Kalman provides exact predictions of the errors in the state estimates.
+in a linear Kalman provides the error in the state estimates.
 The extended Kalman filter offers no such guarantees.
 Therefore it is always a good practice to start by
 an attempt to linearize the system.</p>
@@ -610,7 +610,7 @@ an attempt to linearize the system.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Delta{x}\)</span> is the linear approximation of a small deviation of the state <span class="math notranslate nohighlight">\(x\)</span> from the nominal trajectory</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Delta{u}\)</span> is the linear approximation of a small deviation of the input control <span class="math notranslate nohighlight">\(u\)</span> from the nominal trajectory</p></li>
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty</p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Delta{\nu}\)</span> is the linear approximation of a small deviation of the noise <span class="math notranslate nohighlight">\(\nu\)</span> from the nominal trajectory</p></li>
 <li><p><span class="math notranslate nohighlight">\({\partial{f} \over \partial{i}}\bigg|_{x_n, u_n}\)</span> is the partial derivative of <span class="math notranslate nohighlight">\(f\)</span> with respect to <span class="math notranslate nohighlight">\(i (i = x\)</span> or <span class="math notranslate nohighlight">\(u)\)</span> substituted by the nominal point <span class="math notranslate nohighlight">\({x_n, u_n}\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\({\partial{h} \over \partial{x}}\bigg|_{x_n}\)</span> is the partial derivative of <span class="math notranslate nohighlight">\(h\)</span> with respect to <span class="math notranslate nohighlight">\(x\)</span>, substituted by the nominal point <span class="math notranslate nohighlight">\({x_n}\)</span></p></li>
@@ -620,7 +620,7 @@ an attempt to linearize the system.</p>
 <p>Let’s denote:</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}A = {\partial{f} \over \partial{x}}\bigg|_{x_n, u_n, \omega_n}\\B = {\partial{f} \over \partial{u}}\bigg|_{x_n, u_n, \omega_n}\\C = {\partial{h} \over \partial{x}}\bigg|_{x_n, \nu_n}\end{aligned}\end{align} \]</div>
-<p>Finally the linear model of system <a class="reference internal" href="#equation-nonlinearmodel">(1)</a> is:</p>
+<p>Finally the instantaneous linear model of system <a class="reference internal" href="#equation-nonlinearmodel">(1)</a> is:</p>
 <div class="math notranslate nohighlight" id="equation-linearmodel">
 <span class="eqno">(3)<a class="headerlink" href="#equation-linearmodel" title="Link to this equation">#</a></span>\[ \begin{align}\begin{aligned}\dot{x} = A \cdot x + B \cdot u + \omega\\y = C \cdot x + \nu\\x(0) = x_0\end{aligned}\end{align} \]</div>
 <p>Where:</p>
@@ -629,10 +629,10 @@ an attempt to linearize the system.</p>
 <li><p><span class="math notranslate nohighlight">\(x\)</span> is the system state vector</p></li>
 <li><p><span class="math notranslate nohighlight">\(b\)</span> is the process input matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is the system input signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q_c\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(y\)</span> is the system output vector (the measure)</p></li>
 <li><p><span class="math notranslate nohighlight">\(C\)</span> is the output matrix</p></li>
-<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the (Gaussian) measure noise with covariance matrix <span class="math notranslate nohighlight">\(R_c\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(x_0\)</span> is a vector of initial conditions</p></li>
 <li><p><span class="math notranslate nohighlight">\(Q_c\)</span> is the process covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(R_c\)</span> is the measurement covariance matrix</p></li>
@@ -752,7 +752,7 @@ are notated by <span class="math notranslate nohighlight">\((-)\)</span> supersc
 <section id="update">
 <h3>Update<a class="headerlink" href="#update" title="Link to this heading">#</a></h3>
 <p>In the update step (also called <cite>correct</cite>), the estimate is corrected by incorporating a new measure.</p>
-<p>The Kalman gain, <span class="math notranslate nohighlight">\(K\)</span>, is computed based on the predicted state covariance and the measurement noise covariance.
+<p>The Kalman gain, <span class="math notranslate nohighlight">\(K\)</span>, is computed based on the predicted state error covariance and the measurement noise covariance.
 It determines the optimal weighting between the predicted state and the new measurement.</p>
 <p>The predicted state estimate is adjusted using the new measurement, weighted by the Kalman Gain.
 This update incorporates the latest measurement to refine the state estimate.
@@ -1016,10 +1016,10 @@ and can use the exact nonlinear equations (<span class="math notranslate nohighl
 <li><p><span class="math notranslate nohighlight">\(f(\cdot)\)</span> is an arbitrary vector-valued function representing the system dynamics</p></li>
 <li><p><span class="math notranslate nohighlight">\(x\)</span> is the system state vector</p></li>
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is the process input signal</p></li>
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(y\)</span> is the system output vector</p></li>
 <li><p><span class="math notranslate nohighlight">\(h(\cdot)\)</span> is an arbitrary vector-valued function representing the system output</p></li>
-<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the measure noise with covariance matrix <span class="math notranslate nohighlight">\(R\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the (Gaussian) measure noise with covariance matrix <span class="math notranslate nohighlight">\(R\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(x_0\)</span> is a vector of initial conditions</p></li>
 </ul>
 <p>The noise processes <span class="math notranslate nohighlight">\(\omega(t)\)</span> and <span class="math notranslate nohighlight">\(\nu(t)\)</span> are white, zero-mean, uncorrelated,
@@ -1028,8 +1028,8 @@ and have known covariance matrices <span class="math notranslate nohighlight">\(
 \[ \begin{align}\begin{aligned}\omega(t) \sim (0, Q)\\\nu(t) \sim (0, R)\\E[\omega(t) \cdot \omega^T(t)] = Q \cdot \delta(t)\\E[\nu(t) \cdot \nu^T(t)] = R \cdot \delta(t)\\E[\nu(t) \cdot \omega^T(t)] = 0\end{aligned}\end{align} \]</div>
 <p>Where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the measure noise with covariance matrix <span class="math notranslate nohighlight">\(R\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the (Gaussian) process uncertainty with covariance matrix <span class="math notranslate nohighlight">\(Q\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu\)</span> is the (Gaussian) measure noise with covariance matrix <span class="math notranslate nohighlight">\(R\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(Q\)</span> is the process covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is the measurement covariance matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sim\)</span> is the distribution operator. <span class="math notranslate nohighlight">\(\sim (\mu, \sigma)\)</span> means a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span></p></li>
@@ -1507,7 +1507,7 @@ By c4dynamics
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 08, 2026.
+  Last updated on Mar 10, 2026.
   <br/>
 </p>
   </div>
