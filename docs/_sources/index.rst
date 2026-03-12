@@ -37,7 +37,7 @@
     </a>
   </div>
 
-`Source Repository <https://github.com/C4dynamics/C4dynamics>`_
+`Source Repository <https://github.com/c4dynamics/c4dynamics>`_
 
 
 **c4dynamics** is designed to

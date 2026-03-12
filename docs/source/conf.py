@@ -34,17 +34,17 @@ The cause is the same as that of the issue with the body text color; the color o
 
 
 
-Each introduction page on your GitHub page, website, 
-and documentation serves different purposes and targets 
+Each introduction page on your GitHub page, website,
+and documentation serves different purposes and targets
 different audiences. Here's a breakdown of the intention and focus for each:
 
 https://chatgpt.com/share/671776d9-c600-8002-bf9e-c9345a1fa792
 
 
-### 1. **GitHub Page (Repository README)**  
-**Purpose**: To introduce your project to developers and contributors.  
-**Focus**: Provide a concise overview of the project, its purpose, and how to get started.  
-**What to include**:  
+### 1. **GitHub Page (Repository README)**
+**Purpose**: To introduce your project to developers and contributors.
+**Focus**: Provide a concise overview of the project, its purpose, and how to get started.
+**What to include**:
    - **Project Name** and **Brief Description**: Explain the problem your project solves or the features it offers.
    - **Key Features**: Highlight what makes your project unique or useful.
    - **Installation Instructions**: How someone can clone the repository and run the project locally.
@@ -171,7 +171,7 @@ napoleon_type_aliases = {"Args": "Arguments", "Parameters": "Arguments"}
 """
   https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 
-  
+
   Docstring Sections
   All of the following section headers are supported:
 
@@ -276,26 +276,26 @@ html_short_title = project
 # Don't use the logo since it gets in the way of the project name and is
 # repeated in the front page.
 # html_logo = "_static/pooch-logo.png"
-""" 
+"""
   html_static_path
   ----------------
-  A list of paths that contain custom static files. 
-  Relative paths are taken as relative to the configuration directory (conf.py base). 
-  
-  The content of these folders are copied to the output’s _static directory 
-  after the theme’s static files, 
+  A list of paths that contain custom static files.
+  Relative paths are taken as relative to the configuration directory (conf.py base).
+
+  The content of these folders are copied to the output’s _static directory
+  after the theme’s static files,
   so a file named default.css will overwrite the theme’s default.css.
 
-  Then no matter what static folder the image is located, for example 
-  source/_architecture/image.png 
-  the image is copied to _static 
+  Then no matter what static folder the image is located, for example
+  source/_architecture/image.png
+  the image is copied to _static
   then the reference to it should be with respct to _static:
-  _static/image.png 
+  _static/image.png
 
-  
+
   configuration directory
   -----------------------
-  The directory containing conf.py. 
+  The directory containing conf.py.
 
 """
 html_static_path = ["_papers", "_architecture", "_static"]
@@ -308,6 +308,8 @@ html_extra_path = []
 html_show_sourcelink = False
 html_show_sphinx = True
 html_show_copyright = True
+# html_logo = "_static/c4dlogo.svg"
+
 
 html_theme = "sphinx_book_theme"
 html_theme_options = {
@@ -330,9 +332,9 @@ html_theme_options = {
 """
 procedure for version.
 1 checkout main revision
-2 branch it 
+2 branch it
 3 tag it
-4 .. check gpt wahts first. push and merge or merge and 
+4 .. check gpt wahts first. push and merge or merge and
 
 USE CASES
 1. see pretty example for jupyter demo here https://cocalc.com/share/public_paths/7557a5ac1c870f1ec8f01271959b16b49df9d087/07-Kalman-Filter-Math.ipynb
@@ -346,14 +348,14 @@ https://www.doabledanny.com/static/ab88214c9082dc96bb7d53b90fc6981b/5620d/dark_m
 
 AI for docstrings
 =================
-12 in seeker i commented some parts that included toctrees and description 
+12 in seeker i commented some parts that included toctrees and description
     of arguments in construction etc.
-17 add section explains how the user adds methods (not just params and vars. ) 
-19 protcet the _data array to prevent modification from outside. 
-20 maybe add an option to introduce parameters as dict in the constructor. 
+17 add section explains how the user adds methods (not just params and vars. )
+19 protcet the _data array to prevent modification from outside.
+20 maybe add an option to introduce parameters as dict in the constructor.
 
 
-      
+
 
 
 
