@@ -96,7 +96,7 @@
         border:1px solid #e6e6e6;
         box-shadow:0 6px 14px rgba(0,0,0,0.08);
         transition:all 0.18s ease;
-        overflow:hidden; 
+        overflow:hidden;
     }
 
     .sim-card:hover{
@@ -344,10 +344,37 @@ If you have questions or want to contribute, feel free to reach out.
 — **Ziv Meri**
 
 
+
+
+🤝 Connect
+-----------
+
 .. raw:: html
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+
+    <a href="https://github.com/c4dynamics/c4dynamics/discussions" target="_blank" rel="noopener"
+       style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+        <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M2 1a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3v3l4-3h5a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+        </svg>
+        Ask questions in GitHub Discussions
+    </a>
+
+    <a href="https://www.linkedin.com/in/ziv-meri/" target="_blank" rel="noopener"
+       style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+        <svg height="18" width="18" viewBox="0 0 448 512" fill="currentColor">
+            <path d="M100.3 448H7.4V148.9h92.9zm-46.4-341C24.1 107 0 82.9 0 53.4A53.4 53.4 0 0 1 53.4 0C82.9 0 107 24.1 107 53.4c0 29.5-24.1 53.6-53.1 53.6zM447.9 448h-92.4V302.4c0-34.7-.7-79.3-48.3-79.3-48.3 0-55.7 37.7-55.7 76.7V448h-92.5V148.9h88.8v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"/>
+        </svg>
+        Connect on LinkedIn
+    </a>
 
     </div>
 
+
+.. raw:: html
+
+   </div>
 
 .. raw:: html
 
