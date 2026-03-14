@@ -134,6 +134,10 @@
         color:#000;      /* black */
     }
 
+    .dropdown-download-buttons {
+        display: none !important;
+    }
+    
    </style>
 
    <div class="landing">
