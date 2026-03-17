@@ -137,7 +137,7 @@
     .dropdown-download-buttons {
         display: none !important;
     }
-    
+
    </style>
 
    <div class="landing">
@@ -206,11 +206,28 @@ Start with a **10-minute interactive tutorial**
 
 **c4dynamics** is a Python framework for **state-space modeling and algorithm development**.
 
+
 It helps engineers focus on **physics and algorithms**, instead of boilerplate code.
 
 
 .. raw:: html
 
+    <div style="text-align:center; margin-top:14px;">
+        <a href="https://github.com/c4dynamics/c4dynamics" target="_blank" rel="noopener"
+            style="
+            display:inline-block;
+            margin-top:12px;
+            padding:10px 18px;
+            background:#24292e;
+            color:white;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;">
+            ⭐ Star on GitHub
+        </a>
+    </div>
+
+    <br>
 
     <a href="https://github.com/c4dynamics/c4dynamics" target="_blank" rel="noopener"
        style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
@@ -224,7 +241,7 @@ It helps engineers focus on **physics and algorithms**, instead of boilerplate c
             1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
             1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
         </svg>
-        Explore the repository
+        Browse the repo
     </a>
 
     <br>
