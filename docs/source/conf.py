@@ -315,7 +315,7 @@ html_theme = "sphinx_book_theme"
 html_theme_options = {
     "repository_url": f"https://github.com/{author.lower()}/{project.lower()}",
     "repository_branch": "main",
-    "path_to_docs": "docs"
+    "path_to_docs": "docs",
     # "launch_buttons": {
     #   "binderhub_url": "https://mybinder.org",
     #   "notebook_interface": "jupyterlab",
@@ -323,9 +323,11 @@ html_theme_options = {
     # "use_edit_page_button": True,
     # "use_issues_button": True,
     # "use_repository_button": True,
-    # "use_download_button": True
-    ,
+    # "use_download_button": True,
     "home_page_in_toc": True,
+    "analytics": {
+        "google_analytics_id": "G-LKRZFXZKQP",
+    }
 }
 
 
