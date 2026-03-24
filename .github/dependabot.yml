@@ -1,0 +1,36 @@
+version: 2
+updates:
+  # Main dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+    groups:
+      core:
+        patterns:
+          - "*requirements.txt"
+
+      dev:
+        patterns:
+          - "*requirements-dev.txt"
+
+      vision:
+        patterns:
+          - "*requirements-vision.txt"
+
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+    groups:
+      gh-actions:
+        patterns:
+          - "*"
