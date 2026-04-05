@@ -38,9 +38,11 @@ jobs:
       - name: List installed packages
         run: pip list
 
-      - name: Run unittests
+      - name: Run unittests with coverage
         run: |
-          python -m unittest discover -s tests -p "test_*.py"
+          pip install coverage
+          coverage run -m unittest discover -s tests -p "test_*.py"
+          coverage xml 
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.os == 'ubuntu-latest' &&  matrix.python-version == '3.10'}}
