@@ -63,8 +63,7 @@ class helicopter(state):
 
 
     def dynamics(self, t: float, y: np.ndarray, u: np.ndarray):
-        x1 = y[:2]
-        x2 = y[2:]
+        x1, x2 = self.split(y)
 
         # F, G  = helicopter_dynamics_matrices(x1, x2)
         dx1   = x2
@@ -84,5 +83,12 @@ class helicopter(state):
                             -15 * np.cos(t)]) * d2r
 
         return xd, xd_d, xd_dd
+    
+    
+    def split(self, X=None):
+
+        x = self.X if X is None else X
+        n = len(x) // 2
+        return x[:n], x[n:]
 
 
